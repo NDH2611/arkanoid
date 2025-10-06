@@ -8,7 +8,7 @@ module org.example.arkaprj {
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
-    requires eu.hansolo.tilesfx;
+    //requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
 
     opens org.example.arkaprj to javafx.fxml;
