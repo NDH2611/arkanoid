@@ -45,8 +45,13 @@ public class GameEngine {
     }
 
     public void update() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         ball.update();
+        if (ball.getX() <= 0 || ball.getX() + ball.getWidth() >= WIDTH) {
+            ball.setDx(-ball.getDx());
+        }
+        if (ball.getY() <= 0 || ball.getY() + ball.getHeight() >= HEIGHT) {
+            ball.setDy(-ball.getDy());
+        }
     }
 
     public void render() {
