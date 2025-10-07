@@ -12,7 +12,6 @@ public class Paddle extends MoveObject {
 
         this.paddle = paddle;
         this.screenWidth = screenWidth;
-        this.shape = paddle;
     }
 
     public void moveLeft() {

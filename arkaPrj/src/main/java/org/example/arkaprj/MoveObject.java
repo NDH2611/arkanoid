@@ -6,7 +6,7 @@ public abstract class MoveObject extends GameObject {
     protected double speed;
 
     public MoveObject(double x, double y, double width, double height, double speed) {
-        super(x, y, width, height, null);
+        super(x, y, width, height);
         this.speed = speed;
     }
 

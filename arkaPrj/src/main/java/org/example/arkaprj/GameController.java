@@ -26,7 +26,7 @@ public class GameController {
 
         ball = new Ball(circle, 4);
 
-        playerPaddle = new Paddle(paddle, 10, background.getPrefWidth());
+        playerPaddle = new Paddle(paddle, 20, background.getPrefWidth());
     }
 
     public void startBallMovement() {
