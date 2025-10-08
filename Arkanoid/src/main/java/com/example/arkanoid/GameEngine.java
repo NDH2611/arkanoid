@@ -4,6 +4,8 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
@@ -17,6 +19,7 @@ public class GameEngine {
     private Scene scene;
 
     private Ball ball;
+    private Paddle paddle;
 
     public GameEngine() {
         initialize();
@@ -27,9 +30,13 @@ public class GameEngine {
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
         ball = new Ball(WIDTH/2,HEIGHT/2, 10, 2);
+        paddle = new Paddle(WIDTH/2, HEIGHT*3/4, 36,10,0);
 
         StackPane root = new StackPane(canvas);
         scene = new Scene(root, WIDTH, HEIGHT);
+
+        scene.setOnKeyPressed(event -> handleKeyInput(event));
+        scene.setOnKeyReleased(event -> handleKeyInput(event));
 
     }
 
@@ -52,12 +59,17 @@ public class GameEngine {
         if (ball.getY() <= 0 || ball.getY() + ball.getHeight() >= HEIGHT) {
             ball.setDy(-ball.getDy());
         }
+        paddle.update();
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        gc.setFill(Color.RED);
         ball.render(gc);
+        paddle.render(gc);
+    }
+
+    public void handleKeyInput(KeyEvent event) {
+        paddle.handleInput(event);
     }
 
     public Scene getScene() {
