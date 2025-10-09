@@ -40,11 +40,13 @@ public class Paddle extends MovableObject {
         }
     }
 
+    @Override
     public void render(GraphicsContext gc) {
         gc.setFill(Color.BLUE);
         gc.fillRect(x, y, width, height);
     }
 
+    @Override
     public void update() {
         x += dx;
         y += dy;

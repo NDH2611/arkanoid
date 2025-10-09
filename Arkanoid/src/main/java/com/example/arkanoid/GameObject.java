@@ -1,5 +1,8 @@
 package com.example.arkanoid;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.Shape;
+
 public abstract class GameObject {
     protected double x;
     protected double y;
@@ -13,6 +16,9 @@ public abstract class GameObject {
         this.height = height;
     }
 
+    public abstract void update();
+    public abstract void render(GraphicsContext gc);
+    public abstract Shape getShape();
 //    public abstract void update();
 //    public abstract void render();
 

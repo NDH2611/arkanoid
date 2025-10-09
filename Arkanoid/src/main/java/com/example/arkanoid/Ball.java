@@ -12,11 +12,13 @@ public class Ball extends MovableObject {
         shape = new Circle(x, y, radius);
     }
 
+    @Override
     public void render(GraphicsContext gc) {
         gc.setFill(Color.RED);
         gc.fillOval(x, y, width, height);
     }
 
+    @Override
     public void update() {
         x += dx;
         y += dy;
