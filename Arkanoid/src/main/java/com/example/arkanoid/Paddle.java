@@ -54,11 +54,11 @@ public class Paddle extends MovableObject {
         rect.setLayoutY(y);
     }
 
-    public Rectangle getShape() {
+    public Rectangle getRect() {
         return rect;
     }
 
-    public void setShape(Rectangle rect) {
+    public void setRect(Rectangle rect) {
         this.rect = rect;
     }
 }

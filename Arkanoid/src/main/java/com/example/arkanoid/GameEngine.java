@@ -29,7 +29,7 @@ public class GameEngine {
     public void initialize() {
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        ball = new Ball(WIDTH/2,HEIGHT/2, 10, 4);
+        ball = new Ball(WIDTH/2,HEIGHT/2, 10, 2);
         paddle = new Paddle(WIDTH/2, HEIGHT*3/4, 36,10,0);
 
         StackPane root = new StackPane(canvas);
@@ -53,14 +53,12 @@ public class GameEngine {
 
     public void update() {
         ball.update();
-
-        CheckCollision.checkEdge(ball, paddle);
-        CheckCollision.onCollision(ball, paddle);
-        /*
-        for (Brick brick : bricks) {
-            CheckCollision.onCollision(ball, brick);
+        if (ball.getX() <= 0 || ball.getX() + ball.getWidth() >= WIDTH) {
+            ball.setDx(-ball.getDx());
         }
-         */
+        if (ball.getY() <= 0 || ball.getY() + ball.getHeight() >= HEIGHT) {
+            ball.setDy(-ball.getDy());
+        }
         paddle.update();
     }
 
@@ -77,5 +75,4 @@ public class GameEngine {
     public Scene getScene() {
         return scene;
     }
-
 }
