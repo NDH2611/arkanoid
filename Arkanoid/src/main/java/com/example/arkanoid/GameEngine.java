@@ -7,12 +7,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
 
 public class GameEngine {
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 600;
 
     private Canvas canvas;
     private GraphicsContext gc;
@@ -29,8 +28,8 @@ public class GameEngine {
     public void initialize() {
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        ball = new Ball(WIDTH/2,HEIGHT/2, 10, 2);
-        paddle = new Paddle(WIDTH/2, HEIGHT*3/4, 36,10,0);
+        ball = new Ball(WIDTH/2,HEIGHT/2, 10, 5);
+        paddle = new Paddle(WIDTH/2, HEIGHT*3/4, 75,25,0);
 
         StackPane root = new StackPane(canvas);
         scene = new Scene(root, WIDTH, HEIGHT);
@@ -52,13 +51,7 @@ public class GameEngine {
     }
 
     public void update() {
-        ball.update();
-        if (ball.getX() <= 0 || ball.getX() + ball.getWidth() >= WIDTH) {
-            ball.setDx(-ball.getDx());
-        }
-        if (ball.getY() <= 0 || ball.getY() + ball.getHeight() >= HEIGHT) {
-            ball.setDy(-ball.getDy());
-        }
+        ball.update(paddle);
         paddle.update();
     }
 
