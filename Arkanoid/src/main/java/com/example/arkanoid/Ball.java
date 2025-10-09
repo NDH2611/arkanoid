@@ -12,18 +12,31 @@ public class Ball extends MovableObject {
         shape = new Circle(x, y, radius);
     }
 
-    @Override
     public void render(GraphicsContext gc) {
         gc.setFill(Color.RED);
         gc.fillOval(x, y, width, height);
     }
 
-    @Override
-    public void update() {
+    public void update(Paddle paddle) {
         x += dx;
+        shape.setCenterX(x + width / 2);
+        if (CheckCollision.checkEdge(shape) || CheckCollision.checkCollision(shape, paddle.getRect())) {
+            x -= dx;
+            shape.setCenterX(x + width / 2);
+            dx = -dx;
+        }
         y += dy;
-        shape.setCenterX(x+width/2);
-        shape.setCenterY(y+height/2);
+        shape.setCenterY(y + height / 2);
+        if (CheckCollision.checkEdge(shape) || CheckCollision.checkCollision(shape, paddle.getRect())) {
+            y -= dy;
+            shape.setCenterY(y + height / 2);
+            dy = -dy;
+        }
+//        if (dy > 0 && CheckCollision.checkCollision(shape, paddle.getRect())) {
+//            y = paddle.getRect().getY()-height;
+//            shape.setCenterY(y + height / 2);
+//            dy = -dy;
+//        }
     }
 
     public Circle getShape() {
