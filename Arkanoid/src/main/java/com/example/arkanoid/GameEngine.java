@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 public class GameEngine {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
+    public static final double BALL_SPEED = 3.0;
 
     private Canvas canvas;
     private GraphicsContext gc;
@@ -28,8 +29,8 @@ public class GameEngine {
     public void initialize() {
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        ball = new Ball(WIDTH/2,HEIGHT/2, 10, 5);
-        paddle = new Paddle(WIDTH/2, HEIGHT*3/4, 75,25,0);
+        ball = new Ball(WIDTH/2,HEIGHT/2, 10, BALL_SPEED);
+        paddle = new Paddle(WIDTH/2, HEIGHT*3/4, 75,15,0);
 
         StackPane root = new StackPane(canvas);
         scene = new Scene(root, WIDTH, HEIGHT);

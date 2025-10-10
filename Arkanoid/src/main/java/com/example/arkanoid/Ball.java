@@ -20,23 +20,39 @@ public class Ball extends MovableObject {
     public void update(Paddle paddle) {
         x += dx;
         shape.setCenterX(x + width / 2);
-        if (CheckCollision.checkEdge(shape) || CheckCollision.checkCollision(shape, paddle.getRect())) {
+        if (CheckCollision.checkEdge(shape)) {
             x -= dx;
             shape.setCenterX(x + width / 2);
             dx = -dx;
         }
         y += dy;
         shape.setCenterY(y + height / 2);
-        if (CheckCollision.checkEdge(shape) || CheckCollision.checkCollision(shape, paddle.getRect())) {
+        if (CheckCollision.checkEdge(shape)) {
             y -= dy;
             shape.setCenterY(y + height / 2);
             dy = -dy;
         }
-//        if (dy > 0 && CheckCollision.checkCollision(shape, paddle.getRect())) {
-//            y = paddle.getRect().getY()-height;
-//            shape.setCenterY(y + height / 2);
-//            dy = -dy;
-//        }
+        CheckCollision.CollisionSide side = CheckCollision.checkCollision(shape, paddle.getRect());
+        switch (side) {
+            case LEFT:
+                x = paddle.getX() - width;
+                dx = -GameEngine.BALL_SPEED;
+                break;
+            case RIGHT:
+                x = paddle.getX() + paddle.getWidth();
+                dx = GameEngine.BALL_SPEED;
+                break;
+            case TOP:
+                y = paddle.getY() - height;
+                dy = -GameEngine.BALL_SPEED;
+                break;
+            case BOTTOM:
+                y = paddle.getY() + paddle.getHeight();
+                dy = GameEngine.BALL_SPEED;
+                break;
+            default:
+                break;
+        }
     }
 
     public Circle getShape() {
