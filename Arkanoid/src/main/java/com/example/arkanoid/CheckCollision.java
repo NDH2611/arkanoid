@@ -4,6 +4,14 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public class CheckCollision {
+    enum CollisionSide {
+        NONE,
+        TOP,
+        BOTTOM,
+        LEFT,
+        RIGHT
+    }
+
     public static boolean checkEdge(Circle circle) {
         if (circle.getCenterX() - circle.getRadius() <= 0 ||
                 circle.getCenterX() + circle.getRadius() >= GameEngine.WIDTH) {
@@ -42,7 +50,7 @@ public class CheckCollision {
         return true;
     }
 
-    public static boolean checkCollision(Circle circle, Rectangle rectangle) {
+    public static CollisionSide checkCollision(Circle circle, Rectangle rectangle) {
         double posX;
         double posY;
 
@@ -63,12 +71,27 @@ public class CheckCollision {
         }
 
         if ((circle.getCenterX() - posX) * (circle.getCenterX() - posX) +
-                (circle.getCenterY() - posY) * (circle.getCenterY() -  posY) <=
+                (circle.getCenterY() - posY) * (circle.getCenterY() - posY) >
                 circle.getRadius() * circle.getRadius()) {
-            return true;
+            return CollisionSide.NONE;
         }
-        return false;
+        double overlapLeft = (circle.getCenterX() + circle.getRadius()) - rectangle.getX();
+        double overlapRight = (rectangle.getX() + rectangle.getWidth()) - (circle.getCenterX() - circle.getRadius());
+        double overlapTop = (circle.getCenterY() - circle.getRadius()) - rectangle.getY();
+        double overlapBottom = (rectangle.getY() + rectangle.getHeight()) - (circle.getCenterY() - circle.getRadius());
 
+        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight), Math.min(overlapTop,overlapBottom));
+
+        if(minOverlap == overlapLeft) {
+            return CollisionSide.LEFT;
+        }
+        if(minOverlap == overlapRight) {
+            return CollisionSide.RIGHT;
+        }
+        if(minOverlap == overlapTop) {
+            return CollisionSide.TOP;
+        }
+        return CollisionSide.BOTTOM;
     }
 
 

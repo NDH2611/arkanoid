@@ -59,16 +59,11 @@ public class Paddle extends MovableObject {
         x += dx;
         rect.setX(x);
         if (CheckCollision.checkEdge(rect)) {
-            x -= dx;
-            rect.setX(x);
-            dx = 0;
-        }
-        y += dy;
-        rect.setY(y);
-        if (CheckCollision.checkEdge(rect)) {
-            y -= dy;
-            rect.setY(y);
-            dy = 0;
+            if(x <= 0){
+                x=0;
+            }else {
+                x = GameEngine.WIDTH - width;
+            }
         }
     }
 
