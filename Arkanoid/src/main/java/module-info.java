@@ -6,6 +6,8 @@ module com.example.arkanoid {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires com.almasb.fxgl.all;
+    requires java.desktop;
+    requires java.management;
 
     opens com.example.arkanoid to javafx.fxml;
     exports com.example.arkanoid;

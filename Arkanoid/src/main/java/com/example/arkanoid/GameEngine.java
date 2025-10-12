@@ -23,6 +23,7 @@ public class GameEngine {
 
     public GameEngine() {
         initialize();
+        showBricks();
         startGameLoop();
     }
 
@@ -60,8 +61,14 @@ public class GameEngine {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         ball.render(gc);
         paddle.render(gc);
+        for(Brick brick : Brick.getBricks()) {
+            brick.render(gc);
+        }
     }
 
+    public void showBricks() {
+        Brick.newBricks();
+    }
     public void handleKeyInput(KeyEvent event) {
         paddle.handleInput(event);
     }
