@@ -16,14 +16,14 @@ public class GameEngine {
     public static final int HEIGHT = 600;
     public static final double BALL_SPEED = 3.0;
 
-    static int height = 20;
-    static int width = 60;
-    static int space = 5;
-    static int columns = 12;
-    static int rows = 5;
-    static int distanceY = 10;
-    static int distanceX = (800-width*columns-space*(columns-1))/2;
-    static int bricksType=5;
+    public static int height = 40;
+    public static int width = 80;
+    public static int space = 5;
+    public static int columns = 9;
+    public static int rows = 5;
+    public static int distanceY = 10;
+    public static int distanceX = (800-width*columns-space*(columns-1))/2;
+    public static int bricksType=5;
 
     private Canvas canvas;
     private GraphicsContext gc;
