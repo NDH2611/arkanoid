@@ -7,13 +7,18 @@
     <list default="true" id="189b9082-9fbe-4a0d-b84e-1cfcd1522e45" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/Ball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/Brick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/Brick.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/CheckCollision.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/CheckCollision.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/GameEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/MovableObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/MovableObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/Paddle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Ball$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Ball.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Ball.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/CheckCollision.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/CheckCollision.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/MovableObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/MovableObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Paddle$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Paddle$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Paddle.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Paddle.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,6 +80,26 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration name="Run" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.arkanoid.Run" />
+      <module name="Arkanoid" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.arkanoid.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Run" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -102,6 +127,10 @@
       <workItem from="1760096802642" duration="5524000" />
       <workItem from="1760102711685" duration="270000" />
       <workItem from="1760110713459" duration="30000" />
+      <workItem from="1760457120518" duration="4359000" />
+      <workItem from="1760585890872" duration="4969000" />
+      <workItem from="1760599872357" duration="1003000" />
+      <workItem from="1760635170745" duration="3233000" />
     </task>
     <servers />
   </component>

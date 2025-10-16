@@ -12,42 +12,35 @@ public class CheckCollision {
         RIGHT
     }
 
-    public static boolean checkEdge(Circle circle) {
-        if (circle.getCenterX() - circle.getRadius() <= 0 ||
-                circle.getCenterX() + circle.getRadius() >= GameEngine.WIDTH) {
-            return true;
+    public static void checkBallWallCollision(Ball ball) {
+        if (ball.getX() <= 0) {
+            ball.setX(0);
+            ball.setDx(-ball.getDx());
         }
-        if (circle.getCenterY() - circle.getRadius() <= 0 ||
-                circle.getCenterY() + circle.getRadius() >= GameEngine.HEIGHT) {
-            return true;
+
+        if (ball.getX() + ball.getWidth() >= GameEngine.WIDTH) {
+            ball.setX(GameEngine.WIDTH - ball.getWidth());
+            ball.setDx(-ball.getDx());
         }
-        return false;
+
+        if (ball.getY() <= 0) {
+            ball.setY(0);
+            ball.setDy(-ball.getDy());
+        }
+
+        if (ball.getY() + ball.getHeight() >= GameEngine.HEIGHT) {
+            ball.setY(GameEngine.HEIGHT - ball.getWidth());
+            ball.setDy(-ball.getDy());
+        }
     }
 
-    public static boolean checkEdge(Rectangle rectangle) {
-        if (rectangle.getX() <= 0 || rectangle.getX() + rectangle.getWidth() >= GameEngine.WIDTH) {
-            return true;
+    public static void checkPaddleWallCollision(Paddle paddle) {
+        if (paddle.getX() <= 0) {
+            paddle.setX(0);
         }
-        if (rectangle.getY() <= 0 || rectangle.getY() + rectangle.getHeight() >= GameEngine.HEIGHT) {
-            return true;
+        if (paddle.getX() + paddle.getWidth() >= GameEngine.WIDTH) {
+            paddle.setX(GameEngine.WIDTH - paddle.getWidth());
         }
-        return false;
-    }
-
-    public static boolean checkCollision(Rectangle rectangle1, Rectangle rectangle2) {
-        if (rectangle1.getX() > rectangle2.getX() + rectangle2.getWidth()) {
-            return false;
-        }
-        if (rectangle1.getX() + rectangle1.getWidth() < rectangle2.getX()) {
-            return false;
-        }
-        if (rectangle1.getY() + rectangle1.getHeight() < rectangle2.getY()) {
-            return false;
-        }
-        if (rectangle1.getY() > rectangle2.getY() + rectangle2.getHeight()) {
-            return false;
-        }
-        return true;
     }
 
     public static CollisionSide checkCollision(Circle circle, Rectangle rectangle) {
@@ -77,7 +70,7 @@ public class CheckCollision {
         }
         double overlapLeft = (circle.getCenterX() + circle.getRadius()) - rectangle.getX();
         double overlapRight = (rectangle.getX() + rectangle.getWidth()) - (circle.getCenterX() - circle.getRadius());
-        double overlapTop = (circle.getCenterY() - circle.getRadius()) - rectangle.getY();
+        double overlapTop = (circle.getCenterY() + circle.getRadius()) - rectangle.getY();
         double overlapBottom = (rectangle.getY() + rectangle.getHeight()) - (circle.getCenterY() - circle.getRadius());
 
         double minOverlap = Math.min(Math.min(overlapLeft, overlapRight), Math.min(overlapTop,overlapBottom));
@@ -94,5 +87,19 @@ public class CheckCollision {
         return CollisionSide.BOTTOM;
     }
 
+
+    public static void caculatedBallBounceAngle(Ball ball, Paddle paddle) {
+        double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
+
+        double distanceFromCenter = (ball.getCircle().getCenterX() - paddleCenterX) / (paddle.getWidth() / 2);
+
+        double maxBounceAngle = Math.toRadians(60);
+        double bounceAngle = distanceFromCenter * maxBounceAngle;
+
+        double speed = Math.sqrt(ball.getDx() * ball.getDx() + ball.getDy() * ball.getDy());
+
+        ball.setDx(speed * Math.sin(bounceAngle));
+        ball.setDy(-speed * Math.cos(bounceAngle));
+    }
 
 }

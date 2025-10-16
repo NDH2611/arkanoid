@@ -3,12 +3,14 @@ package com.example.arkanoid;
 import javafx.scene.canvas.GraphicsContext;
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 
 public class Brick extends GameObject {
     private TYPE type;
     private boolean visible;
+    private Rectangle rectangle;
     //private final static ArrayList<Brick> bricks = new ArrayList<>();
 
     public Brick(int x, int y, int width, int height) {
@@ -16,6 +18,7 @@ public class Brick extends GameObject {
         this.x = x;
         this.y = y;
         this.visible = true;
+        this.rectangle = new Rectangle(x, y, width, height);
     }
 
     public void render(GraphicsContext gc) {
@@ -41,7 +44,16 @@ public class Brick extends GameObject {
         }
     }
 
-    public boolean getVisible() {
+
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
+    }
+
+    public boolean isVisible() {
         return visible;
     }
 

@@ -10,11 +10,11 @@ public class Paddle extends MovableObject {
 
     private boolean moveLeft = false;
     private boolean moveRight = false;
-    private Rectangle rect;
+    private Rectangle rectangle;
 
     public Paddle(double x, double y, double width, double height, double speed) {
         super(x, y, width, height, speed);
-        rect = new Rectangle(x, y, width, height);
+        rectangle = new Rectangle(x, y, width, height);
     }
 
     public void handleInput(KeyEvent event) {
@@ -56,22 +56,26 @@ public class Paddle extends MovableObject {
     }
 
     public void update() {
-        x += dx;
-        rect.setX(x);
-        if (CheckCollision.checkEdge(rect)) {
-            if(x <= 0){
-                x=0;
-            }else {
-                x = GameEngine.WIDTH - width;
-            }
-        }
+        setX(x+dx);
+        CheckCollision.checkPaddleWallCollision(this);
     }
 
-    public Rectangle getRect() {
-        return rect;
+    @Override
+    public void setX(double x) {
+        this.x = x;
+        rectangle.setX(x);
+    }
+    @Override
+    public void setY(double y) {
+        this.y = y;
+        rectangle.setY(y);
     }
 
-    public void setRect(Rectangle rect) {
-        this.rect = rect;
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
+
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
     }
 }
