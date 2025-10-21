@@ -12,16 +12,5 @@ public class Menu {
         EXIT
     }
 
-    @FXML
-    private Button Start;
-
-    @FXML
-    private Button Mode;
-
-    @FXML
-    private Button Hdsd;
-
-    @FXML
-    private Button Exit;
 
 }
