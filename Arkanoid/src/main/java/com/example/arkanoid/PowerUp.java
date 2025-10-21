@@ -1,14 +1,55 @@
 package com.example.arkanoid;
 
-public class PowerUp extends GameObject{
-    private static final double FALL_SPEED = 1.5;
-    private double duration;
-    private boolean active;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.Rectangle;
 
-    public PowerUp(double x, double y, double width, double height, double duration) {
-        super(x, y, width, height);
+public class PowerUp extends GameObject{
+    private static final double FALL_SPEED = 0.5;
+    private static final double POWER_UP_WIDTH = 20;
+    private static final double POWER_UP_HEIGHT = 20;
+
+    protected double duration;
+    protected Rectangle rectangle;
+    protected PowerUpType powerUpType;
+
+    public PowerUp(double x, double y, PowerUpType type , double duration) {
+        super(x, y, POWER_UP_WIDTH, POWER_UP_HEIGHT);
+        this.duration = duration;
+        this.powerUpType = type;
+        this.rectangle = new Rectangle(x, y, POWER_UP_WIDTH, POWER_UP_HEIGHT);
+    }
+
+    public void update() {
+        y += FALL_SPEED;
+        rectangle.setY(y);
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public void setDuration(double duration) {
         this.duration = duration;
     }
 
+    public Rectangle getRectangle() {
+        return rectangle;
+    }
 
+    public void setRectangle(Rectangle rectangle) {
+        this.rectangle = rectangle;
+    }
+
+    public PowerUpType getPowerUpType() {
+        return powerUpType;
+    }
+
+    public void setPowerUpType(PowerUpType powerUpType) {
+        this.powerUpType = powerUpType;
+    }
+
+    enum PowerUpType {
+        EXPAND_PADDLE,
+        SHRINK_PADDLE
+    }
 }

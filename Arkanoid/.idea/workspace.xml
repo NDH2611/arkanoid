@@ -6,10 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="189b9082-9fbe-4a0d-b84e-1cfcd1522e45" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/CheckCollision.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/CheckCollision.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/GameEngine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/PowerUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/CheckCollision.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/CheckCollision.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/PowerUp.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/PowerUp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +127,11 @@
       <workItem from="1760599872357" duration="1003000" />
       <workItem from="1760635170745" duration="3233000" />
       <workItem from="1760670218028" duration="5719000" />
+      <workItem from="1760717280250" duration="468000" />
+      <workItem from="1760717843585" duration="3303000" />
+      <workItem from="1761034337116" duration="39000" />
+      <workItem from="1761040049721" duration="7308000" />
+      <workItem from="1761059302358" duration="7034000" />
     </task>
     <servers />
   </component>

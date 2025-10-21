@@ -18,10 +18,12 @@ public class GameEngine {
     private Canvas canvas;
     private GraphicsContext gc;
     private Scene scene;
+    private long startTime = 0;
 
     private Ball ball;
     private Paddle paddle;
-    private ArrayList<Level>  levels =  new ArrayList<>();
+    private ArrayList<Level> levels = new ArrayList<>();
+    private ArrayList<PowerUp> powerUps = new ArrayList<>();
 
     public GameEngine() {
         initialize();
@@ -48,8 +50,8 @@ public class GameEngine {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                update();
-                render();
+                updateGame();
+                renderGame();
             }
         };
         gameLoop.start();
@@ -60,17 +62,24 @@ public class GameEngine {
         levels.add(level);
     }
 
-    private void renderUpdateLevel() {
+    private void updateLevel() {
         for (Brick brick : levels.get(0).getBricks()) {
             if (!brick.isVisible()) {
                 continue;
             }
             CheckCollision.CollisionSide side = CheckCollision.checkCollision(ball.getCircle(), brick.getRectangle());
-            if(side != CheckCollision.CollisionSide.NONE) {
+            if (side != CheckCollision.CollisionSide.NONE) {
                 if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
                     ball.setDx(-ball.getDx());
                 } else if (side == CheckCollision.CollisionSide.TOP || side == CheckCollision.CollisionSide.BOTTOM) {
                     ball.setDy(-ball.getDy());
+                }
+                if (Math.random() < 0.999) {
+                    if (Math.random() < 0.5) {
+                        powerUps.add(new ExpandPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
+                    } else {
+                        powerUps.add(new ShrinkPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
+                    }
                 }
                 brick.setVisible(false);
                 break;
@@ -79,7 +88,47 @@ public class GameEngine {
         }
     }
 
-    public void update() {
+    private void updatePowerUp() {
+        for (int i = 0; i < powerUps.size(); i++) {
+            powerUps.get(i).update();
+            if (powerUps.get(i).getY() + powerUps.get(i).getHeight() > HEIGHT) {
+                powerUps.remove(i);
+            }
+
+            if (CheckCollision.checkCollision(powerUps.get(i).getRectangle(), paddle.getRectangle())) {
+                if (powerUps.get(i) instanceof ExpandPaddlePowerUp) {
+                    ExpandPaddlePowerUp exp = (ExpandPaddlePowerUp) powerUps.get(i);
+                    exp.applyEffect(paddle);
+//                    System.out.println(System.currentTimeMillis() - startTime);
+//                    if(System.currentTimeMillis() - startTime > exp.getDuration()) {
+//                        exp.removeEffect(paddle);
+//                    }
+                } else if (powerUps.get(i) instanceof ShrinkPaddlePowerUp) {
+                    ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUps.get(i);
+                    shr.applyEffect(paddle);
+//                    System.out.println(System.currentTimeMillis() - startTime);
+//                    if(System.currentTimeMillis() - startTime > shr.getDuration()) {
+//                        shr.removeEffect(paddle);
+//                    }
+                }
+                powerUps.remove(i);
+            }
+        }
+    }
+
+    private void renderPowerUp() {
+        for (int i = 0; i < powerUps.size(); i++) {
+            if(powerUps.get(i) instanceof ExpandPaddlePowerUp) {
+                ExpandPaddlePowerUp exp = (ExpandPaddlePowerUp) powerUps.get(i);
+                exp.render(gc);
+            } else if(powerUps.get(i) instanceof ShrinkPaddlePowerUp) {
+                ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUps.get(i);
+                shr.render(gc);
+            }
+        }
+    }
+
+    public void updateGame() {
         ball.update();
 
         CheckCollision.CollisionSide side = CheckCollision.checkCollision(ball.getCircle(), paddle.getRectangle());
@@ -88,15 +137,17 @@ public class GameEngine {
         } else if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
             ball.setDx(-ball.getDx());
         }
-        renderUpdateLevel();
+        updateLevel();
         paddle.update();
+        updatePowerUp();
     }
 
-    public void render() {
+    public void renderGame() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         ball.render(gc);
         paddle.render(gc);
         levels.get(0).render(gc);
+        renderPowerUp();
     }
 
     public void handleKeyInput(KeyEvent event) {
