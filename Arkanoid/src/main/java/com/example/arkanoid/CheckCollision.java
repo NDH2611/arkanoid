@@ -87,6 +87,22 @@ public class CheckCollision {
         return CollisionSide.BOTTOM;
     }
 
+    public static boolean checkCollision(Rectangle rectangle1, Rectangle rectangle2) {
+        if (rectangle1.getX() > rectangle2.getX() + rectangle2.getWidth()) {
+            return false;
+        }
+        if (rectangle1.getX() + rectangle1.getWidth() < rectangle2.getX()) {
+            return false;
+        }
+        if (rectangle1.getY() + rectangle1.getHeight() < rectangle2.getY()) {
+            return false;
+        }
+        if (rectangle1.getY() > rectangle2.getY() + rectangle2.getHeight()) {
+            return false;
+        }
+        return true;
+    }
+
 
     public static void caculatedBallBounceAngle(Ball ball, Paddle paddle) {
         double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
