@@ -5,7 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 import javafx.scene.text.Text;
+import javafx.event.ActionEvent;
 
 public class MenuController {
     @FXML
@@ -57,7 +59,12 @@ public class MenuController {
     }
 
     @FXML
-    private void onExit() {
-
+    private void onExit(ActionEvent event) {
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
