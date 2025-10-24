@@ -33,8 +33,8 @@ public class GameEngine {
     public void initialize() {
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        ball = new Ball(WIDTH / 2, HEIGHT / 2, 10, BALL_SPEED);
-        paddle = new Paddle(WIDTH / 2, HEIGHT * 3 / 4, 75, 25, 0);
+        ball = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
+        paddle = new Paddle(WIDTH / 2.0, HEIGHT * 3 / 4.0, 75, 25, 0);
         //showBricks();
         createLevel();
 
@@ -74,17 +74,21 @@ public class GameEngine {
                 } else if (side == CheckCollision.CollisionSide.TOP || side == CheckCollision.CollisionSide.BOTTOM) {
                     ball.setDy(-ball.getDy());
                 }
-                if (Math.random() < 0.999) {
-                    if (Math.random() < 0.5) {
-                        powerUps.add(new ExpandPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
-                    } else {
-                        powerUps.add(new ShrinkPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
+                if(brick.isBreakable()) {
+                    brick.setStrength(brick.getStrength()-1);
+                    if(brick.getStrength()<=0) {
+                        brick.setVisible(false);
+                        if (Math.random() < 0.999) {
+                            if (Math.random() < 0.5) {
+                                powerUps.add(new ExpandPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
+                            } else {
+                                powerUps.add(new ShrinkPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
+                            }
+                        }
                     }
                 }
-                brick.setVisible(false);
                 break;
             }
-
         }
     }
 

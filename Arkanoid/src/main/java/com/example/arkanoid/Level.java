@@ -36,6 +36,7 @@ public class Level {
                 } else {
                     brick.setType(Brick.TYPE.PINK);
                 }
+                brick.brickStatus();
                 bricks.add(brick);
             }
         }
