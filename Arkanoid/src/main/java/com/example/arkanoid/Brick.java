@@ -31,6 +31,10 @@ public class Brick extends GameObject {
             case YELLOW:
                 this.setBreakable(false);
                 break;
+            case PURPLE:
+                this.setBreakable(true);
+                this.setStrength(1);
+                break;
             default:
                 this.setStrength(1);
                 this.setBreakable(true);
