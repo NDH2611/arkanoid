@@ -7,6 +7,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -26,8 +29,10 @@ public class GameEngine {
     private ArrayList<Level> levels = new ArrayList<>();
     private ArrayList<PowerUp> powerUps = new ArrayList<>();
     private ArrayList<Ball> balls=new ArrayList<>();
+    private ArrayList<String> mapFiles=new ArrayList<>();
 
     public GameEngine() {
+        loadMap("totalMap.txt");
         initialize();
         startGameLoop();
     }
@@ -59,9 +64,37 @@ public class GameEngine {
         };
         gameLoop.start();
     }
-
+    private void loadMap(String fileName){
+        try{
+            InputStream is = getClass().getResourceAsStream("map/"+fileName);
+            if(is == null){
+                System.err.println("File not found");
+                return;
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            while((line = br.readLine()) != null){
+                line=line.trim();
+                if(!line.isEmpty()){
+                    mapFiles.add(line);
+                    System.out.println("Found map: "+line);
+                }
+            }
+            br.close();
+        } catch (Exception e) {
+            System.err.println("Error loading Map");
+            e.printStackTrace();
+        }
+    }
     private void createLevel() {
-        Level level = new Level();
+        if(mapFiles.isEmpty()){
+            System.err.println("No map files found");
+            return;
+        }
+        int randomIndex=(int) (Math.random()*mapFiles.size());
+        String fileName=mapFiles.get(randomIndex);
+        System.out.println("Loading random map: "+fileName);
+        Level level = new Level(fileName);
         levels.add(level);
     }
 
@@ -78,7 +111,6 @@ public class GameEngine {
                     } else if (side == CheckCollision.CollisionSide.TOP || side == CheckCollision.CollisionSide.BOTTOM) {
                         ball.setDy(-ball.getDy());
                     }
-                    if(brick.isBreakable()) {
                         brick.setStrength(brick.getStrength()-1);
                         if(brick.getStrength()<=0) {
                             brick.setVisible(false);
@@ -98,7 +130,7 @@ public class GameEngine {
                                 }
                             }
                         }
-                    }
+
                     break;
                 }
             }

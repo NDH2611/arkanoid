@@ -11,7 +11,6 @@ public class Brick extends GameObject {
     private Rectangle rectangle;
     //private final static ArrayList<Brick> bricks = new ArrayList<>();
     private int strength;
-    private boolean breakable;
 
     public Brick(int x, int y, int width, int height) {
         super(x,y,width,height);
@@ -19,25 +18,21 @@ public class Brick extends GameObject {
         this.y = y;
         this.visible = true;
         this.rectangle = new Rectangle(x, y, width, height);
-        this.breakable =true;
+        //this.breakable =true;
     }
 
     public void brickStatus() {
         switch (type) {
             case ORANGE:
                 this.setStrength(2);
-                this.setBreakable(true);
                 break;
             case YELLOW:
-                this.setBreakable(false);
                 break;
             case PURPLE:
-                this.setBreakable(true);
                 this.setStrength(1);
                 break;
             default:
                 this.setStrength(1);
-                this.setBreakable(true);
                 break;
         }
     }
@@ -83,11 +78,11 @@ public class Brick extends GameObject {
     }
 
     enum TYPE{
-        GREEN,      //normal brick
-        YELLOW,     //unbreakable brick
-        PURPLE,     //ball brick
-        PINK,       //healing brick
-        ORANGE      //double strength brick
+        GREEN,      //normal brick, GREEN
+        YELLOW,     //unbreakable brick, YELLOW
+        PURPLE,     //ball brick, PURPLE
+        PINK,       //healing brick, PINK
+        ORANGE      //double strength brick, ORANGE
     }
 
     public TYPE getType() {
@@ -105,11 +100,4 @@ public class Brick extends GameObject {
         this.strength = strength;
     }
 
-    public boolean isBreakable() {
-        return breakable;
-    }
-
-    public void setBreakable(boolean breakable) {
-        this.breakable = breakable;
-    }
 }
