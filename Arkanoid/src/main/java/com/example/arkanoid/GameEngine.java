@@ -8,6 +8,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class GameEngine {
@@ -20,10 +21,11 @@ public class GameEngine {
     private Scene scene;
     private long startTime = 0;
 
-    private Ball ball;
+    //private Ball ball;
     private Paddle paddle;
     private ArrayList<Level> levels = new ArrayList<>();
     private ArrayList<PowerUp> powerUps = new ArrayList<>();
+    private ArrayList<Ball> balls=new ArrayList<>();
 
     public GameEngine() {
         initialize();
@@ -33,8 +35,9 @@ public class GameEngine {
     public void initialize() {
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        ball = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
-        paddle = new Paddle(WIDTH / 2.0, HEIGHT * 3 / 4.0, 75, 25, 0);
+        Ball initialBall = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
+        balls.add(initialBall);
+        paddle = new Paddle(WIDTH / 2.0, HEIGHT-25, 75, 25, 0);
         //showBricks();
         createLevel();
 
@@ -63,57 +66,76 @@ public class GameEngine {
     }
 
     private void updateLevel() {
-        for (Brick brick : levels.get(0).getBricks()) {
-            if (!brick.isVisible()) {
-                continue;
-            }
-            CheckCollision.CollisionSide side = CheckCollision.checkCollision(ball.getCircle(), brick.getRectangle());
-            if (side != CheckCollision.CollisionSide.NONE) {
-                if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
-                    ball.setDx(-ball.getDx());
-                } else if (side == CheckCollision.CollisionSide.TOP || side == CheckCollision.CollisionSide.BOTTOM) {
-                    ball.setDy(-ball.getDy());
+        for(Ball ball : balls) {
+            for (Brick brick : levels.get(0).getBricks()) {
+                if (!brick.isVisible()) {
+                    continue;
                 }
-                if(brick.isBreakable()) {
-                    brick.setStrength(brick.getStrength()-1);
-                    if(brick.getStrength()<=0) {
-                        brick.setVisible(false);
-                        if (Math.random() < 0.999) {
-                            if (Math.random() < 0.5) {
-                                powerUps.add(new ExpandPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
-                            } else {
-                                powerUps.add(new ShrinkPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
+                CheckCollision.CollisionSide side = CheckCollision.checkCollision(ball.getCircle(), brick.getRectangle());
+                if (side != CheckCollision.CollisionSide.NONE) {
+                    if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
+                        ball.setDx(-ball.getDx());
+                    } else if (side == CheckCollision.CollisionSide.TOP || side == CheckCollision.CollisionSide.BOTTOM) {
+                        ball.setDy(-ball.getDy());
+                    }
+                    if(brick.isBreakable()) {
+                        brick.setStrength(brick.getStrength()-1);
+                        if(brick.getStrength()<=0) {
+                            brick.setVisible(false);
+                            System.out.println(brick.getType());
+                            if(brick.getType()== Brick.TYPE.PURPLE){
+                                System.out.println("PURPLE destroyed");
+                                PowerUp powerUp = new DoubleBallPowerUp(
+                                        brick.getX() + brick.getWidth() / 2 - 10,
+                                        brick.getY());
+                                powerUps.add(powerUp);
+                            }
+                            if (Math.random() < 0.33) {
+                                if (Math.random() < 0.5) {
+                                    powerUps.add(new ExpandPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
+                                } else {
+                                    powerUps.add(new ShrinkPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
+                                }
                             }
                         }
                     }
+                    break;
                 }
-                break;
             }
         }
+
     }
 
     private void updatePowerUp() {
-        for (int i = 0; i < powerUps.size(); i++) {
-            powerUps.get(i).update();
-            if (powerUps.get(i).getY() + powerUps.get(i).getHeight() > HEIGHT) {
+        for (int i=powerUps.size()-1; i>=0; i--) {
+            PowerUp powerUp = powerUps.get(i);
+            powerUp.update();
+            if (powerUp.getY() > HEIGHT) {
                 powerUps.remove(i);
+                continue;
             }
 
-            if (CheckCollision.checkCollision(powerUps.get(i).getRectangle(), paddle.getRectangle())) {
-                if (powerUps.get(i) instanceof ExpandPaddlePowerUp) {
-                    ExpandPaddlePowerUp exp = (ExpandPaddlePowerUp) powerUps.get(i);
+            if (CheckCollision.checkCollision(powerUp.getRectangle(), paddle.getRectangle())) {
+                if (powerUp instanceof ExpandPaddlePowerUp) {
+                    ExpandPaddlePowerUp exp = (ExpandPaddlePowerUp) powerUp;
                     exp.applyEffect(paddle);
 //                    System.out.println(System.currentTimeMillis() - startTime);
 //                    if(System.currentTimeMillis() - startTime > exp.getDuration()) {
 //                        exp.removeEffect(paddle);
 //                    }
-                } else if (powerUps.get(i) instanceof ShrinkPaddlePowerUp) {
-                    ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUps.get(i);
+                } else if (powerUp instanceof ShrinkPaddlePowerUp) {
+                    ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUp;
                     shr.applyEffect(paddle);
 //                    System.out.println(System.currentTimeMillis() - startTime);
 //                    if(System.currentTimeMillis() - startTime > shr.getDuration()) {
 //                        shr.removeEffect(paddle);
 //                    }
+                } else if(powerUp instanceof DoubleBallPowerUp) {
+                    DoubleBallPowerUp dbl = (DoubleBallPowerUp) powerUp;
+                    if(!balls.isEmpty()){
+                        Ball newBall =dbl.applyEffect(balls.get(0));
+                        balls.add(newBall);
+                    }
                 }
                 powerUps.remove(i);
             }
@@ -128,27 +150,42 @@ public class GameEngine {
             } else if(powerUps.get(i) instanceof ShrinkPaddlePowerUp) {
                 ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUps.get(i);
                 shr.render(gc);
+            } else if(powerUps.get(i) instanceof DoubleBallPowerUp) {
+                DoubleBallPowerUp dbl = (DoubleBallPowerUp) powerUps.get(i);
+                dbl.render(gc);
             }
         }
     }
 
     public void updateGame() {
-        ball.update();
+        for(int i=balls.size()-1; i>=0; i--) {
+            Ball currentBall=balls.get(i);
+            currentBall.update();
+            CheckCollision.CollisionSide side = CheckCollision.checkCollision(currentBall.getCircle(), paddle.getRectangle());
+            if (side == CheckCollision.CollisionSide.TOP) {
+                CheckCollision.caculatedBallBounceAngle(balls.get(i), paddle);
+            } else if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
+                currentBall.setDx(-currentBall.getDx());
+            }
+            if(currentBall.getY()>HEIGHT) {
+                balls.remove(i);
 
-        CheckCollision.CollisionSide side = CheckCollision.checkCollision(ball.getCircle(), paddle.getRectangle());
-        if (side == CheckCollision.CollisionSide.TOP) {
-            CheckCollision.caculatedBallBounceAngle(ball, paddle);
-        } else if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
-            ball.setDx(-ball.getDx());
+            }
+            if(balls.isEmpty()) {
+                System.out.println("game over");
+
+            }
+            updateLevel();
+            paddle.update();
+            updatePowerUp();
         }
-        updateLevel();
-        paddle.update();
-        updatePowerUp();
     }
 
     public void renderGame() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        ball.render(gc);
+        for(Ball ball : balls){
+            ball.render(gc);
+        }
         paddle.render(gc);
         levels.get(0).render(gc);
         renderPowerUp();
