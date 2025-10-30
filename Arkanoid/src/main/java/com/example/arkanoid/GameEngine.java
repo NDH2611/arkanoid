@@ -57,12 +57,14 @@ public class GameEngine {
         scene = new Scene(root, WIDTH, HEIGHT);
 
         scene.setOnKeyPressed(event -> handleKeyInput(event));
-        scene.setOnKeyReleased(event -> handleKeyInput(event));
         scene.setOnKeyReleased(event -> {
+            handleKeyInput(event);
             if (event.getCode() == KeyCode.P) {
                 pPressed = false;
             }
         });
+        //scene.setOnKeyReleased(event -> handleKeyInput(event));
+
 
     }
 
@@ -277,8 +279,8 @@ public class GameEngine {
                     } else if (troller.getState() == GameState.PAUSE){
                         troller.setState(GameState.RUNNING);
                     }
-                    break;
                 }
+                break;
 
             case R:
                 if (troller.getState() == GameState.GAME_OVER) {
