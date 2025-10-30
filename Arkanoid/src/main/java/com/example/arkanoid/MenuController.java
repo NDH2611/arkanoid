@@ -21,12 +21,15 @@ public class MenuController {
     @FXML
     private Text text;
 
+
     @FXML
     private void onStart() {
         try {
-            GameEngine game = new GameEngine();
             Stage stage = (Stage) Start.getScene().getWindow();
-            stage.setScene(game.getScene());
+            GameEngine game = new GameEngine(stage);
+            GameStateController controller = game.getTroller();
+            controller.setState(GameState.RUNNING);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -9,10 +9,10 @@ import java.io.IOException;
 public class Run extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
-        Scene menuScene = new Scene(loader.load());
-        stage.setTitle("Hello!");
-        stage.setScene(menuScene);
+        GameEngine engine = new GameEngine(stage);
+        stage.setScene(engine.getScene());
+        GameStateController troller = new GameStateController(stage, engine);
+        troller.setState(GameState.MENU);
         stage.show();
     }
 
