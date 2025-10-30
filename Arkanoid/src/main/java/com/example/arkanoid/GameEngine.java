@@ -5,7 +5,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -23,7 +25,10 @@ public class GameEngine {
     private GraphicsContext gc;
     private Scene scene;
     private long startTime = 0;
-
+    private AnimationTimer gameLoop;
+    private Stage stage;
+    private GameStateController troller;
+    private boolean pPressed = false;
     //private Ball ball;
     private Paddle paddle;
     private ArrayList<Level> levels = new ArrayList<>();
@@ -31,10 +36,12 @@ public class GameEngine {
     private ArrayList<Ball> balls=new ArrayList<>();
     private ArrayList<String> mapFiles=new ArrayList<>();
 
-    public GameEngine() {
+    public GameEngine(Stage stage) {
+        this.stage = stage;
         loadMap("totalMap.txt");
         initialize();
-        startGameLoop();
+        //startGameLoop();
+        troller = new GameStateController(stage, this);
     }
 
     public void initialize() {
@@ -51,11 +58,19 @@ public class GameEngine {
 
         scene.setOnKeyPressed(event -> handleKeyInput(event));
         scene.setOnKeyReleased(event -> handleKeyInput(event));
+        scene.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.P) {
+                pPressed = false;
+            }
+        });
 
     }
 
-    private void startGameLoop() {
-        AnimationTimer gameLoop = new AnimationTimer() {
+    public void startGameLoop() {
+        if (gameLoop != null) {
+            return;
+        }
+        gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 updateGame();
@@ -63,7 +78,26 @@ public class GameEngine {
             }
         };
         gameLoop.start();
+        System.out.println("game started");
     }
+
+    public void stopGameLoop() {
+        if (gameLoop != null) {
+            gameLoop.stop();
+            gameLoop = null;
+            System.out.println("game stopped.");
+        }
+    }
+
+    public void restartGame() {
+        stopGameLoop();
+        balls.clear();
+        powerUps.clear();
+        levels.clear();
+        initialize();
+        startGameLoop();
+    }
+
     private void loadMap(String fileName){
         try{
             InputStream is = getClass().getResourceAsStream("map/"+fileName);
@@ -190,6 +224,10 @@ public class GameEngine {
     }
 
     public void updateGame() {
+
+        if (troller != null && troller.getState() != GameState.RUNNING) {
+            return;
+        }
         for(int i=balls.size()-1; i>=0; i--) {
             Ball currentBall=balls.get(i);
             currentBall.update();
@@ -205,7 +243,7 @@ public class GameEngine {
             }
             if(balls.isEmpty()) {
                 System.out.println("game over");
-
+                troller.setState(GameState.GAME_OVER);
             }
             updateLevel();
             paddle.update();
@@ -224,10 +262,40 @@ public class GameEngine {
     }
 
     public void handleKeyInput(KeyEvent event) {
-        paddle.handleInput(event);
+        if (troller == null) {
+            return;
+        }
+        if (troller.getState() == GameState.RUNNING) {
+            paddle.handleInput(event);
+        }
+        switch (event.getCode()) {
+            case P:
+                if (!pPressed) {
+                    pPressed = true;
+                    if (troller.getState() == GameState.RUNNING) {
+                        troller.setState(GameState.PAUSE);
+                    } else if (troller.getState() == GameState.PAUSE){
+                        troller.setState(GameState.RUNNING);
+                    }
+                    break;
+                }
+
+            case R:
+                if (troller.getState() == GameState.GAME_OVER) {
+                    restartGame();
+                    troller.setState(GameState.RUNNING);
+                }
+                break;
+        }
     }
+
+
 
     public Scene getScene() {
         return scene;
+    }
+
+    public GameStateController getTroller() {
+        return troller;
     }
 }
