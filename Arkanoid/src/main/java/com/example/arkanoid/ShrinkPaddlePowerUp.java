@@ -1,23 +1,30 @@
 package com.example.arkanoid;
 
+import javafx.animation.PauseTransition;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class ShrinkPaddlePowerUp extends PowerUp {
-    private double originalWidth;
 
     public ShrinkPaddlePowerUp(double x, double y) {
-        super(x, y, PowerUpType.SHRINK_PADDLE ,5000);
+        super(x, y, PowerUpType.SHRINK_PADDLE, 5000);
     }
 
     public void applyEffect(Paddle paddle) {
-        originalWidth = paddle.getWidth();
-        paddle.setWidth(originalWidth*0.75);
+        paddle.setWidth(GameEngine.PADDLE_WIDTH * 0.75);
         paddle.getRectangle().setWidth(paddle.getWidth());
+        PauseTransition timer = new PauseTransition(Duration.millis(duration));
+        timer.setOnFinished(event -> {
+            System.out.println("Shrink Paddle PowerUp Finished");
+            paddle.setWidth(GameEngine.PADDLE_WIDTH);
+            paddle.getRectangle().setWidth(paddle.getWidth());
+        });
+        timer.play();
     }
 
     public void removeEffect(Paddle paddle) {
-        paddle.setWidth(originalWidth);
+        paddle.setWidth(GameEngine.PADDLE_WIDTH);
         paddle.getRectangle().setWidth(paddle.getWidth());
     }
 

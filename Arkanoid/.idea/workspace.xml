@@ -5,16 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="189b9082-9fbe-4a0d-b84e-1cfcd1522e45" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/Ball.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/CheckCollision.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/CheckCollision.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/ExpandPaddlePowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/ExpandPaddlePowerUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/GameEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/Paddle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Ball.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Ball.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/CheckCollision.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/CheckCollision.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/GameEngine.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Paddle.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/arkanoid/Paddle.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/ShrinkPaddlePowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/ShrinkPaddlePowerUp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -74,6 +69,9 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -115,6 +113,10 @@
       <workItem from="1760096802642" duration="5524000" />
       <workItem from="1760102711685" duration="270000" />
       <workItem from="1760110713459" duration="30000" />
+      <workItem from="1761528162100" duration="484000" />
+      <workItem from="1761647518050" duration="364000" />
+      <workItem from="1761746861369" duration="4581000" />
+      <workItem from="1761840356802" duration="2478000" />
     </task>
     <servers />
   </component>
