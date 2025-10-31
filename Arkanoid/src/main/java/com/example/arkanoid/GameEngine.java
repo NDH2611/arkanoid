@@ -22,6 +22,7 @@ public class GameEngine {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
     public static final double BALL_SPEED = 3.0;
+    public static final double PADDLE_WIDTH = 75;
 
     private Canvas canvas;
     private GraphicsContext gc;
