@@ -9,12 +9,11 @@ public class ModeController extends MenuController{
     private Button Story;
     @FXML
     private Button Infinite;
-    //protected Mode mode;
 
     public void onStory() {
         try {
-            GameEngine game = new GameEngine();
             Stage stage = (Stage) Story.getScene().getWindow();
+            GameEngine game = new GameEngine(stage);
             stage.setScene(game.getScene());
         } catch (Exception e) {
             e.printStackTrace();
@@ -23,8 +22,8 @@ public class ModeController extends MenuController{
 
     public void onInfinite() {
         try {
-            GameEngine game = new GameEngine();
             Stage stage = (Stage) Infinite.getScene().getWindow();
+            GameEngine game = new GameEngine(stage);
             stage.setScene(game.getScene());
         } catch (Exception e) {
             e.printStackTrace();

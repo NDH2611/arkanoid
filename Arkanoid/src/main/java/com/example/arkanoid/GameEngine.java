@@ -7,24 +7,30 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class GameEngine {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
     public static final double BALL_SPEED = 3.0;
-    public static final double PADDLE_WIDTH = 75;
 
     private Canvas canvas;
     private GraphicsContext gc;
     private Scene scene;
-
+    private long startTime = 0;
+    private AnimationTimer gameLoop;
+    private Stage stage;
+    private GameStateController troller;
+    private boolean pPressed = false;
     //private Ball ball;
     private Paddle paddle;
     private ArrayList<Level> levels = new ArrayList<>();
@@ -32,10 +38,12 @@ public class GameEngine {
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<String> mapFiles = new ArrayList<>();
 
-    public GameEngine() {
+    public GameEngine(Stage stage) {
+        this.stage = stage;
         loadMap("totalMap.txt");
         initialize();
-        startGameLoop();
+        //startGameLoop();
+        troller = new GameStateController(stage, this);
     }
 
     public void initialize() {
@@ -50,12 +58,22 @@ public class GameEngine {
         scene = new Scene(root, WIDTH, HEIGHT);
 
         scene.setOnKeyPressed(event -> handleKeyInput(event));
-        scene.setOnKeyReleased(event -> handleKeyInput(event));
+        scene.setOnKeyReleased(event -> {
+            handleKeyInput(event);
+            if (event.getCode() == KeyCode.P) {
+                pPressed = false;
+            }
+        });
+        //scene.setOnKeyReleased(event -> handleKeyInput(event));
+
 
     }
 
-    private void startGameLoop() {
-        AnimationTimer gameLoop = new AnimationTimer() {
+    public void startGameLoop() {
+        if (gameLoop != null) {
+            return;
+        }
+        gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 updateGame();
@@ -63,12 +81,30 @@ public class GameEngine {
             }
         };
         gameLoop.start();
+        System.out.println("game started");
     }
 
-    private void loadMap(String fileName) {
-        try {
-            InputStream is = getClass().getResourceAsStream("map/" + fileName);
-            if (is == null) {
+    public void stopGameLoop() {
+        if (gameLoop != null) {
+            gameLoop.stop();
+            gameLoop = null;
+            System.out.println("game stopped.");
+        }
+    }
+
+    public void restartGame() {
+        stopGameLoop();
+        balls.clear();
+        powerUps.clear();
+        levels.clear();
+        initialize();
+        startGameLoop();
+    }
+
+    private void loadMap(String fileName){
+        try{
+            InputStream is = getClass().getResourceAsStream("map/"+fileName);
+            if(is == null){
                 System.err.println("File not found");
                 return;
             }
@@ -154,6 +190,10 @@ public class GameEngine {
                     System.out.println("ExpandPaddlePowerUp");
                     ExpandPaddlePowerUp exp = (ExpandPaddlePowerUp) powerUp;
                     exp.applyEffect(paddle);
+//                    System.out.println(System.currentTimeMillis() - startTime);
+//                    if(System.currentTimeMillis() - startTime > exp.getDuration()) {
+//                        exp.removeEffect(paddle);
+//                    }
                 } else if (powerUp instanceof ShrinkPaddlePowerUp) {
                     System.out.println("ShrinkPaddlePowerUp");
                     ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUp;
@@ -187,6 +227,10 @@ public class GameEngine {
     }
 
     public void updateGame() {
+
+        if (troller != null && troller.getState() != GameState.RUNNING) {
+            return;
+        }
         for (int i = balls.size() - 1; i >= 0; i--) {
             Ball currentBall = balls.get(i);
             currentBall.update();
@@ -221,7 +265,31 @@ public class GameEngine {
     }
 
     public void handleKeyInput(KeyEvent event) {
-        paddle.handleInput(event);
+        if (troller == null) {
+            return;
+        }
+        if (troller.getState() == GameState.RUNNING) {
+            paddle.handleInput(event);
+        }
+        switch (event.getCode()) {
+            case P:
+                if (!pPressed) {
+                    pPressed = true;
+                    if (troller.getState() == GameState.RUNNING) {
+                        troller.setState(GameState.PAUSE);
+                    } else if (troller.getState() == GameState.PAUSE){
+                        troller.setState(GameState.RUNNING);
+                    }
+                }
+                break;
+
+            case R:
+                if (troller.getState() == GameState.GAME_OVER) {
+                    restartGame();
+                    troller.setState(GameState.RUNNING);
+                }
+                break;
+        }
     }
 
     public Scene getScene() {
