@@ -6,21 +6,31 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 public class ExpandPaddlePowerUp extends PowerUp {
+    private PauseTransition timer;
 
     public ExpandPaddlePowerUp(double x, double y) {
-        super(x, y, PowerUpType.EXPAND_PADDLE,  5000);
+        super(x, y, PowerUpType.EXPAND_PADDLE, 5000, true);
+        timer = new PauseTransition(Duration.millis(duration));
     }
 
     public void applyEffect(Paddle paddle) {
         paddle.setWidth(GameEngine.PADDLE_WIDTH * 1.25);
         paddle.getRectangle().setWidth(paddle.getWidth());
-        PauseTransition timer =  new PauseTransition(Duration.millis(duration));
         timer.setOnFinished(event -> {
             System.out.println("Shrink Paddle PowerUp Finished");
             paddle.setWidth(GameEngine.PADDLE_WIDTH);
             paddle.getRectangle().setWidth(paddle.getWidth());
+            active = false;
         });
         timer.play();
+    }
+
+    public void pauseEffect() {
+        if (timer != null) timer.pause();
+    }
+
+    public void resumeEffect() {
+        if (timer != null) timer.play();
     }
 
     public void removeEffect(Paddle paddle) {
@@ -34,4 +44,5 @@ public class ExpandPaddlePowerUp extends PowerUp {
         gc.setFill(Color.RED);
         gc.fillText("E", x + 7, y + 14);
     }
+
 }

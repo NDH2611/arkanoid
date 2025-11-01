@@ -24,7 +24,7 @@ import java.util.Iterator;
 public class GameEngine {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 650;
-    public static final double BALL_SPEED = 1.0;
+    public static final double BALL_SPEED = 3.0;
     public static final double PADDLE_WIDTH = 75;
 
     private Canvas canvas;
@@ -39,6 +39,7 @@ public class GameEngine {
     private Paddle paddle;
     private ArrayList<Level> levels = new ArrayList<>();
     private ArrayList<PowerUp> powerUps = new ArrayList<>();
+    private ArrayList<PowerUp> activePowerUps = new ArrayList<>();
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<String> mapFiles = new ArrayList<>();
 
@@ -200,14 +201,14 @@ public class GameEngine {
                     System.out.println("ExpandPaddlePowerUp");
                     ExpandPaddlePowerUp exp = (ExpandPaddlePowerUp) powerUp;
                     exp.applyEffect(paddle);
-//                    System.out.println(System.currentTimeMillis() - startTime);
-//                    if(System.currentTimeMillis() - startTime > exp.getDuration()) {
-//                        exp.removeEffect(paddle);
-//                    }
+                    activePowerUps.add(exp);
+                    exp.setActive(true);
                 } else if (powerUp instanceof ShrinkPaddlePowerUp) {
                     System.out.println("ShrinkPaddlePowerUp");
                     ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUp;
                     shr.applyEffect(paddle);
+                    activePowerUps.add(shr);
+                    shr.setActive(true);
                 } else if (powerUp instanceof DoubleBallPowerUp) {
                     System.out.println("DoubleBallPowerUp");
                     DoubleBallPowerUp dbl = (DoubleBallPowerUp) powerUp;
@@ -217,6 +218,12 @@ public class GameEngine {
                     }
                 }
                 powerUps.remove(i);
+            }
+        }
+
+        for (PowerUp powerUp : activePowerUps) {
+            if(!powerUp.isActive()) {
+                activePowerUps.remove(powerUp);
             }
         }
     }
@@ -333,5 +340,21 @@ public class GameEngine {
 
     public void setTotalScores(int totalScores) {
         this.totalScores = totalScores;
+    }
+
+    public ArrayList<PowerUp> getPowerUps() {
+        return powerUps;
+    }
+
+    public void setPowerUps(ArrayList<PowerUp> powerUps) {
+        this.powerUps = powerUps;
+    }
+
+    public ArrayList<PowerUp> getActivePowerUps() {
+        return activePowerUps;
+    }
+
+    public void setActivePowerUps(ArrayList<PowerUp> activePowerUps) {
+        this.activePowerUps = activePowerUps;
     }
 }

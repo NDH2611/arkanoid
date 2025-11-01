@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 
 public class DoubleBallPowerUp extends PowerUp{
     public DoubleBallPowerUp(double x, double y) {
-        super(x,y,PowerUpType.DOUBLE_BALL,5000);
+        super(x,y,PowerUpType.DOUBLE_BALL,5000, false);
     }
     public Ball applyEffect(Ball originalBall){
         Ball newBall=new Ball(originalBall.getX(), originalBall.getY(),
