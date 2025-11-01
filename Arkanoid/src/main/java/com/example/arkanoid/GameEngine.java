@@ -9,6 +9,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -20,8 +23,8 @@ import java.util.Iterator;
 
 public class GameEngine {
     public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
-    public static final double BALL_SPEED = 3.0;
+    public static final int HEIGHT = 650;
+    public static final double BALL_SPEED = 1.0;
     public static final double PADDLE_WIDTH = 75;
 
     private Canvas canvas;
@@ -32,15 +35,19 @@ public class GameEngine {
     private Stage stage;
     private GameStateController troller;
     private boolean pPressed = false;
-    //private Ball ball;
+
     private Paddle paddle;
     private ArrayList<Level> levels = new ArrayList<>();
     private ArrayList<PowerUp> powerUps = new ArrayList<>();
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<String> mapFiles = new ArrayList<>();
 
+    private int lives=3;
+    private int totalScores=0;
+
     public GameEngine(Stage stage) {
         this.stage = stage;
+        this.setTotalScores(0);
         loadMap("totalMap.txt");
         initialize();
         //startGameLoop();
@@ -65,8 +72,6 @@ public class GameEngine {
                 pPressed = false;
             }
         });
-        //scene.setOnKeyReleased(event -> handleKeyInput(event));
-
 
     }
 
@@ -98,6 +103,7 @@ public class GameEngine {
         balls.clear();
         powerUps.clear();
         levels.clear();
+        this.setTotalScores(0);
         initialize();
         startGameLoop();
     }
@@ -153,6 +159,9 @@ public class GameEngine {
                     brick.setStrength(brick.getStrength() - 1);
                     if (brick.getStrength() <= 0) {
                         brick.setVisible(false);
+                        totalScores+= brick.getScore();
+                        System.out.println(totalScores);
+
                         System.out.println(brick.getType());
                         if (brick.getType() == Brick.TYPE.PURPLE) {
                             System.out.println("PURPLE destroyed");
@@ -264,6 +273,22 @@ public class GameEngine {
         paddle.render(gc);
         levels.get(0).render(gc);
         renderPowerUp();
+        renderScore();
+    }
+    private void renderScore() {
+        gc.setFill(Color.BLACK);
+        Font font=new Font("Arial", 24);
+        gc.setFont(font);
+
+        String scoreText=String.valueOf(totalScores);
+        Text tempText=new Text(scoreText);
+        double textWidth=tempText.getLayoutBounds().getWidth();
+
+        double x = (GameEngine.WIDTH) / 2.0;
+        double y = Level.getDistanceY() / 2.0 + font.getSize() / 2;
+
+        gc.fillText(scoreText, x, y);
+
     }
 
     public void handleKeyInput(KeyEvent event) {
@@ -300,5 +325,13 @@ public class GameEngine {
 
     public GameStateController getTroller() {
         return troller;
+    }
+
+    public int getTotalScores() {
+        return totalScores;
+    }
+
+    public void setTotalScores(int totalScores) {
+        this.totalScores = totalScores;
     }
 }

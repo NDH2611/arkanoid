@@ -11,6 +11,7 @@ public class Brick extends GameObject {
     private Rectangle rectangle;
     //private final static ArrayList<Brick> bricks = new ArrayList<>();
     private int strength;
+    private int score;
 
     public Brick(int x, int y, int width, int height) {
         super(x,y,width,height);
@@ -25,41 +26,59 @@ public class Brick extends GameObject {
         switch (type) {
             case ORANGE:
                 this.setStrength(2);
+                this.setScore(20);
                 break;
             case YELLOW:
+                this.setStrength(1);
+                this.setScore(10);
                 break;
             case PURPLE:
+                this.setScore(30);
                 this.setStrength(1);
                 break;
             default:
                 this.setStrength(1);
+                this.setScore(10);
                 break;
         }
     }
 
     public void render(GraphicsContext gc) {
         if (visible) {
+            Color color;
             switch (type) {
                 case GREEN:
-                    gc.setFill(Color.GREEN);
+                    color=Color.GREEN;
                     break;
                 case ORANGE:
-                    gc.setFill(Color.ORANGE);
+                    color=Color.ORANGE;
                     break;
                 case YELLOW:
-                    gc.setFill(Color.YELLOW);
+                    color=Color.YELLOW;
                     break;
                 case PURPLE:
-                    gc.setFill(Color.PURPLE);
+                    color=Color.PURPLE;
                     break;
                 case PINK:
-                    gc.setFill(Color.PINK);
+                    color=Color.PINK;
+                    break;
+                default:
+                    color=Color.GREEN;
                     break;
             }
+            if(type==TYPE.ORANGE) {
+                double opacity=strength/2.0;
+                color = Color.color(
+                        color.getRed(),
+                        color.getGreen(),
+                        color.getBlue(),
+                        opacity
+                );
+            }
+            gc.setFill(color);
             gc.fillRect(x, y, width, height);
         }
     }
-
 
     public Rectangle getRectangle() {
         return rectangle;
@@ -100,4 +119,11 @@ public class Brick extends GameObject {
         this.strength = strength;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 }

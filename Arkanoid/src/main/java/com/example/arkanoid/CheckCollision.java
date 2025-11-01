@@ -23,8 +23,8 @@ public class CheckCollision {
             ball.setDx(-ball.getDx());
         }
 
-        if (ball.getY() <= 0) {
-            ball.setY(0);
+        if (ball.getY() <= Level.getDistanceY()) {
+            ball.setY(Level.getDistanceY());
             ball.setDy(-ball.getDy());
         }
 

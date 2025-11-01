@@ -2,7 +2,6 @@ package com.example.arkanoid;
 
 import javafx.scene.canvas.GraphicsContext;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,7 +13,7 @@ public class Level {
     private static final int LEVEL_COLUMN = 9;
     private static final int LEVEL_ROW = 5;
     private static final int BRICK_SPACE = 5;
-    private static final int DISTANCE_Y = 10;
+    private static final int DISTANCE_Y = 50;
 //    private static final int DISTANCE_X = (GameEngine.WIDTH - WIDTH_BRICK * LEVEL_COLUMN
 //            - BRICK_SPACE * (LEVEL_COLUMN - 1)) / 2;
     private static final int BRICK_TYPE = 5;
@@ -37,7 +36,7 @@ public class Level {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                if (!line.trim().isEmpty()) {  // Skip empty lines
+                if (!line.trim().isEmpty()) {
                     lines.add(line);
                 }
             }
@@ -48,7 +47,6 @@ public class Level {
             }
             int row=lines.size();
             int col = lines.get(0).split("\\s+").length;
-            //System.out.println("Loading map: " + row + " rows x " + col + " columns");
 
             int DISTANCE_X=(GameEngine.WIDTH - WIDTH_BRICK * col - BRICK_SPACE * (col - 1)) / 2;
             for(int i=0; i<row; i++){
@@ -101,5 +99,8 @@ public class Level {
 
     public void setBricks(ArrayList<Brick> bricks) {
         this.bricks = bricks;
+    }
+    public static int getDistanceY() {
+        return DISTANCE_Y;
     }
 }
