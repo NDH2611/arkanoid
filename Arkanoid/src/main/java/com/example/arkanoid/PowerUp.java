@@ -11,8 +11,9 @@ public class PowerUp extends GameObject{
     protected double duration;
     protected Rectangle rectangle;
     protected PowerUpType powerUpType;
+    protected boolean active;
 
-    public PowerUp(double x, double y, PowerUpType type , double duration) {
+    public PowerUp(double x, double y, PowerUpType type , double duration, boolean active) {
         super(x, y, POWER_UP_WIDTH, POWER_UP_HEIGHT);
         this.duration = duration;
         this.powerUpType = type;
@@ -46,6 +47,14 @@ public class PowerUp extends GameObject{
 
     public void setPowerUpType(PowerUpType powerUpType) {
         this.powerUpType = powerUpType;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     enum PowerUpType {

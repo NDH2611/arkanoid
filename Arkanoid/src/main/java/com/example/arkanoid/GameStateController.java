@@ -45,9 +45,28 @@ public class GameStateController {
         stage.show();
         gameEngine.getScene().getRoot().requestFocus();
         gameEngine.startGameLoop();
+        for(PowerUp powerUp: gameEngine.getActivePowerUps()) {
+            if(powerUp instanceof ShrinkPaddlePowerUp) {
+                ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUp;
+                shr.resumeEffect();
+
+            } else if (powerUp instanceof ExpandPaddlePowerUp) {
+                ExpandPaddlePowerUp exp =  (ExpandPaddlePowerUp) powerUp;
+                exp.resumeEffect();
+            }
+        }
     }
 
     private void pauseGame() {
+        for(PowerUp powerUp: gameEngine.getActivePowerUps()) {
+            if(powerUp instanceof ShrinkPaddlePowerUp) {
+                ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUp;
+                shr.pauseEffect();
+            } else if (powerUp instanceof ExpandPaddlePowerUp) {
+                ExpandPaddlePowerUp exp =  (ExpandPaddlePowerUp) powerUp;
+                exp.pauseEffect();
+            }
+        }
         gameEngine.stopGameLoop();
     }
 
