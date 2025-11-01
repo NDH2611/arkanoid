@@ -247,6 +247,7 @@ public class GameEngine {
             }
             if (balls.isEmpty()) {
                 System.out.println("game over");
+                troller.setState(GameState.GAME_OVER);
 
             }
             updateLevel();
@@ -295,5 +296,9 @@ public class GameEngine {
 
     public Scene getScene() {
         return scene;
+    }
+
+    public GameStateController getTroller() {
+        return troller;
     }
 }

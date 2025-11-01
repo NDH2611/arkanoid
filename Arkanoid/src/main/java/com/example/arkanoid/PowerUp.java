@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Rectangle;
 
 public class PowerUp extends GameObject{
-    private static final double FALL_SPEED = 0.5;
+    private static final double FALL_SPEED = 2;
     private static final double POWER_UP_WIDTH = 20;
     private static final double POWER_UP_HEIGHT = 20;
 
