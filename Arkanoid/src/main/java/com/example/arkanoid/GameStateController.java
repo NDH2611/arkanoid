@@ -3,6 +3,7 @@ package com.example.arkanoid;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 public class GameStateController {
     private GameState currentState = GameState.MENU;
     private GameEngine gameEngine;
@@ -17,10 +18,21 @@ public class GameStateController {
         this.currentState = newState;
         System.out.println("state changed");
         switch (newState) {
-            case MENU: showMenu(); break;
-            case RUNNING: startGame(); break;
-            case PAUSE: pauseGame(); break;
-            case GAME_OVER: gameOverRestart(); break;
+            case MENU:
+                showMenu();
+                break;
+            case RUNNING:
+                startGame();
+                break;
+            case PAUSE:
+                pauseGame();
+                break;
+            case GAME_OVER:
+                gameOverRestart();
+                break;
+            case READY:
+                gameEngine.startGameLoop();
+                break;
 
         }
     }
@@ -45,25 +57,25 @@ public class GameStateController {
         stage.show();
         gameEngine.getScene().getRoot().requestFocus();
         gameEngine.startGameLoop();
-        for(PowerUp powerUp: gameEngine.getActivePowerUps()) {
-            if(powerUp instanceof ShrinkPaddlePowerUp) {
+        for (PowerUp powerUp : gameEngine.getActivePowerUps()) {
+            if (powerUp instanceof ShrinkPaddlePowerUp) {
                 ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUp;
                 shr.resumeEffect();
 
             } else if (powerUp instanceof ExpandPaddlePowerUp) {
-                ExpandPaddlePowerUp exp =  (ExpandPaddlePowerUp) powerUp;
+                ExpandPaddlePowerUp exp = (ExpandPaddlePowerUp) powerUp;
                 exp.resumeEffect();
             }
         }
     }
 
     private void pauseGame() {
-        for(PowerUp powerUp: gameEngine.getActivePowerUps()) {
-            if(powerUp instanceof ShrinkPaddlePowerUp) {
+        for (PowerUp powerUp : gameEngine.getActivePowerUps()) {
+            if (powerUp instanceof ShrinkPaddlePowerUp) {
                 ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUp;
                 shr.pauseEffect();
             } else if (powerUp instanceof ExpandPaddlePowerUp) {
-                ExpandPaddlePowerUp exp =  (ExpandPaddlePowerUp) powerUp;
+                ExpandPaddlePowerUp exp = (ExpandPaddlePowerUp) powerUp;
                 exp.pauseEffect();
             }
         }
