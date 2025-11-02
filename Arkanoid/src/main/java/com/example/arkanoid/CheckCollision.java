@@ -73,15 +73,15 @@ public class CheckCollision {
         double overlapTop = (circle.getCenterY() + circle.getRadius()) - rectangle.getY();
         double overlapBottom = (rectangle.getY() + rectangle.getHeight()) - (circle.getCenterY() - circle.getRadius());
 
-        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight), Math.min(overlapTop,overlapBottom));
+        double minOverlap = Math.min(Math.min(overlapLeft, overlapRight), Math.min(overlapTop, overlapBottom));
 
-        if(minOverlap == overlapLeft) {
+        if (minOverlap == overlapLeft) {
             return CollisionSide.LEFT;
         }
-        if(minOverlap == overlapRight) {
+        if (minOverlap == overlapRight) {
             return CollisionSide.RIGHT;
         }
-        if(minOverlap == overlapTop) {
+        if (minOverlap == overlapTop) {
             return CollisionSide.TOP;
         }
         return CollisionSide.BOTTOM;

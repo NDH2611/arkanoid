@@ -14,25 +14,25 @@ public class Level {
     private static final int LEVEL_ROW = 5;
     private static final int BRICK_SPACE = 5;
     private static final int DISTANCE_Y = 50;
-//    private static final int DISTANCE_X = (GameEngine.WIDTH - WIDTH_BRICK * LEVEL_COLUMN
+    //    private static final int DISTANCE_X = (GameEngine.WIDTH - WIDTH_BRICK * LEVEL_COLUMN
 //            - BRICK_SPACE * (LEVEL_COLUMN - 1)) / 2;
     private static final int BRICK_TYPE = 5;
 
-    private ArrayList<Brick> bricks =  new ArrayList<>();
+    private ArrayList<Brick> bricks = new ArrayList<>();
 
     public Level(String fileName) {
         loadFromFile(fileName);
     }
 
     private void loadFromFile(String fileName) {
-        try{
-            InputStream is=getClass().getResourceAsStream("map/"+fileName);
-            if(is==null){
+        try {
+            InputStream is = getClass().getResourceAsStream("map/" + fileName);
+            if (is == null) {
                 System.err.println("File not found");
                 return;
             }
-            BufferedReader reader=new BufferedReader(new InputStreamReader(is));
-            ArrayList<String> lines=new ArrayList<>();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            ArrayList<String> lines = new ArrayList<>();
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -45,22 +45,22 @@ public class Level {
                 System.err.println("ERROR: File is empty: " + fileName);
                 return;
             }
-            int row=lines.size();
+            int row = lines.size();
             int col = lines.get(0).split("\\s+").length;
 
-            int DISTANCE_X=(GameEngine.WIDTH - WIDTH_BRICK * col - BRICK_SPACE * (col - 1)) / 2;
-            for(int i=0; i<row; i++){
-                String[] values=lines.get(i).trim().split("\\s+");
-                for(int j=0; j<values.length; j++){
-                    int type=Integer.parseInt(values[j]);
-                    if(type==0) {
+            int DISTANCE_X = (GameEngine.WIDTH - WIDTH_BRICK * col - BRICK_SPACE * (col - 1)) / 2;
+            for (int i = 0; i < row; i++) {
+                String[] values = lines.get(i).trim().split("\\s+");
+                for (int j = 0; j < values.length; j++) {
+                    int type = Integer.parseInt(values[j]);
+                    if (type == 0) {
                         continue;
                     }
                     int x = j * (WIDTH_BRICK + BRICK_SPACE) + DISTANCE_X;
                     int y = i * (HEIGHT_BRICK + BRICK_SPACE) + DISTANCE_Y;
 
                     Brick brick = new Brick(x, y, WIDTH_BRICK, HEIGHT_BRICK);
-                    switch (type){
+                    switch (type) {
                         case 1:
                             brick.setType(Brick.TYPE.PINK);
                             break;
@@ -87,6 +87,7 @@ public class Level {
             e.printStackTrace();
         }
     }
+
     public void render(GraphicsContext gc) {
         for (Brick brick : bricks) {
             brick.render(gc);
@@ -100,6 +101,7 @@ public class Level {
     public void setBricks(ArrayList<Brick> bricks) {
         this.bricks = bricks;
     }
+
     public static int getDistanceY() {
         return DISTANCE_Y;
     }

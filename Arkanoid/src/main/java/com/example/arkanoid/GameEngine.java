@@ -24,7 +24,7 @@ import java.util.Iterator;
 public class GameEngine {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 650;
-    public static final double BALL_SPEED = 3.0;
+    public static final double BALL_SPEED = 2.0;
     public static final double PADDLE_WIDTH = 75;
 
     private Canvas canvas;
@@ -43,12 +43,13 @@ public class GameEngine {
     private ArrayList<Ball> balls = new ArrayList<>();
     private ArrayList<String> mapFiles = new ArrayList<>();
 
-    private int lives=3;
-    private int totalScores=0;
+    private int lives = 3;
+    private int totalScores = 0;
 
     public GameEngine(Stage stage) {
         this.stage = stage;
         this.setTotalScores(0);
+        this.setLives(3);
         loadMap("totalMap.txt");
         initialize();
         //startGameLoop();
@@ -60,7 +61,7 @@ public class GameEngine {
         gc = canvas.getGraphicsContext2D();
         Ball initialBall = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
         balls.add(initialBall);
-        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 25, 0);
+        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 10, 0);
         createLevel();
 
         StackPane root = new StackPane(canvas);
@@ -105,14 +106,15 @@ public class GameEngine {
         powerUps.clear();
         levels.clear();
         this.setTotalScores(0);
+        this.setLives(3);
         initialize();
         startGameLoop();
     }
 
-    private void loadMap(String fileName){
-        try{
-            InputStream is = getClass().getResourceAsStream("map/"+fileName);
-            if(is == null){
+    private void loadMap(String fileName) {
+        try {
+            InputStream is = getClass().getResourceAsStream("map/" + fileName);
+            if (is == null) {
                 System.err.println("File not found");
                 return;
             }
@@ -160,12 +162,11 @@ public class GameEngine {
                     brick.setStrength(brick.getStrength() - 1);
                     if (brick.getStrength() <= 0) {
                         brick.setVisible(false);
-                        totalScores+= brick.getScore();
+                        totalScores += brick.getScore();
                         System.out.println(totalScores);
 
                         System.out.println(brick.getType());
                         if (brick.getType() == Brick.TYPE.PURPLE) {
-                            System.out.println("PURPLE destroyed");
                             PowerUp powerUp = new DoubleBallPowerUp(
                                     brick.getX() + brick.getWidth() / 2 - 10,
                                     brick.getY());
@@ -221,9 +222,9 @@ public class GameEngine {
             }
         }
 
-        for (PowerUp powerUp : activePowerUps) {
-            if(!powerUp.isActive()) {
-                activePowerUps.remove(powerUp);
+        for(int i= activePowerUps.size()-1; i>=0; i--) {
+            if(!activePowerUps.get(i).isActive()) {
+                activePowerUps.remove(i);
             }
         }
     }
@@ -262,8 +263,7 @@ public class GameEngine {
 
             }
             if (balls.isEmpty()) {
-                System.out.println("game over");
-                troller.setState(GameState.GAME_OVER);
+                loseLife();
 
             }
             updateLevel();
@@ -280,22 +280,45 @@ public class GameEngine {
         paddle.render(gc);
         levels.get(0).render(gc);
         renderPowerUp();
-        renderScore();
+        renderUI();
     }
-    private void renderScore() {
-        gc.setFill(Color.BLACK);
+
+    private void loseLife() {
+        lives--;
+        System.out.println("Life loss. Lives remained: " + lives);
+        if (lives > 0) {
+            resetBallAndPaddle();
+            troller.setState(GameState.READY);
+        } else {
+            System.out.println("Game over");
+            troller.setState(GameState.GAME_OVER);
+        }
+    }
+
+    private void resetBallAndPaddle() {
+        balls.clear();
+        Ball newBall = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
+        newBall.setX(WIDTH/2.0);
+        newBall.setY(HEIGHT/2.0);
+        balls.add(newBall);
+        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 10, 0);
+    }
+
+    private void renderUI() {
+        Font originalFont = gc.getFont();
         Font font=new Font("Arial", 24);
+
+        gc.setFill(Color.BLACK);
         gc.setFont(font);
-
         String scoreText=String.valueOf(totalScores);
-        Text tempText=new Text(scoreText);
-        double textWidth=tempText.getLayoutBounds().getWidth();
+        gc.fillText(scoreText, WIDTH/2.0-50, 30);
 
-        double x = (GameEngine.WIDTH) / 2.0;
-        double y = Level.getDistanceY() / 2.0 + font.getSize() / 2;
+        gc.setFill(Color.RED);
+        gc.setFont(font);
+        String livesText=String.valueOf(lives);
+        gc.fillText(livesText, 10, 30);
 
-        gc.fillText(scoreText, x, y);
-
+        gc.setFont(originalFont);
     }
 
     public void handleKeyInput(KeyEvent event) {
@@ -311,7 +334,7 @@ public class GameEngine {
                     pPressed = true;
                     if (troller.getState() == GameState.RUNNING) {
                         troller.setState(GameState.PAUSE);
-                    } else if (troller.getState() == GameState.PAUSE){
+                    } else if (troller.getState() == GameState.PAUSE) {
                         troller.setState(GameState.RUNNING);
                     }
                 }
@@ -320,6 +343,15 @@ public class GameEngine {
             case R:
                 if (troller.getState() == GameState.GAME_OVER) {
                     restartGame();
+                    troller.setState(GameState.RUNNING);
+                }
+                break;
+            case SPACE:
+                if (troller.getState() == GameState.READY) {
+                    if (!balls.isEmpty()) {
+                        balls.get(0).setDx(BALL_SPEED);
+                        balls.get(0).setDy(BALL_SPEED);
+                    }
                     troller.setState(GameState.RUNNING);
                 }
                 break;
@@ -356,5 +388,13 @@ public class GameEngine {
 
     public void setActivePowerUps(ArrayList<PowerUp> activePowerUps) {
         this.activePowerUps = activePowerUps;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 }
