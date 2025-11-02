@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Paddle extends MovableObject {
-    private static final double SPEED = 5.0;
+    private static final double SPEED = 3.0;
 
     private boolean moveLeft = false;
     private boolean moveRight = false;
@@ -51,7 +51,7 @@ public class Paddle extends MovableObject {
     }
 
     public void render(GraphicsContext gc) {
-        gc.setFill(Color.BLUE);
+        gc.setFill(Color.rgb(242,226,210));
         gc.fillRect(x, y, width, height);
     }
 

@@ -60,6 +60,7 @@ public class PowerUp extends GameObject{
     enum PowerUpType {
         EXPAND_PADDLE,
         SHRINK_PADDLE,
-        DOUBLE_BALL
+        DOUBLE_BALL,
+        HEALTH
     }
 }

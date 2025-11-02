@@ -14,7 +14,7 @@ public class Brick extends GameObject {
     private int score;
 
     public Brick(int x, int y, int width, int height) {
-        super(x,y,width,height);
+        super(x, y, width, height);
         this.x = x;
         this.y = y;
         this.visible = true;
@@ -32,7 +32,7 @@ public class Brick extends GameObject {
                 this.setStrength(1);
                 this.setScore(10);
                 break;
-            case PURPLE:
+            case BLUE:
                 this.setScore(30);
                 this.setStrength(1);
                 break;
@@ -48,26 +48,29 @@ public class Brick extends GameObject {
             Color color;
             switch (type) {
                 case GREEN:
-                    color=Color.GREEN;
+                    color = Color.rgb(94, 252, 141);
                     break;
                 case ORANGE:
-                    color=Color.ORANGE;
+                    color = Color.rgb(250, 130, 76);
                     break;
                 case YELLOW:
-                    color=Color.YELLOW;
+                    color = Color.rgb(255, 230, 109);
                     break;
-                case PURPLE:
-                    color=Color.PURPLE;
+                case BLUE:
+                    color = Color.rgb(124, 152, 179);
                     break;
                 case PINK:
-                    color=Color.PINK;
+                    color = Color.rgb(220, 117, 143);
+                    break;
+                case MAROON:
+                    color = Color.MAROON;
                     break;
                 default:
-                    color=Color.GREEN;
+                    color = Color.rgb(94, 252, 141);
                     break;
             }
-            if(type==TYPE.ORANGE) {
-                double opacity=strength/2.0;
+            if (type == TYPE.ORANGE) {
+                double opacity = strength / 2.0;
                 color = Color.color(
                         color.getRed(),
                         color.getGreen(),
@@ -96,18 +99,20 @@ public class Brick extends GameObject {
         this.visible = visible;
     }
 
-    enum TYPE{
+    enum TYPE {
         GREEN,      //normal brick, GREEN
         YELLOW,     //unbreakable brick, YELLOW
-        PURPLE,     //ball brick, PURPLE
+        BLUE,     //ball brick, BLUE
         PINK,       //healing brick, PINK
-        ORANGE      //double strength brick, ORANGE
+        ORANGE,      //double strength brick, ORANGE
+        MAROON
     }
 
     public TYPE getType() {
         return type;
     }
-    public  void setType(TYPE type) {
+
+    public void setType(TYPE type) {
         this.type = type;
     }
 
