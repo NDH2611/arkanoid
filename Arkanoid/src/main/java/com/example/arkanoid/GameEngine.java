@@ -24,7 +24,7 @@ import java.util.Iterator;
 public class GameEngine {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 650;
-    public static final double BALL_SPEED = 2.0;
+    public static final double BALL_SPEED = 1.5;
     public static final double PADDLE_WIDTH = 75;
 
     private Canvas canvas;
@@ -45,6 +45,7 @@ public class GameEngine {
 
     private int lives = 3;
     private int totalScores = 0;
+    private int currentLevel=1;
 
     public GameEngine(Stage stage) {
         this.stage = stage;
@@ -61,7 +62,7 @@ public class GameEngine {
         gc = canvas.getGraphicsContext2D();
         Ball initialBall = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
         balls.add(initialBall);
-        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 10, 0);
+        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 15, 0);
         createLevel();
 
         StackPane root = new StackPane(canvas);
@@ -107,6 +108,7 @@ public class GameEngine {
         levels.clear();
         this.setTotalScores(0);
         this.setLives(3);
+        this.currentLevel = 1;
         initialize();
         startGameLoop();
     }
@@ -143,6 +145,7 @@ public class GameEngine {
         String fileName = mapFiles.get(randomIndex);
         System.out.println("Loading random map: " + fileName);
         Level level = new Level(fileName);
+        levels.clear();
         levels.add(level);
     }
 
@@ -266,10 +269,15 @@ public class GameEngine {
                 loseLife();
 
             }
-            updateLevel();
             paddle.update();
             updatePowerUp();
         }
+        updateLevel();
+        if(checkLevelComplete()) {
+            handleLevelComplete();
+        }
+        paddle.update();
+        updatePowerUp();
     }
 
     public void renderGame() {
@@ -301,7 +309,7 @@ public class GameEngine {
         newBall.setX(WIDTH/2.0);
         newBall.setY(HEIGHT/2.0);
         balls.add(newBall);
-        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 10, 0);
+        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 15, 0);
     }
 
     private void renderUI() {
@@ -318,9 +326,39 @@ public class GameEngine {
         String livesText=String.valueOf(lives);
         gc.fillText(livesText, 10, 30);
 
+        gc.setFill(Color.RED);
+        gc.setFont(font);
+        String levelText=String.valueOf(currentLevel);
+        gc.fillText(levelText, WIDTH-150, 30);
+
+
         gc.setFont(originalFont);
     }
-
+    private boolean checkLevelComplete() {
+        if(levels.isEmpty()) {
+            return false;
+        }
+        for(Brick brick : levels.get(0).getBricks()) {
+            if(brick.isVisible()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private void handleLevelComplete() {
+        System.out.println("Level Complete");
+        currentLevel++;
+        totalScores+=100;
+        loadNextLevel();
+    }
+    private void loadNextLevel() {
+        balls.clear();
+        powerUps.clear();
+        activePowerUps.clear();
+        createLevel();
+        resetBallAndPaddle();
+        troller.setState(GameState.READY);
+    }
     public void handleKeyInput(KeyEvent event) {
         if (troller == null) {
             return;
