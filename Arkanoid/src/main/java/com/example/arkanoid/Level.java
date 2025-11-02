@@ -74,7 +74,10 @@ public class Level {
                             brick.setType(Brick.TYPE.ORANGE);
                             break;
                         case 5:
-                            brick.setType(Brick.TYPE.PURPLE);
+                            brick.setType(Brick.TYPE.BLUE);
+                            break;
+                        case 6:
+                            brick.setType(Brick.TYPE.MAROON);
                             break;
                     }
                     brick.brickStatus();

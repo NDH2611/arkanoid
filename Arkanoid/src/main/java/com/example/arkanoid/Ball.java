@@ -15,7 +15,7 @@ public class Ball extends MovableObject {
     }
 
     public void render(GraphicsContext gc) {
-        gc.setFill(Color.RED);
+        gc.setFill(Color.rgb(242,226,210));
         gc.fillOval(x, y, width, height);
     }
 
