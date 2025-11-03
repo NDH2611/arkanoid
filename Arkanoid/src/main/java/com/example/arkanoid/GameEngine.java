@@ -1,16 +1,12 @@
 package com.example.arkanoid;
 
 import javafx.animation.AnimationTimer;
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
-import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -21,10 +17,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+
 public class GameEngine {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 650;
-    public static final double BALL_SPEED = 4;
+    public static final double BALL_SPEED = 1.5;
     public static final double PADDLE_WIDTH = 75;
 
     private Canvas canvas;
@@ -33,9 +30,9 @@ public class GameEngine {
     private long startTime = 0;
     private AnimationTimer gameLoop;
     private Stage stage;
-    private StackPane root;
     private GameStateController troller;
     private boolean pPressed = false;
+    private Font renderFont;
 
     private Paddle paddle;
     private ArrayList<Level> levels = new ArrayList<>();
@@ -61,18 +58,15 @@ public class GameEngine {
     public void initialize() {
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
+        renderFont = loadFont("PressStart2P-Regular.ttf", 16);
         Ball initialBall = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
         balls.add(initialBall);
         paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 15, 0);
         createLevel();
 
-        //StackPane root = new StackPane(canvas);
-        StackPane gameContainer = new StackPane(canvas);
-        StackPane.setAlignment(canvas, Pos.CENTER);
-        root = new StackPane(canvas);
-
+        StackPane root = new StackPane(canvas);
         scene = new Scene(root, WIDTH, HEIGHT);
-        System.out.println("Root type: " + root.getClass().getSimpleName());
+
         scene.setOnKeyPressed(event -> handleKeyInput(event));
         scene.setOnKeyReleased(event -> {
             handleKeyInput(event);
@@ -116,6 +110,22 @@ public class GameEngine {
         this.currentLevel = 1;
         initialize();
         startGameLoop();
+    }
+
+    private Font loadFont(String fontName, int fontSize) {
+        try {
+            InputStream is = this.getClass().getResourceAsStream("font/" + fontName);
+            if (is == null) {
+                System.err.println("Font not found");
+                return Font.font("Arial", fontSize);
+            }
+            System.out.println("Font loaded" + fontName);
+            return Font.loadFont(is, fontSize);
+        } catch (Exception e) {
+            System.err.println("Error loading font");
+            e.printStackTrace();
+            return Font.font("Arial", fontSize);
+        }
     }
 
     private void loadMap(String fileName) {
@@ -174,13 +184,16 @@ public class GameEngine {
                         System.out.println(totalScores);
 
                         System.out.println(brick.getType());
-                        if (brick.getType() == Brick.TYPE.PURPLE) {
+                        if (brick.getType() == Brick.TYPE.BLUE) {
                             PowerUp powerUp = new DoubleBallPowerUp(
                                     brick.getX() + brick.getWidth() / 2 - 10,
                                     brick.getY());
                             powerUps.add(powerUp);
-                        }
-                        if (Math.random() < 0.33) {
+                        } else if (brick.getType() == Brick.TYPE.PINK) {
+                            PowerUp powerUp = new HealthPowerUp(brick.getX() + brick.getWidth() / 2 - 10,
+                                    brick.getY());
+                            powerUps.add(powerUp);
+                        } else if (Math.random() < 0.25) {
                             if (Math.random() < 0.5) {
                                 powerUps.add(new ExpandPaddlePowerUp(brick.getX() + 5, brick.getY() + 5));
                             } else {
@@ -225,6 +238,11 @@ public class GameEngine {
                         Ball newBall = dbl.applyEffect(balls.get(0));
                         balls.add(newBall);
                     }
+                } else if (powerUp instanceof HealthPowerUp) {
+                    System.out.println("HealthPowerUp");
+                    if (lives < 3) {
+                        lives++;
+                    }
                 }
                 powerUps.remove(i);
             }
@@ -248,6 +266,9 @@ public class GameEngine {
             } else if (powerUps.get(i) instanceof DoubleBallPowerUp) {
                 DoubleBallPowerUp dbl = (DoubleBallPowerUp) powerUps.get(i);
                 dbl.render(gc);
+            } else if (powerUps.get(i) instanceof HealthPowerUp) {
+                HealthPowerUp health = (HealthPowerUp) powerUps.get(i);
+                health.render(gc);
             }
         }
     }
@@ -286,7 +307,8 @@ public class GameEngine {
     }
 
     public void renderGame() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        gc.setFill(Color.rgb(46, 26, 71));
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (Ball ball : balls) {
             ball.render(gc);
         }
@@ -319,25 +341,39 @@ public class GameEngine {
 
     private void renderUI() {
         Font originalFont = gc.getFont();
-        Font font = new Font("Arial", 24);
 
-        gc.setFill(Color.BLACK);
-        gc.setFont(font);
-        String scoreText = String.valueOf(totalScores);
-        gc.fillText(scoreText, WIDTH / 2.0 - 50, 30);
+        gc.setFont(renderFont);
+        gc.setFill(Color.rgb(242, 226, 210));
 
-        gc.setFill(Color.RED);
-        gc.setFont(font);
-        String livesText = String.valueOf(lives);
-        gc.fillText(livesText, 10, 30);
+        String scoreText = "Scores: " + String.valueOf(totalScores);
+        Text scoreTextNode = new Text(scoreText);
+        scoreTextNode.setFont(renderFont);
+        double textWidth=scoreTextNode.getLayoutBounds().getWidth();
+        double textHeight=scoreTextNode.getLayoutBounds().getHeight();
+        double horizontalCenter=WIDTH/2.0-textWidth/2.0;
+        gc.fillText(scoreText, horizontalCenter  , Level.getDistanceY()/2.0 + textHeight/2.0);
 
-        gc.setFill(Color.RED);
-        gc.setFont(font);
-        String levelText = String.valueOf(currentLevel);
-        gc.fillText(levelText, WIDTH - 150, 30);
+        String livesText = "Lives: " + String.valueOf(lives);
+        Text livesTextNode = new Text(livesText);
+        livesTextNode.setFont(renderFont);
+        double livesTextWidth = livesTextNode.getLayoutBounds().getWidth();
+        gc.fillText(livesText, 10, Level.getDistanceY()/2.0 + textHeight/2.0);
 
+        String levelText = "Levels: " + String.valueOf(currentLevel);
+        Text levelTextNode = new Text(levelText);
+        levelTextNode.setFont(renderFont);
+        double levelTextWidth = levelTextNode.getLayoutBounds().getWidth();
+        gc.fillText(levelText, WIDTH-150, Level.getDistanceY()/2.0 + textHeight/2.0);
 
+        drawSeparatorLine();
         gc.setFont(originalFont);
+    }
+
+    private void drawSeparatorLine() {
+        double lineY = Level.getDistanceY();
+        gc.setStroke(Color.rgb(242, 226, 210));
+        gc.setLineWidth(3);
+        gc.strokeLine(0, lineY, WIDTH, lineY);
     }
 
     private boolean checkLevelComplete() {
@@ -445,7 +481,11 @@ public class GameEngine {
         this.lives = lives;
     }
 
-    public StackPane getRoot() {
-        return root;
+    public Font getRenderFont() {
+        return renderFont;
+    }
+
+    public void setRenderFont(Font renderFont) {
+        this.renderFont = renderFont;
     }
 }
