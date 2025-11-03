@@ -353,13 +353,13 @@ public class GameEngine {
         double horizontalCenter=WIDTH/2.0-textWidth/2.0;
         gc.fillText(scoreText, horizontalCenter  , Level.getDistanceY()/2.0 + textHeight/2.0);
 
-        String livesText = "Lives: " + String.valueOf(totalScores);
+        String livesText = "Lives: " + String.valueOf(lives);
         Text livesTextNode = new Text(livesText);
         livesTextNode.setFont(renderFont);
         double livesTextWidth = livesTextNode.getLayoutBounds().getWidth();
         gc.fillText(livesText, 10, Level.getDistanceY()/2.0 + textHeight/2.0);
 
-        String levelText = "Levels: " + String.valueOf(totalScores);
+        String levelText = "Levels: " + String.valueOf(currentLevel);
         Text levelTextNode = new Text(levelText);
         levelTextNode.setFont(renderFont);
         double levelTextWidth = levelTextNode.getLayoutBounds().getWidth();
