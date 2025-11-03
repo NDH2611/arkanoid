@@ -6,6 +6,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
+import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -30,6 +31,7 @@ public class GameEngine {
     private long startTime = 0;
     private AnimationTimer gameLoop;
     private Stage stage;
+    private StackPane root;
     private GameStateController troller;
     private boolean pPressed = false;
     private Font renderFont;
@@ -64,7 +66,10 @@ public class GameEngine {
         paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 15, 0);
         createLevel();
 
-        StackPane root = new StackPane(canvas);
+        StackPane gameContainer = new StackPane(canvas);
+        StackPane.setAlignment(canvas, Pos.CENTER);
+        root = new StackPane(canvas);
+
         scene = new Scene(root, WIDTH, HEIGHT);
 
         scene.setOnKeyPressed(event -> handleKeyInput(event));
@@ -487,5 +492,8 @@ public class GameEngine {
 
     public void setRenderFont(Font renderFont) {
         this.renderFont = renderFont;
+    }
+    public StackPane getRoot() {
+        return root;
     }
 }
