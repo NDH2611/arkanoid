@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class GameEngine {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 650;
-    public static final double BALL_SPEED = 1.5;
+    public static final double BALL_SPEED = 3;
     public static final double PADDLE_WIDTH = 75;
 
     private Canvas canvas;
@@ -63,7 +63,7 @@ public class GameEngine {
         renderFont = loadFont("PressStart2P-Regular.ttf", 16);
         Ball initialBall = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
         balls.add(initialBall);
-        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 15, 0);
+        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 100, PADDLE_WIDTH, 15, 0);
         createLevel();
 
         StackPane gameContainer = new StackPane(canvas);
@@ -353,22 +353,22 @@ public class GameEngine {
         String scoreText = "Scores: " + String.valueOf(totalScores);
         Text scoreTextNode = new Text(scoreText);
         scoreTextNode.setFont(renderFont);
-        double textWidth=scoreTextNode.getLayoutBounds().getWidth();
-        double textHeight=scoreTextNode.getLayoutBounds().getHeight();
-        double horizontalCenter=WIDTH/2.0-textWidth/2.0;
-        gc.fillText(scoreText, horizontalCenter  , Level.getDistanceY()/2.0 + textHeight/2.0);
+        double textWidth = scoreTextNode.getLayoutBounds().getWidth();
+        double textHeight = scoreTextNode.getLayoutBounds().getHeight();
+        double horizontalCenter = WIDTH / 2.0 - textWidth / 2.0;
+        gc.fillText(scoreText, horizontalCenter, Level.getDistanceY() / 2.0 + textHeight / 2.0);
 
         String livesText = "Lives: " + String.valueOf(lives);
         Text livesTextNode = new Text(livesText);
         livesTextNode.setFont(renderFont);
         double livesTextWidth = livesTextNode.getLayoutBounds().getWidth();
-        gc.fillText(livesText, 10, Level.getDistanceY()/2.0 + textHeight/2.0);
+        gc.fillText(livesText, 10, Level.getDistanceY() / 2.0 + textHeight / 2.0);
 
         String levelText = "Levels: " + String.valueOf(currentLevel);
         Text levelTextNode = new Text(levelText);
         levelTextNode.setFont(renderFont);
         double levelTextWidth = levelTextNode.getLayoutBounds().getWidth();
-        gc.fillText(levelText, WIDTH-150, Level.getDistanceY()/2.0 + textHeight/2.0);
+        gc.fillText(levelText, WIDTH - 150, Level.getDistanceY() / 2.0 + textHeight / 2.0);
 
         drawSeparatorLine();
         gc.setFont(originalFont);
@@ -493,6 +493,7 @@ public class GameEngine {
     public void setRenderFont(Font renderFont) {
         this.renderFont = renderFont;
     }
+
     public StackPane getRoot() {
         return root;
     }
