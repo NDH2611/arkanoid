@@ -27,6 +27,11 @@ public class MenuController {
         try {
             Stage stage = (Stage) Start.getScene().getWindow();
             GameEngine game = new GameEngine(stage);
+
+            stage.setScene(game.getScene());
+            stage.centerOnScreen();
+            stage.show();
+
             GameStateController controller = game.getTroller();
             controller.setState(GameState.RUNNING);
 

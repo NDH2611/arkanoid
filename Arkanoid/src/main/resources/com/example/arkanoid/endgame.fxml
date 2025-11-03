@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<StackPane alignment="CENTER" prefHeight="400" prefWidth="600" style="-fx-background-color: rgba(0, 0, 0, 0.5);;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.arkanoid.GameStateController">
+    <VBox alignment="CENTER" spacing="20">
+      <Text fill="#00c3ff" strokeType="OUTSIDE" strokeWidth="0.0" text="Trình hơi noan, bấm Play Again và phím R để chơi lại" />
+        <Button fx:id="PlayContinue" onAction="#onPlayContinue" prefHeight="80" prefWidth="185" text="Play Again" />
+        <Button fx:id="ReturnMenu" onAction="#onReturnMenu" prefHeight="80" prefWidth="185" text="Return to Menu" />
+    </VBox>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</StackPane>
