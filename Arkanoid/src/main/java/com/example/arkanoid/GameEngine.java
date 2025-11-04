@@ -341,7 +341,7 @@ public class GameEngine {
         newBall.setX(WIDTH / 2.0);
         newBall.setY(HEIGHT / 2.0);
         balls.add(newBall);
-        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 25, PADDLE_WIDTH, 15, 0);
+        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 100, PADDLE_WIDTH, 15, 0);
     }
 
     private void renderUI() {
