@@ -13,6 +13,8 @@ public class Paddle extends MovableObject {
     private boolean moveRight = false;
     private Rectangle rectangle;
 
+    private Image paddleImage;
+
     private Image fireSpriteSheet;
     private int frameCount = 6;
     private int currentFrame = 0;
@@ -24,6 +26,12 @@ public class Paddle extends MovableObject {
     public Paddle(double x, double y, double width, double height, double speed) {
         super(x, y, width, height, speed);
         rectangle = new Rectangle(x, y, width, height);
+
+        try {
+            paddleImage = new Image(getClass().getResourceAsStream("images/paddle.png"));
+        } catch (Exception e) {
+            System.err.println("Không tìm thấy paddle.png");
+        }
 
         try {
             fireSpriteSheet = new Image(getClass().getResourceAsStream("images/firelgbt.png"));
@@ -83,8 +91,18 @@ public class Paddle extends MovableObject {
             );
         }
 
+        if (paddleImage != null) {
+            gc.drawImage(paddleImage, x, y, width, height);
+        } else {
+            gc.setFill(Color.rgb(242, 226, 210));
+            gc.fillRect(x, y, width, height);
+        }
+
+        /*
         gc.setFill(Color.rgb(242, 226, 210));
         gc.fillRect(x, y, width, height);
+
+         */
     }
 
     public void update() {
