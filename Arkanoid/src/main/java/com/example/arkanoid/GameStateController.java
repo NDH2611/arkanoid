@@ -4,13 +4,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.Pane;
 
+import java.io.IOException;
+
 public class GameStateController {
+    @FXML
+    public Button ViewLeaderboard;
+    @FXML
+    private Button Leaderboard;
     private GameState currentState = GameState.MENU;
     private GameEngine gameEngine;
     private Stage stage;
@@ -66,12 +73,31 @@ public class GameStateController {
             case READY:
                 gameEngine.startGameLoop();
                 break;
-
+            case LEADERBOARD:
+                onViewLeaderboard();
+                break;
         }
     }
 
     public GameState getState() {
         return currentState;
+    }
+
+    public void onViewLeaderboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("leaderboard.fxml"));
+            Parent root = loader.load();
+            LeaderboardController controller = loader.getController();
+
+            Stage leaderboardStage = (Stage) getLeaderboard().getScene().getWindow();
+            leaderboardStage.setTitle("Leaderboard");
+            leaderboardStage.setScene(new Scene(root));
+            controller.setStage(leaderboardStage);
+            controller.setMode("Classic");
+            leaderboardStage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void showMenu() {
@@ -163,5 +189,9 @@ public class GameStateController {
 
     public void setGameEngine(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
+    }
+
+    public Button getLeaderboard() {
+        return Leaderboard;
     }
 }

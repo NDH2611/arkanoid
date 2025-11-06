@@ -2,12 +2,16 @@ package com.example.arkanoid;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
+
+import java.io.IOException;
 
 public class MenuController {
     @FXML
@@ -15,12 +19,15 @@ public class MenuController {
     @FXML
     private Button Mode;
     @FXML
-    private Button Hdsd;
+    private Button Guide;
     @FXML
     private Button Exit;
     @FXML
     private Text text;
+    @FXML
+    private Button Leaderboard;
 
+    private Stage stage;
 
     @FXML
     private void onStart() {
@@ -54,9 +61,26 @@ public class MenuController {
     }
 
     @FXML
-    private void onHdsd() {
+    public void onLeaderboard() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("leaderboard.fxml"));
+        Parent root = loader.load();
+
+        LeaderboardController controller = loader.getController();
+
+        Stage leaderboardStage = (Stage) Leaderboard.getScene().getWindow();
+        leaderboardStage.setTitle("Leaderboard");
+        leaderboardStage.setScene(new Scene(root));
+
+        controller.setStage(leaderboardStage);
+        controller.setMode("Classic");
+
+        leaderboardStage.show();
+    }
+
+    @FXML
+    private void onGuide() {
         try {
-            Stage stage = (Stage) Hdsd.getScene().getWindow();
+            Stage stage = (Stage) Guide.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hdsd.fxml"));
             Scene hdsdScene = new Scene(loader.load());
             stage.setScene(hdsdScene);
@@ -74,5 +98,9 @@ public class MenuController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }
