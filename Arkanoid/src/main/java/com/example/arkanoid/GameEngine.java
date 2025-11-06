@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.PieChart;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.geometry.Pos;
@@ -47,8 +48,13 @@ public class GameEngine {
     private int totalScores = 0;
     private int currentLevel = 1;
 
+    private DatabaseManager dbManager;
+    private String currentMode="Classic";
+    private String playerName="player";
+
     public GameEngine(Stage stage) {
         this.stage = stage;
+        dbManager = DatabaseManager.getInstance();
         this.setTotalScores(0);
         this.setLives(3);
         loadMap("totalMap.txt");
@@ -116,7 +122,25 @@ public class GameEngine {
         initialize();
         startGameLoop();
     }
-
+    private void saveScore() {
+        if(dbManager==null) {
+            System.err.println("dbManager is null");
+            return;
+        }
+        boolean success=dbManager.insertScore(
+                currentMode,
+                playerName,
+                currentLevel,
+                totalScores
+        );
+        if (success) {
+            System.out.println("Score saved! Mode: " + currentMode +
+                    ", Player: " + playerName +
+                    ", Score: " + totalScores);
+        } else {
+            System.out.println("Failed to save score.");
+        }
+    }
     private Font loadFont(String fontName, int fontSize) {
         try {
             InputStream is = this.getClass().getResourceAsStream("font/" + fontName);
@@ -330,6 +354,7 @@ public class GameEngine {
             resetBallAndPaddle();
             troller.setState(GameState.READY);
         } else {
+            saveScore();
             System.out.println("Game over");
             troller.setState(GameState.GAME_OVER);
         }

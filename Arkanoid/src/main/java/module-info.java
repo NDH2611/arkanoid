@@ -9,6 +9,8 @@ module com.example.arkanoid {
     requires java.desktop;
     requires java.management;
     requires javafx.graphics;
+    requires java.sql;
+    requires mysql.connector.j;
 
     opens com.example.arkanoid to javafx.fxml;
     exports com.example.arkanoid;
