@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseManager {
-    private static final String URL = "jdbc:mysql://localhost:3306/arkanoid";
-    private static final String USER = "root";
-    private static final String PASSWORD = "Long2006@";
+    private static final String URL = "jdbc:sqlite:arkanoid.db";
 
     private static Connection connection;
     private static DatabaseManager instance;
@@ -28,8 +26,9 @@ public class DatabaseManager {
 
     private void connectToDatabase() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection(URL);
+            createTable();
         } catch (ClassNotFoundException e) {
             System.err.println("Driver not found!");
             e.printStackTrace();
@@ -38,7 +37,23 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-
+    private void createTable() {
+        String sql = "create table if not exists main (\n" +
+                "    id integer primary key autoincrement,\n" +
+                "    mode_name text not null,\n" +
+                "    user_name text not null,\n" +
+                "    level_num integer not null default 1,\n" +
+                "    score integer not null default 0,\n" +
+                "    time_played TEXT DEFAULT (datetime('now', 'localtime'))\n" +
+                ");";
+        try (Statement st = connection.createStatement()){
+            st.execute(sql);
+            System.out.println("Table created!");
+        } catch (SQLException e) {
+            System.err.println("Error creating table!");
+            e.printStackTrace();
+        }
+    }
     public boolean insertScore(String modeName, String userName, int levelNum, int score) {
         String sql = "INSERT INTO main (mode_name, user_name, level_num, score) VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
