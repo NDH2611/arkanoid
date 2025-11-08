@@ -7,6 +7,7 @@ public class HealthPowerUp extends PowerUp {
     public HealthPowerUp(double x, double y) {
         super(x, y, PowerUpType.HEALTH, 5000, false);
     }
+    @Override
     public void render(GraphicsContext gc) {
         gc.setFill(Color.PINK);
         gc.fillRect(x,y,width,height);

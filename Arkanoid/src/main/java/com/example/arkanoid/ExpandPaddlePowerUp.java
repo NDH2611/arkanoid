@@ -37,7 +37,7 @@ public class ExpandPaddlePowerUp extends PowerUp {
         paddle.setWidth(GameEngine.PADDLE_WIDTH);
         paddle.getRectangle().setWidth(paddle.getWidth());
     }
-
+    @Override
     public void render(GraphicsContext gc) {
         gc.setFill(Color.GREEN);
         gc.fillRect(x, y, rectangle.getWidth(), rectangle.getHeight());

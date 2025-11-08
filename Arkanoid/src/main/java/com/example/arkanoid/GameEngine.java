@@ -26,6 +26,7 @@ public class GameEngine {
     public static final double BALL_SPEED = 3;
     public static final double PADDLE_WIDTH = 75;
 
+    private GameRenderer gameRenderer;
     private Canvas canvas;
     private GraphicsContext gc;
     private Scene scene;
@@ -37,7 +38,7 @@ public class GameEngine {
     private boolean pPressed = false;
     private Font renderFont;
 
-    private Paddle paddle;
+    private ArrayList<Paddle> paddles = new ArrayList<>();
     private ArrayList<Level> levels = new ArrayList<>();
     private ArrayList<PowerUp> powerUps = new ArrayList<>();
     private ArrayList<PowerUp> activePowerUps = new ArrayList<>();
@@ -66,9 +67,11 @@ public class GameEngine {
         canvas = new Canvas(WIDTH, HEIGHT);
         gc = canvas.getGraphicsContext2D();
         renderFont = loadFont("PressStart2P-Regular.ttf", 16);
+        gameRenderer = new GameRenderer(gc,renderFont);
         Ball initialBall = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
         balls.add(initialBall);
-        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 100, PADDLE_WIDTH, 15, 0);
+        Paddle paddle = new Paddle(WIDTH / 2.0, HEIGHT - 100, PADDLE_WIDTH, 15, 0);
+        paddles.add(paddle);
         createLevel();
 
         StackPane gameContainer = new StackPane(canvas);
@@ -254,17 +257,17 @@ public class GameEngine {
                 continue;
             }
 
-            if (CheckCollision.checkCollision(powerUp.getRectangle(), paddle.getRectangle())) {
+            if (CheckCollision.checkCollision(powerUp.getRectangle(), paddles.get(0).getRectangle())) {
                 if (powerUp instanceof ExpandPaddlePowerUp) {
                     System.out.println("ExpandPaddlePowerUp");
                     ExpandPaddlePowerUp exp = (ExpandPaddlePowerUp) powerUp;
-                    exp.applyEffect(paddle);
+                    exp.applyEffect(paddles.get(0));
                     activePowerUps.add(exp);
                     exp.setActive(true);
                 } else if (powerUp instanceof ShrinkPaddlePowerUp) {
                     System.out.println("ShrinkPaddlePowerUp");
                     ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUp;
-                    shr.applyEffect(paddle);
+                    shr.applyEffect(paddles.get(0));
                     activePowerUps.add(shr);
                     shr.setActive(true);
                 } else if (powerUp instanceof DoubleBallPowerUp) {
@@ -291,24 +294,6 @@ public class GameEngine {
         }
     }
 
-    private void renderPowerUp() {
-        for (int i = 0; i < powerUps.size(); i++) {
-            if (powerUps.get(i) instanceof ExpandPaddlePowerUp) {
-                ExpandPaddlePowerUp exp = (ExpandPaddlePowerUp) powerUps.get(i);
-                exp.render(gc);
-            } else if (powerUps.get(i) instanceof ShrinkPaddlePowerUp) {
-                ShrinkPaddlePowerUp shr = (ShrinkPaddlePowerUp) powerUps.get(i);
-                shr.render(gc);
-            } else if (powerUps.get(i) instanceof DoubleBallPowerUp) {
-                DoubleBallPowerUp dbl = (DoubleBallPowerUp) powerUps.get(i);
-                dbl.render(gc);
-            } else if (powerUps.get(i) instanceof HealthPowerUp) {
-                HealthPowerUp health = (HealthPowerUp) powerUps.get(i);
-                health.render(gc);
-            }
-        }
-    }
-
     public void updateGame() {
 
         if (troller != null && troller.getState() != GameState.RUNNING) {
@@ -317,9 +302,9 @@ public class GameEngine {
         for (int i = balls.size() - 1; i >= 0; i--) {
             Ball currentBall = balls.get(i);
             currentBall.update();
-            CheckCollision.CollisionSide side = CheckCollision.checkCollision(currentBall.getCircle(), paddle.getRectangle());
+            CheckCollision.CollisionSide side = CheckCollision.checkCollision(currentBall.getCircle(), paddles.get(0).getRectangle());
             if (side == CheckCollision.CollisionSide.TOP) {
-                CheckCollision.caculatedBallBounceAngle(balls.get(i), paddle);
+                CheckCollision.caculatedBallBounceAngle(balls.get(i), paddles.get(0));
             } else if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
                 currentBall.setDx(-currentBall.getDx());
             }
@@ -331,27 +316,21 @@ public class GameEngine {
                 loseLife();
 
             }
-            paddle.update();
+            paddles.get(0).update();
             updatePowerUp();
         }
         updateLevel();
         if (checkLevelComplete()) {
             handleLevelComplete();
         }
-        paddle.update();
+        paddles.get(0).update();
         updatePowerUp();
     }
 
     public void renderGame() {
-        gc.setFill(Color.rgb(46, 26, 71));
-        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (Ball ball : balls) {
-            ball.render(gc);
-        }
-        paddle.render(gc);
-        levels.get(0).render(gc);
-        renderPowerUp();
+        gameRenderer.render(balls, paddles, levels, powerUps);
         renderUI();
+
     }
 
     private void loseLife() {
@@ -373,7 +352,9 @@ public class GameEngine {
         newBall.setX(WIDTH / 2.0);
         newBall.setY(HEIGHT / 2.0);
         balls.add(newBall);
-        paddle = new Paddle(WIDTH / 2.0, HEIGHT - 100, PADDLE_WIDTH, 15, 0);
+        paddles.clear();
+        Paddle paddle = new Paddle(WIDTH / 2.0, HEIGHT - 100, PADDLE_WIDTH, 15, 0);
+        paddles.add(paddle);
     }
 
     private void renderUI() {
@@ -446,7 +427,7 @@ public class GameEngine {
             return;
         }
         if (troller.getState() == GameState.RUNNING) {
-            paddle.handleInput(event);
+            paddles.get(0).handleInput(event);
         }
         switch (event.getCode()) {
             case P:

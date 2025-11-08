@@ -14,6 +14,7 @@ public class DoubleBallPowerUp extends PowerUp{
         newBall.setDy(originalBall.getDy());
         return newBall;
     }
+    @Override
     public void render(GraphicsContext gc) {
         gc.setFill(Color.CYAN);
         gc.fillRect(x,y,width,height);
