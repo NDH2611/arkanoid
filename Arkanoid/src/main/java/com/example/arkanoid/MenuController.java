@@ -26,7 +26,10 @@ public class MenuController {
     private Text text;
     @FXML
     private Button Leaderboard;
-
+    @FXML
+    private Button About;
+    @FXML
+    private Button backButton;
     private Stage stage;
 
     @FXML
@@ -47,7 +50,18 @@ public class MenuController {
             e.printStackTrace();
         }
     }
-
+    @FXML
+    private void onAbout() {
+        try {
+            Stage stage = (Stage) Start.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("About.fxml"));
+            Scene aboutScene=new Scene(loader.load());
+            stage.setScene(aboutScene);
+            stage.show();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
     @FXML
     private void onMode() {
         try {
@@ -60,7 +74,17 @@ public class MenuController {
             throw new RuntimeException(e);
         }
     }
+    @FXML
+    private void comeBack() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
+        Parent root = loader.load();
 
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Arkanoid");
+        MenuController controller = (MenuController) loader.getController();
+
+    }
     @FXML
     public void onLeaderboard() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("leaderboard.fxml"));

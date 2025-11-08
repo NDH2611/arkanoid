@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseManager {
-    private static final String URL = "jdbc:sqlite:arkanoid.db";
+    private static final String URL = "jdbc:sqlite:Arkanoid/arkanoid.db";
 
     private static Connection connection;
     private static DatabaseManager instance;
