@@ -1,6 +1,7 @@
 package com.example.arkanoid;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class PowerUp extends GameObject{
@@ -18,6 +19,11 @@ public class PowerUp extends GameObject{
         this.duration = duration;
         this.powerUpType = type;
         this.rectangle = new Rectangle(x, y, POWER_UP_WIDTH, POWER_UP_HEIGHT);
+    }
+
+    public void render(GraphicsContext gc) {
+        gc.setFill(Color.WHITE);
+        gc.fillRect(x, y, POWER_UP_WIDTH, POWER_UP_HEIGHT);
     }
 
     public void update() {

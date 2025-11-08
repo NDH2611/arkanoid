@@ -38,6 +38,7 @@ public class ShrinkPaddlePowerUp extends PowerUp {
         paddle.getRectangle().setWidth(paddle.getWidth());
     }
 
+    @Override
     public void render(GraphicsContext gc) {
         gc.setFill(Color.RED);
         gc.fillRect(x, y, rectangle.getWidth(), rectangle.getHeight());

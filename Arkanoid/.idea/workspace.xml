@@ -7,10 +7,11 @@
     <list default="true" id="189b9082-9fbe-4a0d-b84e-1cfcd1522e45" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/arkanoid.db" beforeDir="false" afterPath="$PROJECT_DIR$/arkanoid.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/DoubleBallPowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/DoubleBallPowerUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/ExpandPaddlePowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/ExpandPaddlePowerUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/GameEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/GameStateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/GameStateController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/HealthPowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/HealthPowerUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/PowerUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/ShrinkPaddlePowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/arkanoid/ShrinkPaddlePowerUp.java" afterDir="false" />
     </list>
@@ -24,6 +25,7 @@
       <list>
         <option value="FxmlFile" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -127,10 +129,23 @@
       <workItem from="1761746861369" duration="4581000" />
       <workItem from="1761840356802" duration="2478000" />
       <workItem from="1762013130077" duration="3615000" />
+      <workItem from="1762483790394" duration="1429000" />
+      <workItem from="1762589828932" duration="3341000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/arkanoid/HealthPowerUp.java</url>
+          <line>7</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
