@@ -35,6 +35,7 @@ public class MenuController {
             Stage stage = (Stage) Start.getScene().getWindow();
             GameEngine game = new GameEngine(stage);
 
+            game.inputUsername();
             stage.setScene(game.getScene());
             stage.centerOnScreen();
             stage.show();

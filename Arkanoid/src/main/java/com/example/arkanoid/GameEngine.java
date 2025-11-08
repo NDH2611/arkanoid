@@ -50,7 +50,7 @@ public class GameEngine {
 
     private DatabaseManager dbManager;
     private String currentMode="Classic";
-    private String playerName="player";
+    private String playerName;
 
     public GameEngine(Stage stage) {
         this.stage = stage;
@@ -59,7 +59,6 @@ public class GameEngine {
         this.setLives(3);
         loadMap("totalMap.txt");
         initialize();
-        //startGameLoop();
         troller = new GameStateController(stage, this);
     }
 
@@ -86,6 +85,16 @@ public class GameEngine {
             }
         });
 
+    }
+
+    public void inputUsername() {
+        UsernameLog log=new UsernameLog(stage);
+        String username=log.showAndWait();
+        if(log.isConfirmed()) {
+            this.playerName=username;
+        } else {
+            this.playerName="player";
+        }
     }
 
     public void startGameLoop() {
@@ -148,7 +157,6 @@ public class GameEngine {
                 System.err.println("Font not found");
                 return Font.font("Arial", fontSize);
             }
-            System.out.println("Font loaded" + fontName);
             return Font.loadFont(is, fontSize);
         } catch (Exception e) {
             System.err.println("Error loading font");
@@ -170,7 +178,6 @@ public class GameEngine {
                 line = line.trim();
                 if (!line.isEmpty()) {
                     mapFiles.add(line);
-                    System.out.println("Found map: " + line);
                 }
             }
             br.close();
