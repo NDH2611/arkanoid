@@ -21,11 +21,6 @@ import java.util.ArrayList;
 
 
 public class GameEngine {
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 650;
-    public static final double BALL_SPEED = 3;
-    public static final double PADDLE_WIDTH = 75;
-
     private GameRenderer gameRenderer;
     private Canvas canvas;
     private GraphicsContext gc;
@@ -50,7 +45,7 @@ public class GameEngine {
     private int currentLevel = 1;
 
     private DatabaseManager dbManager;
-    private String currentMode="Classic";
+    private String currentMode = "Solo";
     private String playerName;
 
     public GameEngine(Stage stage) {
@@ -58,19 +53,23 @@ public class GameEngine {
         dbManager = DatabaseManager.getInstance();
         this.setTotalScores(0);
         this.setLives(3);
-        loadMap("totalMap.txt");
+        loadMap(GameConfig.totalMap);
         initialize();
         troller = new GameStateController(stage, this);
     }
 
     public void initialize() {
-        canvas = new Canvas(WIDTH, HEIGHT);
+        canvas = new Canvas(GameConfig.WIDTH, GameConfig.HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        renderFont = loadFont("PressStart2P-Regular.ttf", 16);
-        gameRenderer = new GameRenderer(gc,renderFont);
-        Ball initialBall = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
+        renderFont = loadFont(GameConfig.fontUse, 16);
+        gameRenderer = new GameRenderer(gc, renderFont);
+        Ball initialBall = new Ball(GameConfig.WIDTH / 2.0 - GameConfig.BALL_RADIUS / 2.0,
+                GameConfig.HEIGHT - 120, GameConfig.BALL_RADIUS, GameConfig.BALL_SPEED);
         balls.add(initialBall);
-        Paddle paddle = new Paddle(WIDTH / 2.0, HEIGHT - 100, PADDLE_WIDTH, 15, 0);
+        initialBall.setDx(0);
+        initialBall.setDy(-GameConfig.BALL_SPEED);
+        Paddle paddle = new Paddle(GameConfig.WIDTH / 2.0 - GameConfig.PADDLE_WIDTH / 2.0
+                , GameConfig.HEIGHT - 100, GameConfig.PADDLE_WIDTH, 15, 0);
         paddles.add(paddle);
         createLevel();
 
@@ -78,7 +77,7 @@ public class GameEngine {
         StackPane.setAlignment(canvas, Pos.CENTER);
         root = new StackPane(canvas);
 
-        scene = new Scene(root, WIDTH, HEIGHT);
+        scene = new Scene(root, GameConfig.WIDTH, GameConfig.HEIGHT);
 
         scene.setOnKeyPressed(event -> handleKeyInput(event));
         scene.setOnKeyReleased(event -> {
@@ -87,16 +86,15 @@ public class GameEngine {
                 pPressed = false;
             }
         });
-
     }
 
     public void inputUsername() {
-        UsernameLog log=new UsernameLog(stage);
-        String username=log.showAndWait();
-        if(log.isConfirmed()) {
-            this.playerName=username;
+        UsernameLog log = new UsernameLog(stage);
+        String username = log.showAndWait();
+        if (log.isConfirmed()) {
+            this.playerName = username;
         } else {
-            this.playerName="player";
+            this.playerName = "player";
         }
     }
 
@@ -128,18 +126,24 @@ public class GameEngine {
         balls.clear();
         powerUps.clear();
         levels.clear();
+        paddles.clear();
         this.setTotalScores(0);
         this.setLives(3);
         this.currentLevel = 1;
         initialize();
-        startGameLoop();
+        stage.setScene(this.scene);
+        this.root.requestFocus();
+        stage.show();
+        troller.setState(GameState.READY);
+
     }
+
     private void saveScore() {
-        if(dbManager==null) {
+        if (dbManager == null) {
             System.err.println("dbManager is null");
             return;
         }
-        boolean success=dbManager.insertScore(
+        boolean success = dbManager.insertScore(
                 currentMode,
                 playerName,
                 currentLevel,
@@ -153,6 +157,7 @@ public class GameEngine {
             System.out.println("Failed to save score.");
         }
     }
+
     private Font loadFont(String fontName, int fontSize) {
         try {
             InputStream is = this.getClass().getResourceAsStream("font/" + fontName);
@@ -252,7 +257,7 @@ public class GameEngine {
         for (int i = powerUps.size() - 1; i >= 0; i--) {
             PowerUp powerUp = powerUps.get(i);
             powerUp.update();
-            if (powerUp.getY() > HEIGHT) {
+            if (powerUp.getY() > GameConfig.HEIGHT) {
                 powerUps.remove(i);
                 continue;
             }
@@ -308,7 +313,7 @@ public class GameEngine {
             } else if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
                 currentBall.setDx(-currentBall.getDx());
             }
-            if (currentBall.getY() > HEIGHT) {
+            if (currentBall.getY() > GameConfig.HEIGHT) {
                 balls.remove(i);
 
             }
@@ -323,8 +328,7 @@ public class GameEngine {
         if (checkLevelComplete()) {
             handleLevelComplete();
         }
-        paddles.get(0).update();
-        updatePowerUp();
+
     }
 
     public void renderGame() {
@@ -348,12 +352,16 @@ public class GameEngine {
 
     private void resetBallAndPaddle() {
         balls.clear();
-        Ball newBall = new Ball(WIDTH / 2.0, HEIGHT / 2.0, 10, BALL_SPEED);
-        newBall.setX(WIDTH / 2.0);
-        newBall.setY(HEIGHT / 2.0);
+        Ball newBall = new Ball(GameConfig.WIDTH / 2.0 - GameConfig.BALL_RADIUS / 2.0,
+                GameConfig.HEIGHT / 2.0, GameConfig.BALL_RADIUS, GameConfig.BALL_SPEED);
+        newBall.setX(GameConfig.WIDTH / 2.0);
+        newBall.setY(GameConfig.HEIGHT - 120);
+        newBall.setDx(0);
+        newBall.setDy(-GameConfig.BALL_SPEED);
         balls.add(newBall);
         paddles.clear();
-        Paddle paddle = new Paddle(WIDTH / 2.0, HEIGHT - 100, PADDLE_WIDTH, 15, 0);
+        Paddle paddle = new Paddle(GameConfig.WIDTH / 2.0 - GameConfig.PADDLE_WIDTH / 2.0,
+                GameConfig.HEIGHT - 100, GameConfig.PADDLE_WIDTH, 15, 0);
         paddles.add(paddle);
     }
 
@@ -368,7 +376,7 @@ public class GameEngine {
         scoreTextNode.setFont(renderFont);
         double textWidth = scoreTextNode.getLayoutBounds().getWidth();
         double textHeight = scoreTextNode.getLayoutBounds().getHeight();
-        double horizontalCenter = WIDTH / 2.0 - textWidth / 2.0;
+        double horizontalCenter = GameConfig.WIDTH / 2.0 - textWidth / 2.0;
         gc.fillText(scoreText, horizontalCenter, Level.getDistanceY() / 2.0 + textHeight / 2.0);
 
         String livesText = "Lives: " + String.valueOf(lives);
@@ -381,7 +389,7 @@ public class GameEngine {
         Text levelTextNode = new Text(levelText);
         levelTextNode.setFont(renderFont);
         double levelTextWidth = levelTextNode.getLayoutBounds().getWidth();
-        gc.fillText(levelText, WIDTH - 150, Level.getDistanceY() / 2.0 + textHeight / 2.0);
+        gc.fillText(levelText, GameConfig.WIDTH - 150, Level.getDistanceY() / 2.0 + textHeight / 2.0);
 
         drawSeparatorLine();
         gc.setFont(originalFont);
@@ -391,7 +399,7 @@ public class GameEngine {
         double lineY = Level.getDistanceY();
         gc.setStroke(Color.rgb(242, 226, 210));
         gc.setLineWidth(3);
-        gc.strokeLine(0, lineY, WIDTH, lineY);
+        gc.strokeLine(0, lineY, GameConfig.WIDTH, lineY);
     }
 
     private boolean checkLevelComplete() {
@@ -444,14 +452,14 @@ public class GameEngine {
             case R:
                 if (troller.getState() == GameState.GAME_OVER) {
                     restartGame();
-                    troller.setState(GameState.RUNNING);
+                    //troller.setState(GameState.RUNNING);
                 }
                 break;
             case SPACE:
                 if (troller.getState() == GameState.READY) {
                     if (!balls.isEmpty()) {
-                        balls.get(0).setDx(BALL_SPEED);
-                        balls.get(0).setDy(BALL_SPEED);
+                        balls.get(0).setDx(GameConfig.BALL_SPEED);
+                        balls.get(0).setDy(GameConfig.BALL_SPEED);
                     }
                     troller.setState(GameState.RUNNING);
                 }

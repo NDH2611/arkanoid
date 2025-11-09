@@ -31,6 +31,7 @@ public class MenuController {
     @FXML
     private Button backButton;
     private Stage stage;
+    private GameEngine gameEngine;
 
     @FXML
     private void onStart() {
@@ -44,24 +45,31 @@ public class MenuController {
             stage.show();
 
             GameStateController controller = game.getTroller();
-            controller.setState(GameState.RUNNING);
+            controller.setState(GameState.READY);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    //    @FXML
+//    private void onStartGame() {
+//        gameEngine.inputUsername();
+//        gameEngine.getTroller().setState(GameState.READY);
+//    }
     @FXML
     private void onAbout() {
         try {
             Stage stage = (Stage) Start.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("About.fxml"));
-            Scene aboutScene=new Scene(loader.load());
+            Scene aboutScene = new Scene(loader.load());
             stage.setScene(aboutScene);
             stage.show();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
     @FXML
     private void onMode() {
         try {
@@ -74,6 +82,7 @@ public class MenuController {
             throw new RuntimeException(e);
         }
     }
+
     @FXML
     private void comeBack() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
@@ -85,6 +94,7 @@ public class MenuController {
         MenuController controller = (MenuController) loader.getController();
 
     }
+
     @FXML
     public void onLeaderboard() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("leaderboard.fxml"));
@@ -97,7 +107,7 @@ public class MenuController {
         leaderboardStage.setScene(new Scene(root));
 
         controller.setStage(leaderboardStage);
-        controller.setMode("Classic");
+        controller.setMode("Solo");
 
         leaderboardStage.show();
     }

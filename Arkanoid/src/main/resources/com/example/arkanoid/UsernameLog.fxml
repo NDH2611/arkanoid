@@ -7,7 +7,7 @@
 
 <AnchorPane fx:id="getUsername" prefHeight="258.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.arkanoid.UsernameLogController">
    <children>
-      <Button fx:id="continueButton" layoutX="160.0" layoutY="191.0" mnemonicParsing="false" text="Let's go" />
+      <Button fx:id="continueButton" layoutX="160.0" layoutY="191.0" mnemonicParsing="false" onAction="#handleConfirm" text="Let's go" />
       <TextField fx:id="usernameField" layoutX="114.0" layoutY="147.0" />
       <Text layoutX="120.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type your name here" textAlignment="CENTER" wrappingWidth="138.8034210205078" />
    </children>

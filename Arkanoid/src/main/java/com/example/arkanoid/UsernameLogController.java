@@ -18,11 +18,30 @@ public class UsernameLogController {
     private void initialize() {
         usernameField.requestFocus();
         usernameField.setOnAction(event -> {
-            String input = usernameField.getText();
-            this.setUsername(input);
-            confirmed = true;
-            logStage.close();
+            handleConfirm();
         });
+    }
+
+    @FXML
+    private void handleConfirm() {
+        String input = usernameField.getText();
+        if (usernameValidate(input)) {
+            this.setUsername(input);
+        } else {
+            this.setUsername("player");
+        }
+        confirmed = true;
+        if (logStage != null) {
+            logStage.close();
+        }
+    }
+
+    private boolean usernameValidate(String input) {
+        if (input.isEmpty() || input.length() >= 20) return false;
+        for (char c : input.toCharArray()) {
+            if (Character.isLetterOrDigit(c) || c == '_') return true;
+        }
+        return false;
     }
 
     public String getUsername() {

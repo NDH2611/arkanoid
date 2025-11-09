@@ -9,7 +9,7 @@ public class DoubleBallPowerUp extends PowerUp{
     }
     public Ball applyEffect(Ball originalBall){
         Ball newBall=new Ball(originalBall.getX(), originalBall.getY(),
-                originalBall.radius, GameEngine.BALL_SPEED);
+                originalBall.radius, GameConfig.BALL_SPEED);
         newBall.setDx(-originalBall.getDx());
         newBall.setDy(originalBall.getDy());
         return newBall;

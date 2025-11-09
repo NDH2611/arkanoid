@@ -14,11 +14,11 @@ public class ShrinkPaddlePowerUp extends PowerUp {
     }
 
     public void applyEffect(Paddle paddle) {
-        paddle.setWidth(GameEngine.PADDLE_WIDTH * 0.75);
+        paddle.setWidth(GameConfig.PADDLE_WIDTH * 0.75);
         paddle.getRectangle().setWidth(paddle.getWidth());
         timer.setOnFinished(event -> {
             System.out.println("Shrink Paddle PowerUp Finished");
-            paddle.setWidth(GameEngine.PADDLE_WIDTH);
+            paddle.setWidth(GameConfig.PADDLE_WIDTH);
             paddle.getRectangle().setWidth(paddle.getWidth());
             active = false;
         });
@@ -34,7 +34,7 @@ public class ShrinkPaddlePowerUp extends PowerUp {
     }
 
     public void removeEffect(Paddle paddle) {
-        paddle.setWidth(GameEngine.PADDLE_WIDTH);
+        paddle.setWidth(GameConfig.PADDLE_WIDTH);
         paddle.getRectangle().setWidth(paddle.getWidth());
     }
 
