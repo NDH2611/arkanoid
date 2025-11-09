@@ -21,18 +21,27 @@ public class UsernameLogController {
             handleConfirm();
         });
     }
+
     @FXML
     private void handleConfirm() {
         String input = usernameField.getText();
-        if (input.isEmpty()) {
-            this.username = "Player";
+        if (usernameValidate(input)) {
+            this.setUsername(input);
         } else {
-            this.username = input;
+            this.setUsername("player");
         }
         confirmed = true;
         if (logStage != null) {
             logStage.close();
         }
+    }
+
+    private boolean usernameValidate(String input) {
+        if (input.isEmpty() || input.length() >= 20) return false;
+        for (char c : input.toCharArray()) {
+            if (Character.isLetterOrDigit(c) || c == '_') return true;
+        }
+        return false;
     }
 
     public String getUsername() {
