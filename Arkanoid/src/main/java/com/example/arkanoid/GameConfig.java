@@ -17,7 +17,7 @@ public interface GameConfig {
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 650;
-    public static final double BALL_SPEED = 3;
+    public static final double BALL_SPEED = 4.0;
     public static final double PADDLE_WIDTH = 75;
     public static final double BALL_RADIUS = 10;
 

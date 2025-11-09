@@ -26,8 +26,8 @@ public class PowerUp extends GameObject{
         gc.fillRect(x, y, POWER_UP_WIDTH, POWER_UP_HEIGHT);
     }
 
-    public void update() {
-        y += FALL_SPEED;
+    public void update(double deltaTime) {
+        y += (FALL_SPEED*deltaTime*60);
         rectangle.setY(y);
     }
 
