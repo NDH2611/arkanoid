@@ -30,12 +30,17 @@ public class GameStateController {
 
     @FXML
     private void onReturnMenu() {
+        if(pauseMenu != null) {
+            gameEngine.getRoot().getChildren().remove(pauseMenu);
+        }
         showMenu();
     }
 
     @FXML
     private void onPlayContinue() {
-        gameEngine.getRoot().getChildren().removeIf(node -> node instanceof Parent && node.lookup("#PlayContinue") != null);
+        if(pauseMenu != null) {
+            gameEngine.getRoot().getChildren().remove(pauseMenu);
+        }
         for (PowerUp powerUp : gameEngine.getActivePowerUps()) {
             if (powerUp instanceof ShrinkPaddlePowerUp) {
                 ((ShrinkPaddlePowerUp) powerUp).resumeEffect();
@@ -122,6 +127,10 @@ public class GameStateController {
     }
 
     private void startGame() {
+        if(pauseMenu != null) {
+            gameEngine.getRoot().getChildren().remove(pauseMenu);
+            pauseMenu = null;
+        }
         stage.setScene(gameEngine.getScene());
         stage.show();
         gameEngine.getScene().getRoot().requestFocus();
@@ -141,12 +150,13 @@ public class GameStateController {
     private void pauseGame() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("state.fxml"));
+            loader.setController(this);
             pauseMenu = loader.load();
             //StackPane.setAlignment(pauseMenu, Pos.CENTER);
 
-            GameStateController controller = loader.getController();
-            controller.setStage(stage);
-            controller.setGameEngine(gameEngine);
+//            GameStateController controller = loader.getController();
+//            controller.setStage(stage);
+//            controller.setGameEngine(gameEngine);
 
             gameEngine.getRoot().getChildren().add(pauseMenu);
             pauseMenu.toFront();
@@ -174,11 +184,12 @@ public class GameStateController {
         //gameEngine.stopGameLoop();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("endgame.fxml"));
+            loader.setController(this);
             endMenu = loader.load();
 
-            GameStateController controller = loader.getController();
-            controller.setStage(stage);
-            controller.setGameEngine(gameEngine);
+//            GameStateController controller = loader.getController();
+//            controller.setStage(stage);
+//            controller.setGameEngine(gameEngine);
 
             gameEngine.getRoot().getChildren().add(endMenu);
             endMenu.toFront();

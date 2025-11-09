@@ -7,8 +7,7 @@
 <?import javafx.scene.text.Text?>
 
 <StackPane alignment="CENTER" prefHeight="400" prefWidth="600" style="-fx-background-color: rgba(0, 0, 0, 0.5);;"
-           xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.example.arkanoid.GameStateController">
+           xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
     <VBox alignment="CENTER" spacing="20">
         <Text fill="#00c3ff" strokeType="OUTSIDE" strokeWidth="0.0" text="Wanna play again?"/>
         <Button fx:id="PlayContinue" onAction="#onRestartGame" prefHeight="80" prefWidth="185" text="Play Again"/>
