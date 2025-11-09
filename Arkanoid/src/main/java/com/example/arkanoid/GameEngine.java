@@ -102,10 +102,13 @@ public class GameEngine {
         if (gameLoop != null) {
             return;
         }
+        startTime=System.nanoTime();
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                updateGame();
+                double deltaTime=(now-startTime)/1000000000.0;
+                startTime = now;
+                updateGame(deltaTime);
                 renderGame();
             }
         };
@@ -117,6 +120,7 @@ public class GameEngine {
         if (gameLoop != null) {
             gameLoop.stop();
             gameLoop = null;
+            startTime = 0;
             System.out.println("game stopped.");
         }
     }
@@ -253,10 +257,10 @@ public class GameEngine {
 
     }
 
-    private void updatePowerUp() {
+    private void updatePowerUp(double deltaTime) {
         for (int i = powerUps.size() - 1; i >= 0; i--) {
             PowerUp powerUp = powerUps.get(i);
-            powerUp.update();
+            powerUp.update(deltaTime);
             if (powerUp.getY() > GameConfig.HEIGHT) {
                 powerUps.remove(i);
                 continue;
@@ -299,14 +303,14 @@ public class GameEngine {
         }
     }
 
-    public void updateGame() {
+    public void updateGame(double deltaTime) {
 
         if (troller != null && troller.getState() != GameState.RUNNING) {
             return;
         }
         for (int i = balls.size() - 1; i >= 0; i--) {
             Ball currentBall = balls.get(i);
-            currentBall.update();
+            currentBall.update(deltaTime);
             CheckCollision.CollisionSide side = CheckCollision.checkCollision(currentBall.getCircle(), paddles.get(0).getRectangle());
             if (side == CheckCollision.CollisionSide.TOP) {
                 CheckCollision.caculatedBallBounceAngle(balls.get(i), paddles.get(0));
@@ -321,8 +325,8 @@ public class GameEngine {
                 loseLife();
 
             }
-            paddles.get(0).update();
-            updatePowerUp();
+            paddles.get(0).update(deltaTime);
+            updatePowerUp(deltaTime);
         }
         updateLevel();
         if (checkLevelComplete()) {
@@ -333,8 +337,7 @@ public class GameEngine {
 
     public void renderGame() {
         gameRenderer.render(balls, paddles, levels, powerUps);
-        renderUI();
-
+        gameRenderer.renderUI(totalScores, lives, currentLevel);
     }
 
     private void loseLife() {
@@ -363,43 +366,6 @@ public class GameEngine {
         Paddle paddle = new Paddle(GameConfig.WIDTH / 2.0 - GameConfig.PADDLE_WIDTH / 2.0,
                 GameConfig.HEIGHT - 100, GameConfig.PADDLE_WIDTH, 15, 0);
         paddles.add(paddle);
-    }
-
-    private void renderUI() {
-        Font originalFont = gc.getFont();
-
-        gc.setFont(renderFont);
-        gc.setFill(Color.rgb(242, 226, 210));
-
-        String scoreText = "Scores: " + String.valueOf(totalScores);
-        Text scoreTextNode = new Text(scoreText);
-        scoreTextNode.setFont(renderFont);
-        double textWidth = scoreTextNode.getLayoutBounds().getWidth();
-        double textHeight = scoreTextNode.getLayoutBounds().getHeight();
-        double horizontalCenter = GameConfig.WIDTH / 2.0 - textWidth / 2.0;
-        gc.fillText(scoreText, horizontalCenter, Level.getDistanceY() / 2.0 + textHeight / 2.0);
-
-        String livesText = "Lives: " + String.valueOf(lives);
-        Text livesTextNode = new Text(livesText);
-        livesTextNode.setFont(renderFont);
-        double livesTextWidth = livesTextNode.getLayoutBounds().getWidth();
-        gc.fillText(livesText, 10, Level.getDistanceY() / 2.0 + textHeight / 2.0);
-
-        String levelText = "Levels: " + String.valueOf(currentLevel);
-        Text levelTextNode = new Text(levelText);
-        levelTextNode.setFont(renderFont);
-        double levelTextWidth = levelTextNode.getLayoutBounds().getWidth();
-        gc.fillText(levelText, GameConfig.WIDTH - 150, Level.getDistanceY() / 2.0 + textHeight / 2.0);
-
-        drawSeparatorLine();
-        gc.setFont(originalFont);
-    }
-
-    private void drawSeparatorLine() {
-        double lineY = Level.getDistanceY();
-        gc.setStroke(Color.rgb(242, 226, 210));
-        gc.setLineWidth(3);
-        gc.strokeLine(0, lineY, GameConfig.WIDTH, lineY);
     }
 
     private boolean checkLevelComplete() {
@@ -505,6 +471,14 @@ public class GameEngine {
 
     public void setLives(int lives) {
         this.lives = lives;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
     }
 
     public Font getRenderFont() {

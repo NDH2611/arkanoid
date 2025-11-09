@@ -7,7 +7,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.image.Image;
 
 public class Paddle extends MovableObject {
-    private static final double SPEED = 3.0;
+    private static final double SPEED = 6.0;
 
     private boolean moveLeft = false;
     private boolean moveRight = false;
@@ -105,8 +105,8 @@ public class Paddle extends MovableObject {
          */
     }
 
-    public void update() {
-        setX(x + dx);
+    public void update(double deltaTime) {
+        setX(x + dx*deltaTime*60);
         CheckCollision.checkPaddleWallCollision(this);
 
         long now = System.nanoTime();

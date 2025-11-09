@@ -6,7 +6,9 @@ import com.example.arkanoid.Ball;
 import com.example.arkanoid.Paddle;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.util.List;
 
@@ -66,11 +68,40 @@ public class GameRenderer {
         }
     }
 
-    private void renderUI() {
+    public void renderUI(int totalScores, int lives, int currentLevel) {
         Font originalFont = gc.getFont();
 
         gc.setFont(uiFont);
         gc.setFill(GameConfig.UI_TEXT_COLOR);
 
+        String scoreText = "Scores: " + String.valueOf(totalScores);
+        Text scoreTextNode = new Text(scoreText);
+        scoreTextNode.setFont(uiFont);
+        double textWidth = scoreTextNode.getLayoutBounds().getWidth();
+        double textHeight = scoreTextNode.getLayoutBounds().getHeight();
+        double horizontalCenter = GameConfig.WIDTH / 2.0 - textWidth / 2.0;
+        gc.fillText(scoreText, horizontalCenter, Level.getDistanceY() / 2.0 + textHeight / 2.0);
+
+        String livesText = "Lives: " + String.valueOf(lives);
+        Text livesTextNode = new Text(livesText);
+        livesTextNode.setFont(uiFont);
+        double livesTextWidth = livesTextNode.getLayoutBounds().getWidth();
+        gc.fillText(livesText, 10, Level.getDistanceY() / 2.0 + textHeight / 2.0);
+
+        String levelText = "Levels: " + String.valueOf(currentLevel);
+        Text levelTextNode = new Text(levelText);
+        levelTextNode.setFont(uiFont);
+        double levelTextWidth = levelTextNode.getLayoutBounds().getWidth();
+        gc.fillText(levelText, GameConfig.WIDTH - 150, Level.getDistanceY() / 2.0 + textHeight / 2.0);
+
+        drawSeparatorLine();
+        gc.setFont(originalFont);
+    }
+
+    private void drawSeparatorLine() {
+        double lineY = Level.getDistanceY();
+        gc.setStroke(Color.rgb(242, 226, 210));
+        gc.setLineWidth(3);
+        gc.strokeLine(0, lineY, GameConfig.WIDTH, lineY);
     }
 }

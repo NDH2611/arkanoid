@@ -11,7 +11,7 @@ public class DoubleBallPowerUp extends PowerUp{
         Ball newBall=new Ball(originalBall.getX(), originalBall.getY(),
                 originalBall.radius, GameConfig.BALL_SPEED);
         newBall.setDx(-originalBall.getDx());
-        newBall.setDy(originalBall.getDy());
+        newBall.setDy(-originalBall.getDy());
         return newBall;
     }
     @Override

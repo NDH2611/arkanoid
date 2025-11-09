@@ -19,9 +19,9 @@ public class Ball extends MovableObject {
         gc.fillOval(x, y, width, height);
     }
 
-    public void update() {
-        setX(x += dx);
-        setY(y += dy);
+    public void update(double deltaTime) {
+        setX(x += dx*deltaTime*60);
+        setY(y += dy*deltaTime*60);
         CheckCollision.checkBallWallCollision(this);
     }
 
