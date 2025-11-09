@@ -18,8 +18,8 @@ public class CheckCollision {
             ball.setDx(-ball.getDx());
         }
 
-        if (ball.getX() + ball.getWidth() >= GameEngine.WIDTH) {
-            ball.setX(GameEngine.WIDTH - ball.getWidth());
+        if (ball.getX() + ball.getWidth() >= GameConfig.WIDTH) {
+            ball.setX(GameConfig.WIDTH - ball.getWidth());
             ball.setDx(-ball.getDx());
         }
 
@@ -38,8 +38,8 @@ public class CheckCollision {
         if (paddle.getX() <= 0) {
             paddle.setX(0);
         }
-        if (paddle.getX() + paddle.getWidth() >= GameEngine.WIDTH) {
-            paddle.setX(GameEngine.WIDTH - paddle.getWidth());
+        if (paddle.getX() + paddle.getWidth() >= GameConfig.WIDTH) {
+            paddle.setX(GameConfig.WIDTH - paddle.getWidth());
         }
     }
 

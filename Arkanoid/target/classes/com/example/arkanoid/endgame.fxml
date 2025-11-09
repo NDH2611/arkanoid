@@ -11,7 +11,7 @@
            fx:controller="com.example.arkanoid.GameStateController">
     <VBox alignment="CENTER" spacing="20">
         <Text fill="#00c3ff" strokeType="OUTSIDE" strokeWidth="0.0" text="Wanna play again?"/>
-        <Button fx:id="PlayContinue" onAction="#onPlayContinue" prefHeight="80" prefWidth="185" text="Play Again"/>
+        <Button fx:id="PlayContinue" onAction="#onRestartGame" prefHeight="80" prefWidth="185" text="Play Again"/>
         <Button fx:id="Leaderboard" layoutX="217.0" layoutY="138.0" onAction="#onViewLeaderboard" prefHeight="80"
                 prefWidth="185" text="Leaderboard"/>
         <Button fx:id="ReturnMenu" onAction="#onReturnMenu" prefHeight="80" prefWidth="185" text="Return to Menu"/>

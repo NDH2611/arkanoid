@@ -83,6 +83,15 @@ public class GameStateController {
         return currentState;
     }
 
+//    private void readyState() {
+//        if(stage.getScene()!=gameEngine.getScene()) {
+//            stage.setScene(gameEngine.getScene());
+//            stage.show();
+//            gameEngine.getScene().getRoot().requestFocus();
+//        }
+//        gameEngine.startGameLoop();
+//    }
+
     public void onViewLeaderboard() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("leaderboard.fxml"));
@@ -172,15 +181,19 @@ public class GameStateController {
             controller.setGameEngine(gameEngine);
 
             gameEngine.getRoot().getChildren().add(endMenu);
-            pauseMenu.toFront();
-            pauseMenu.requestFocus();
-            pauseMenu.setPickOnBounds(true);
+            endMenu.toFront();
+            endMenu.requestFocus();
+            endMenu.setPickOnBounds(true);
 
             gameEngine.stopGameLoop();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    @FXML
+    private void onRestartGame() {
+        gameEngine.restartGame();
     }
 
     public void setStage(Stage stage) {

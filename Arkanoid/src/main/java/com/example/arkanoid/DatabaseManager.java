@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseManager {
-    private static final String URL = "jdbc:sqlite:Arkanoid/arkanoid.db";
-
     private static Connection connection;
     private static DatabaseManager instance;
 
@@ -27,7 +25,7 @@ public class DatabaseManager {
     private void connectToDatabase() {
         try {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection(URL);
+            connection = DriverManager.getConnection(GameConfig.URL);
             createTable();
         } catch (ClassNotFoundException e) {
             System.err.println("Driver not found!");

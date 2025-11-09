@@ -48,7 +48,7 @@ public class Level {
             int row = lines.size();
             int col = lines.get(0).split("\\s+").length;
 
-            int DISTANCE_X = (GameEngine.WIDTH - WIDTH_BRICK * col - BRICK_SPACE * (col - 1)) / 2;
+            int DISTANCE_X = (GameConfig.WIDTH - WIDTH_BRICK * col - BRICK_SPACE * (col - 1)) / 2;
             for (int i = 0; i < row; i++) {
                 String[] values = lines.get(i).trim().split("\\s+");
                 for (int j = 0; j < values.length; j++) {
