@@ -10,7 +10,7 @@ module com.example.arkanoid {
     requires java.management;
     requires javafx.graphics;
     requires java.sql;
-    requires org.xerial.sqlitejdbc;
+   // requires org.xerial.sqlitejdbc;
 
     opens com.example.arkanoid to javafx.fxml;
     exports com.example.arkanoid;
