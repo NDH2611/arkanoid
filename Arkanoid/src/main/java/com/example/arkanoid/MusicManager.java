@@ -1,5 +1,7 @@
 package com.example.arkanoid;
 
+import com.almasb.fxgl.audio.Audio;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -12,7 +14,7 @@ import java.util.Map;
 public class MusicManager {
     private static MusicManager instance;
     private Map<String, MediaPlayer> musicPlayers;
-    private Map<String, MediaPlayer> soundEffects;
+    private Map<String, AudioClip> soundEffects;
     private MediaPlayer currentMusic;
 
     private double musicVolume = 1.0;
@@ -38,6 +40,7 @@ public class MusicManager {
             loadMusic("menu", "Hedwig's Theme.mp3");
 
             loadSoundEffect("button_click", "button_toggle.mp3");
+            loadSoundEffect("collide", "brick_break.mp3");
         } catch (Exception e) {
             System.err.println("Error loading audio");
             e.printStackTrace();
@@ -68,10 +71,9 @@ public class MusicManager {
                 System.err.println("Can't find file");
                 return;
             }
-            Media media = new Media(resource.toString());
-            MediaPlayer player = new MediaPlayer(media);
-            player.setVolume(soundVolume);
-            soundEffects.put(type, player);
+            AudioClip clip = new AudioClip(resource.toString());
+            clip.setVolume(soundVolume);
+            soundEffects.put(type, clip);
         } catch (Exception e) {
             System.err.println("Can't load sound file");
         }
@@ -94,10 +96,9 @@ public class MusicManager {
     }
 
     public void playSoundEffect(String soundName) {
-        MediaPlayer player = soundEffects.get(soundName);
+        AudioClip player = soundEffects.get(soundName);
         if(player != null) {
             player.setVolume(soundVolume);
-            player.seek(Duration.ZERO);
             player.play();
         } else {
             System.err.println("Can't play sound " + soundName);
