@@ -32,6 +32,7 @@ public class GameEngine {
     private GameStateController troller;
     private boolean pPressed = false;
     private Font renderFont;
+    private MusicManager musicManager=MusicManager.getInstance();
 
     private ArrayList<Paddle> paddles = new ArrayList<>();
     private ArrayList<Level> levels = new ArrayList<>();
@@ -50,6 +51,7 @@ public class GameEngine {
 
     public GameEngine(Stage stage) {
         this.stage = stage;
+        musicManager=MusicManager.getInstance();
         dbManager = DatabaseManager.getInstance();
         this.setTotalScores(0);
         this.setLives(3);
@@ -102,6 +104,7 @@ public class GameEngine {
         if (gameLoop != null) {
             return;
         }
+        musicManager.playMusic("gameplay");
         startTime=System.nanoTime();
         gameLoop = new AnimationTimer() {
             @Override
@@ -487,6 +490,14 @@ public class GameEngine {
 
     public void setRenderFont(Font renderFont) {
         this.renderFont = renderFont;
+    }
+
+    public String getCurrentMode() {
+        return currentMode;
+    }
+
+    public void setCurrentMode(String currentMode) {
+        this.currentMode = currentMode;
     }
 
     public StackPane getRoot() {

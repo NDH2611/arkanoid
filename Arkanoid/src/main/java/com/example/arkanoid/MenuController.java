@@ -31,7 +31,7 @@ public class MenuController {
     @FXML
     private Button backButton;
     private Stage stage;
-    private GameEngine gameEngine;
+    private MusicManager musicManager=MusicManager.getInstance();
 
     @FXML
     private void onStart() {
@@ -39,6 +39,7 @@ public class MenuController {
             Stage stage = (Stage) Start.getScene().getWindow();
             GameEngine game = new GameEngine(stage);
 
+            musicManager.playSoundEffect("button_click");
             game.inputUsername();
             stage.setScene(game.getScene());
             stage.centerOnScreen();
@@ -64,6 +65,7 @@ public class MenuController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("About.fxml"));
             Scene aboutScene = new Scene(loader.load());
             stage.setScene(aboutScene);
+            musicManager.playSoundEffect("button_click");
             stage.show();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -77,6 +79,7 @@ public class MenuController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("mode.fxml"));
             Scene modeScene = new Scene(loader.load());
             stage.setScene(modeScene);
+            musicManager.playSoundEffect("button_click");
             stage.show();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -100,6 +103,7 @@ public class MenuController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("leaderboard.fxml"));
         Parent root = loader.load();
 
+        musicManager.playSoundEffect("button_click");
         LeaderboardController controller = loader.getController();
 
         Stage leaderboardStage = (Stage) Leaderboard.getScene().getWindow();
@@ -109,6 +113,7 @@ public class MenuController {
         controller.setStage(leaderboardStage);
         controller.setMode("Solo");
 
+        controller.refreshData();
         leaderboardStage.show();
     }
 
@@ -119,6 +124,7 @@ public class MenuController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hdsd.fxml"));
             Scene hdsdScene = new Scene(loader.load());
             stage.setScene(hdsdScene);
+            musicManager.playSoundEffect("button_click");
             stage.show();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -129,6 +135,7 @@ public class MenuController {
     private void onExit(ActionEvent event) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            musicManager.playSoundEffect("button_click");
             stage.close();
         } catch (Exception e) {
             e.printStackTrace();

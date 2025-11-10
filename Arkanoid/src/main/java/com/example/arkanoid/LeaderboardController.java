@@ -34,7 +34,7 @@ public class LeaderboardController {
 
     private DatabaseManager dbManager;
     private Stage stage;
-    private String currentMode = "Classic";
+    private String currentMode;
 
     public void initialize() {
         dbManager = DatabaseManager.getInstance();
@@ -45,14 +45,20 @@ public class LeaderboardController {
         playerColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
         levelColumn.setCellValueFactory(new PropertyValueFactory<>("levelNum"));
         scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
-        ObservableList<String> modes = FXCollections.observableArrayList("Classic");
+        ObservableList<String> modes = FXCollections.observableArrayList("Solo");
         modeSelector.setItems(modes);
+        modeSelector.setValue("Solo");
+        currentMode="Solo";
         modeSelector.setValue(currentMode);
-        loadLeaderboard(currentMode);
+
         modeSelector.setOnAction(event -> {
             currentMode = modeSelector.getValue();
             loadLeaderboard(currentMode);
         });
+    }
+
+    public void refreshData() {
+        loadLeaderboard(currentMode);
     }
 
     private void loadLeaderboard(String mode) {

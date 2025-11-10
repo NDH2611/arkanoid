@@ -27,6 +27,7 @@ public class GameStateController {
     private Button ReturnMenu;
     @FXML
     private Button PlayContinue;
+    private MusicManager musicManager=MusicManager.getInstance();
 
     @FXML
     private void onReturnMenu() {
@@ -96,7 +97,7 @@ public class GameStateController {
 //        }
 //        gameEngine.startGameLoop();
 //    }
-
+    @FXML
     public void onViewLeaderboard() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("leaderboard.fxml"));
@@ -107,7 +108,8 @@ public class GameStateController {
             leaderboardStage.setTitle("Leaderboard");
             leaderboardStage.setScene(new Scene(root));
             controller.setStage(leaderboardStage);
-            controller.setMode("Classic");
+            controller.setMode(gameEngine.getCurrentMode());
+            controller.refreshData();
             leaderboardStage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -116,6 +118,7 @@ public class GameStateController {
 
     private void showMenu() {
         try {
+            musicManager.playMusic("menu");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
             Scene menuScene = new Scene(loader.load());
             stage.setScene(menuScene);
