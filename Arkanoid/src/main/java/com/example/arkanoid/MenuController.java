@@ -32,10 +32,12 @@ public class MenuController {
     private Button backButton;
     private Stage stage;
     private GameEngine gameEngine;
+    private MusicManager musicManager=MusicManager.getInstance();
 
     @FXML
     private void onStart() {
         try {
+            musicManager.playSoundEffect("button_toggle");
             Stage stage = (Stage) Start.getScene().getWindow();
             GameEngine game = new GameEngine(stage);
 
@@ -45,6 +47,7 @@ public class MenuController {
             stage.show();
 
             GameStateController controller = game.getTroller();
+            musicManager.playMusic("gameplay");
             controller.setState(GameState.READY);
 
         } catch (Exception e) {
@@ -64,6 +67,7 @@ public class MenuController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("About.fxml"));
             Scene aboutScene = new Scene(loader.load());
             stage.setScene(aboutScene);
+            musicManager.playSoundEffect("button_toggle");
             stage.show();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -77,6 +81,7 @@ public class MenuController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("mode.fxml"));
             Scene modeScene = new Scene(loader.load());
             stage.setScene(modeScene);
+            musicManager.playSoundEffect("button_toggle");
             stage.show();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -109,6 +114,7 @@ public class MenuController {
         controller.setStage(leaderboardStage);
         controller.setMode("Solo");
 
+        musicManager.playSoundEffect("button_toggle");
         leaderboardStage.show();
     }
 
@@ -119,6 +125,7 @@ public class MenuController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hdsd.fxml"));
             Scene hdsdScene = new Scene(loader.load());
             stage.setScene(hdsdScene);
+            musicManager.playSoundEffect("button_toggle");
             stage.show();
         } catch (Exception e) {
             throw new RuntimeException(e);

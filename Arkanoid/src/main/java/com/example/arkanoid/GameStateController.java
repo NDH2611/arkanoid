@@ -27,6 +27,7 @@ public class GameStateController {
     private Button ReturnMenu;
     @FXML
     private Button PlayContinue;
+    private MusicManager musicManager=MusicManager.getInstance();
 
     @FXML
     private void onReturnMenu() {
@@ -120,6 +121,7 @@ public class GameStateController {
             Scene menuScene = new Scene(loader.load());
             stage.setScene(menuScene);
             stage.centerOnScreen();
+            musicManager.playMusic("menu");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

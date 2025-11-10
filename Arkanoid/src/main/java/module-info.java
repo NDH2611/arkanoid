@@ -11,6 +11,7 @@ module com.example.arkanoid {
     requires javafx.graphics;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
+    requires javafx.media;
 
     opens com.example.arkanoid to javafx.fxml;
     exports com.example.arkanoid;
