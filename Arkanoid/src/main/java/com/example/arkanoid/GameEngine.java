@@ -32,6 +32,7 @@ public class GameEngine {
     private GameStateController troller;
     private boolean pPressed = false;
     private Font renderFont;
+    private MusicManager musicManager=MusicManager.getInstance();
 
     private ArrayList<Paddle> paddles = new ArrayList<>();
     private ArrayList<Level> levels = new ArrayList<>();
@@ -220,6 +221,7 @@ public class GameEngine {
                 }
                 CheckCollision.CollisionSide side = CheckCollision.checkCollision(ball.getCircle(), brick.getRectangle());
                 if (side != CheckCollision.CollisionSide.NONE) {
+                    musicManager.playSoundEffect("collide");
                     if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
                         ball.setDx(-ball.getDx());
                     } else if (side == CheckCollision.CollisionSide.TOP || side == CheckCollision.CollisionSide.BOTTOM) {
@@ -313,8 +315,10 @@ public class GameEngine {
             currentBall.update(deltaTime);
             CheckCollision.CollisionSide side = CheckCollision.checkCollision(currentBall.getCircle(), paddles.get(0).getRectangle());
             if (side == CheckCollision.CollisionSide.TOP) {
+                musicManager.playSoundEffect("collide");
                 CheckCollision.caculatedBallBounceAngle(balls.get(i), paddles.get(0));
             } else if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
+                musicManager.playSoundEffect("collide");
                 currentBall.setDx(-currentBall.getDx());
             }
             if (currentBall.getY() > GameConfig.HEIGHT) {
