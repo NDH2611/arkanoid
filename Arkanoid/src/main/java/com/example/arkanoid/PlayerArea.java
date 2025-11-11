@@ -6,6 +6,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,27 +25,31 @@ public class PlayerArea {
     private List<Level> levels = new ArrayList<>();
     private List<PowerUp> powerUps = new ArrayList<>();
     private List<PowerUp> activePowerUps = new ArrayList<>();
+    private List<String> mapFiles = new ArrayList<>();
+
 
     private int lives = 3;
     private int totalScores = 0;
     private int currentLevel = 1;
 
-    public PlayerArea(Canvas canvas, GraphicsContext gc, Font renderFont) {
-        this.canvas = canvas;
-        this.gc = gc;
-        this.renderFont = renderFont;
+    public PlayerArea() {
+        initialize();
     }
 
     private void initialize() {
-        canvas = new Canvas(GameConfig.CANVAS_WIDTH / 2.0, GameConfig.CANVAS_HEIGHT);
+        canvas = new Canvas(GameConfig.CANVAS_WIDTH , GameConfig.CANVAS_HEIGHT);
         gc = canvas.getGraphicsContext2D();
         renderFont = loadFont(GameConfig.fontUse, 16);
+        gameRenderer = new GameRenderer(gc, renderFont);
+        loadMap(GameConfig.totalMap);
         Ball initialBall = new Ball(canvas.getWidth() / 2.0, canvas.getHeight() / 2.0
                 , GameConfig.BALL_RADIUS, GameConfig.BALL_SPEED);
         balls.add(initialBall);
         Paddle paddle = new Paddle(canvas.getWidth() / 2.0 - GameConfig.PADDLE_WIDTH / 2.0
                 , canvas.getHeight() - 100, GameConfig.PADDLE_WIDTH, 15, 0);
         paddles.add(paddle);
+
+        createLevel();
     }
 
     public void setLevel(List<Level> levels) {
@@ -61,7 +68,7 @@ public class PlayerArea {
                 //musicManager.playSoundEffect("collide");
                 currentBall.setDx(-currentBall.getDx());
             }
-            if (currentBall.getY() > GameConfig.HEIGHT) {
+            if (currentBall.getY() > canvas.getHeight()) {
                 balls.remove(i);
 
             }
@@ -73,6 +80,47 @@ public class PlayerArea {
             updatePowerUp(deltaTime);
         }
         updateLevel();
+        if (checkLevelComplete()) {
+            handleLevelComplete();
+        }
+    }
+
+    private void loadMap(String fileName) {
+        try {
+            InputStream is = getClass().getResourceAsStream("map/" + fileName);
+            System.out.println("Doc file!");
+            if (is == null) {
+                System.err.println("File not found");
+                return;
+            }
+            System.out.println("Doc thanh cong");
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (!line.isEmpty()) {
+                    mapFiles.add(line);
+                }
+            }
+            br.close();
+        } catch (Exception e) {
+            System.err.println("Error loading Map");
+            e.printStackTrace();
+        }
+    }
+
+
+    private void createLevel() {
+        if (mapFiles.isEmpty()) {
+            System.err.println("No map files found");
+            return;
+        }
+        int randomIndex = (int) (Math.random() * mapFiles.size());
+        String fileName = mapFiles.get(randomIndex);
+        System.out.println("Loading random map: " + fileName);
+        Level level = new Level(fileName);
+        levels.clear();
+        levels.add(level);
     }
 
     private void updateLevel() {
@@ -162,17 +210,44 @@ public class PlayerArea {
 
     private void resetBallAndPaddle() {
         balls.clear();
-        Ball newBall = new Ball(GameConfig.WIDTH / 2.0 - GameConfig.BALL_RADIUS / 2.0,
+        Ball newBall = new Ball(canvas.getWidth() / 2.0 - GameConfig.BALL_RADIUS / 2.0,
                 GameConfig.HEIGHT / 2.0, GameConfig.BALL_RADIUS, GameConfig.BALL_SPEED);
-        newBall.setX(GameConfig.WIDTH / 2.0);
+        newBall.setX(canvas.getWidth() / 2.0);
         newBall.setY(GameConfig.HEIGHT - 120);
         newBall.setDx(0);
         newBall.setDy(-GameConfig.BALL_SPEED);
         balls.add(newBall);
         paddles.clear();
-        Paddle paddle = new Paddle(GameConfig.WIDTH / 2.0 - GameConfig.PADDLE_WIDTH / 2.0,
+        Paddle paddle = new Paddle(canvas.getWidth() / 2.0 - GameConfig.PADDLE_WIDTH / 2.0,
                 GameConfig.HEIGHT - 100, GameConfig.PADDLE_WIDTH, 15, 0);
         paddles.add(paddle);
+    }
+
+    private boolean checkLevelComplete() {
+        if (levels.isEmpty()) {
+            return false;
+        }
+        for (Brick brick : levels.get(0).getBricks()) {
+            if (brick.isVisible()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void handleLevelComplete() {
+        System.out.println("Level Complete");
+        currentLevel++;
+        totalScores += 100;
+        loadNextLevel();
+    }
+
+    private void loadNextLevel() {
+        balls.clear();
+        powerUps.clear();
+        activePowerUps.clear();
+        createLevel();
+        resetBallAndPaddle();
     }
 
     private void loseLife() {
@@ -187,8 +262,18 @@ public class PlayerArea {
 
     public void render() {
         gameRenderer.render(balls, paddles, levels, powerUps);
-        gameRenderer.renderUI(totalScores,lives,currentLevel);
+        gameRenderer.renderUI(totalScores, lives, currentLevel);
     }
 
+    public Canvas getCanvas() {
+        return canvas;
+    }
 
+    public List<Level> getLevels() {
+        return levels;
+    }
+
+    public List<Paddle> getPaddles() {
+        return paddles;
+    }
 }

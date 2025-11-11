@@ -40,27 +40,54 @@ public class Paddle extends MovableObject {
         }
     }
 
-    public void handleInput(KeyEvent event) {
-        if (event.getEventType() == KeyEvent.KEY_PRESSED) {
-            switch (event.getCode()) {
-                case LEFT:
-                    moveLeft = true;
-                    break;
-                case RIGHT:
-                    moveRight = true;
-                    break;
-                default:
-                    break;
+    public void handleInput(KeyEvent event, boolean isPlayer2) {
+        if (isPlayer2) {
+            if (event.getEventType() == KeyEvent.KEY_PRESSED) {
+                switch (event.getCode()) {
+                    case A:
+                        moveLeft = true;
+                        break;
+                    case D:
+                        moveRight = true;
+                        break;
+                    default:
+                        break;
+                }
+            } else if (event.getEventType() == KeyEvent.KEY_RELEASED) {
+                switch (event.getCode()) {
+                    case A:
+                        moveLeft = false;
+                        break;
+                    case D:
+                        moveRight = false;
+                        break;
+                    default:
+                        break;
+                }
             }
-        } else if (event.getEventType() == KeyEvent.KEY_RELEASED) {
-            switch (event.getCode()) {
-                case LEFT:
-                    moveLeft = false;
-                    break;
-                case RIGHT:
-                    moveRight = false;
-                default:
-                    break;
+        } else {
+            if (event.getEventType() == KeyEvent.KEY_PRESSED) {
+                switch (event.getCode()) {
+                    case LEFT:
+                        moveLeft = true;
+                        break;
+                    case RIGHT:
+                        moveRight = true;
+                        break;
+                    default:
+                        break;
+                }
+            } else if (event.getEventType() == KeyEvent.KEY_RELEASED) {
+                switch (event.getCode()) {
+                    case LEFT:
+                        moveLeft = false;
+                        break;
+                    case RIGHT:
+                        moveRight = false;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
