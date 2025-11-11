@@ -2,9 +2,8 @@ package com.example.arkanoid;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javafx.scene.text.Font.loadFont;
+
 
 public class PlayerArea {
     private Canvas canvas;
@@ -26,6 +25,7 @@ public class PlayerArea {
     private List<PowerUp> powerUps = new ArrayList<>();
     private List<PowerUp> activePowerUps = new ArrayList<>();
     private List<String> mapFiles = new ArrayList<>();
+    private MusicManager musicManager = MusicManager.getInstance();
 
 
     private int lives = 3;
@@ -52,8 +52,16 @@ public class PlayerArea {
         createLevel();
     }
 
-    public void setLevel(List<Level> levels) {
-        this.levels = levels;
+    public void restartGame() {
+        balls.clear();
+        powerUps.clear();
+        levels.clear();
+        paddles.clear();
+        totalScores = 0;
+        lives = 3;
+        this.currentLevel = 1;
+        initialize();
+
     }
 
     public void update(double deltaTime) {
@@ -62,10 +70,10 @@ public class PlayerArea {
             currentBall.update(deltaTime);
             CheckCollision.CollisionSide side = CheckCollision.checkCollision(currentBall.getCircle(), paddles.get(0).getRectangle());
             if (side == CheckCollision.CollisionSide.TOP) {
-                //musicManager.playSoundEffect("collide");
+                musicManager.playSoundEffect("collide");
                 CheckCollision.caculatedBallBounceAngle(balls.get(i), paddles.get(0));
             } else if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
-                //musicManager.playSoundEffect("collide");
+                musicManager.playSoundEffect("collide");
                 currentBall.setDx(-currentBall.getDx());
             }
             if (currentBall.getY() > canvas.getHeight()) {
@@ -109,6 +117,21 @@ public class PlayerArea {
         }
     }
 
+    private Font loadFont(String fontName, int fontSize) {
+        try {
+            InputStream is = this.getClass().getResourceAsStream("font/" + fontName);
+            if (is == null) {
+                System.err.println("Font not found");
+                return Font.font("Arial", fontSize);
+            }
+            return Font.loadFont(is, fontSize);
+        } catch (Exception e) {
+            System.err.println("Error loading font");
+            e.printStackTrace();
+            return Font.font("Arial", fontSize);
+        }
+    }
+
 
     private void createLevel() {
         if (mapFiles.isEmpty()) {
@@ -131,6 +154,7 @@ public class PlayerArea {
                 }
                 CheckCollision.CollisionSide side = CheckCollision.checkCollision(ball.getCircle(), brick.getRectangle());
                 if (side != CheckCollision.CollisionSide.NONE) {
+                    musicManager.playSoundEffect("collide");
                     if (side == CheckCollision.CollisionSide.LEFT || side == CheckCollision.CollisionSide.RIGHT) {
                         ball.setDx(-ball.getDx());
                     } else if (side == CheckCollision.CollisionSide.TOP || side == CheckCollision.CollisionSide.BOTTOM) {
