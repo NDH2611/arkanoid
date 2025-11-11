@@ -120,6 +120,7 @@ public class MenuController {
     private void onMode() {
 
         switchSceneWithEffect("mode.fxml");
+
     }
 
     @FXML

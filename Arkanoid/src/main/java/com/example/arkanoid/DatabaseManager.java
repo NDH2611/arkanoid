@@ -8,6 +8,9 @@ public class DatabaseManager {
     private static Connection connection;
     private static DatabaseManager instance;
 
+    private DatabaseManager() {
+        connectToDatabase();
+    }
     public Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             connectToDatabase();
