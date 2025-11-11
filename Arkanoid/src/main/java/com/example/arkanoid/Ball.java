@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Ball extends MovableObject {
+public class Ball extends MovableObject implements Prototype {
     protected double radius;
     protected Circle circle;
 
@@ -14,15 +14,33 @@ public class Ball extends MovableObject {
         this.radius = radius;
     }
 
+    public Ball(Ball ball) {
+        super(ball.getX(), ball.getY()
+                , ball.getRadius() * 2
+                , ball.getRadius() * 2
+                , ball.getSpeed());
+
+        this.circle = new Circle(ball.getX() + ball.getRadius()
+                , ball.getY() + ball.getRadius()
+                , ball.getRadius());
+
+        this.radius = ball.getRadius();
+    }
+
     public void render(GraphicsContext gc) {
-        gc.setFill(Color.rgb(242,226,210));
+        gc.setFill(Color.rgb(242, 226, 210));
         gc.fillOval(x, y, width, height);
     }
 
     public void update(double deltaTime) {
-        setX(x += dx*deltaTime*60);
-        setY(y += dy*deltaTime*60);
+        setX(x += dx * deltaTime * 60);
+        setY(y += dy * deltaTime * 60);
         CheckCollision.checkBallWallCollision(this);
+    }
+
+    @Override
+    public Ball clone() {
+        return new Ball(this);
     }
 
     @Override
