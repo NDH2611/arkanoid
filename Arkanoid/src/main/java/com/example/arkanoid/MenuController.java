@@ -38,6 +38,8 @@ public class MenuController {
 
     @FXML
     public void initialize() {
+        if (Start == null) return;
+
         addHoverEffect(Mode);
         addHoverEffect(Guide);
         addHoverEffect(Exit);
@@ -47,6 +49,7 @@ public class MenuController {
     }
 
     private void addHoverEffect(javafx.scene.Node node) {
+        if (node == null) return;
         node.setOnMouseEntered(e -> {
             node.setScaleX(1.15);
             node.setScaleY(1.15);
@@ -157,7 +160,7 @@ public class MenuController {
         }
 
         @FXML
-        private void onExit (ActionEvent event){
+        private void onExit (javafx.scene.input.MouseEvent event){
             try {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.close();

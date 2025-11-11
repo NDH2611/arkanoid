@@ -9,8 +9,13 @@
 
 <ScrollPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.arkanoid.MenuController">
    <content>
-      <AnchorPane prefHeight="653.0" prefWidth="601.0">
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
+            <ImageView fitHeight="403.0" fitWidth="603.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/background.png" />
+               </image>
+            </ImageView>
             <ImageView fx:id="Start" fitHeight="150.0" fitWidth="200.0" layoutX="199.0" layoutY="50.0" onMouseClicked="#onStart" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/startbutton.png" />
