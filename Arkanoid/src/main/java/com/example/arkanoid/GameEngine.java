@@ -32,7 +32,7 @@ public class GameEngine {
     private GameStateController troller;
     private boolean pPressed = false;
     private Font renderFont;
-    private MusicManager musicManager=MusicManager.getInstance();
+    private MusicManager musicManager = MusicManager.getInstance();
 
     private ArrayList<Paddle> paddles = new ArrayList<>();
     private ArrayList<Level> levels = new ArrayList<>();
@@ -103,11 +103,11 @@ public class GameEngine {
         if (gameLoop != null) {
             return;
         }
-        startTime=System.nanoTime();
+        startTime = System.nanoTime();
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                double deltaTime=(now-startTime)/1000000000.0;
+                double deltaTime = (now - startTime) / 1000000000.0;
                 startTime = now;
                 updateGame(deltaTime);
                 renderGame();
@@ -405,7 +405,7 @@ public class GameEngine {
             return;
         }
         if (troller.getState() == GameState.RUNNING) {
-            paddles.get(0).handleInput(event,false);
+            paddles.get(0).handleInput(event, false);
         }
         switch (event.getCode()) {
             case P:
