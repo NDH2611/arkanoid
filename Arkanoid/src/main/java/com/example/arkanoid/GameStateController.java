@@ -108,7 +108,7 @@ public class GameStateController {
             leaderboardStage.setTitle("Leaderboard");
             leaderboardStage.setScene(new Scene(root));
             controller.setStage(leaderboardStage);
-            controller.setMode("Classic");
+            controller.setMode("Solo");
             leaderboardStage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
