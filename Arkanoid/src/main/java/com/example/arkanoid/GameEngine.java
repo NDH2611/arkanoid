@@ -405,7 +405,7 @@ public class GameEngine {
             return;
         }
         if (troller.getState() == GameState.RUNNING) {
-            paddles.get(0).handleInput(event);
+            paddles.get(0).handleInput(event,false);
         }
         switch (event.getCode()) {
             case P:
