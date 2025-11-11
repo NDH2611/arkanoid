@@ -4,27 +4,37 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class ModeController extends MenuController{
+public class ModeController extends MenuController {
     @FXML
-    private Button Story;
+    private Button Solo;
     @FXML
-    private Button Infinite;
+    private Button Duel;
 
-    public void onStory() {
+    @FXML
+    public void onSolo() {
         try {
-            Stage stage = (Stage) Story.getScene().getWindow();
+            Stage stage = (Stage) Solo.getScene().getWindow();
             GameEngine game = new GameEngine(stage);
+            game.inputUsername();
+
             stage.setScene(game.getScene());
+            game.getRoot().requestFocus();
+            stage.show();
+
+            game.getTroller().setState(GameState.READY);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void onInfinite() {
+    @FXML
+    public void onDuel() {
         try {
-            Stage stage = (Stage) Infinite.getScene().getWindow();
-            GameEngine game = new GameEngine(stage);
+            Stage stage = (Stage) Duel.getScene().getWindow();
+            TwoPlayerGameEngine game = new TwoPlayerGameEngine(stage);
             stage.setScene(game.getScene());
+            stage.show();
+            game.startGameLoop();
         } catch (Exception e) {
             e.printStackTrace();
         }
