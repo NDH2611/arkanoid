@@ -44,6 +44,8 @@ public class PlayerArea {
         loadMap(GameConfig.totalMap);
         Ball initialBall = new Ball(canvas.getWidth() / 2.0, canvas.getHeight() / 2.0
                 , GameConfig.BALL_RADIUS, GameConfig.BALL_SPEED);
+        initialBall.setDx(0);
+        initialBall.setDy(0);
         balls.add(initialBall);
         Paddle paddle = new Paddle(canvas.getWidth() / 2.0 - GameConfig.PADDLE_WIDTH / 2.0
                 , canvas.getHeight() - 100, GameConfig.PADDLE_WIDTH, 15, 0);
@@ -63,8 +65,10 @@ public class PlayerArea {
         initialize();
 
     }
-
     public void update(double deltaTime) {
+        if(isGameOver()) {
+            return;
+        }
         for (int i = balls.size() - 1; i >= 0; i--) {
             Ball currentBall = balls.get(i);
             currentBall.update(deltaTime);
@@ -239,12 +243,22 @@ public class PlayerArea {
         newBall.setX(canvas.getWidth() / 2.0);
         newBall.setY(GameConfig.HEIGHT - 120);
         newBall.setDx(0);
-        newBall.setDy(-GameConfig.BALL_SPEED);
+        newBall.setDy(0);
         balls.add(newBall);
         paddles.clear();
         Paddle paddle = new Paddle(canvas.getWidth() / 2.0 - GameConfig.PADDLE_WIDTH / 2.0,
                 GameConfig.HEIGHT - 100, GameConfig.PADDLE_WIDTH, 15, 0);
         paddles.add(paddle);
+    }
+
+    public void startBall() {
+        if(!balls.isEmpty()) {
+            Ball ball=balls.get(0);
+            if (ball.getDx() == 0 && ball.getDy() == 0) {
+                ball.setDx(GameConfig.BALL_SPEED);
+                ball.setDy(-GameConfig.BALL_SPEED);
+            }
+        }
     }
 
     private boolean checkLevelComplete() {
@@ -273,7 +287,17 @@ public class PlayerArea {
         createLevel();
         resetBallAndPaddle();
     }
+    public boolean isGameOver() {
+        return lives <= 0;
+    }
 
+    public boolean needRestart() {
+        if (!balls.isEmpty()) {
+            Ball ball = balls.get(0);
+            return ball.getDx() == 0 && ball.getDy() == 0;
+        }
+        return false;
+    }
     private void loseLife() {
         lives--;
         System.out.println("Life loss. Lives remained: " + lives);
@@ -284,6 +308,7 @@ public class PlayerArea {
         }
     }
 
+
     public void render() {
         gameRenderer.render(balls, paddles, levels, powerUps);
         gameRenderer.renderUI(totalScores, lives, currentLevel);
@@ -292,7 +317,9 @@ public class PlayerArea {
     public Canvas getCanvas() {
         return canvas;
     }
-
+    public int getTotalScores(){
+        return totalScores;
+    }
     public List<Level> getLevels() {
         return levels;
     }
