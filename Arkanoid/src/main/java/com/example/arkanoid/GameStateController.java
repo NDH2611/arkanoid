@@ -18,25 +18,23 @@ public class GameStateController {
     public Button ViewLeaderboard;
     @FXML
     private Button Leaderboard;
+    private GameState currentState = GameState.MENU;
+    private GameEngine gameEngine;
+    private static Stage stage;
+    private Parent pauseMenu;
+    private Parent endMenu;
     @FXML
     private Button ReturnMenu;
     @FXML
     private Button PlayContinue;
-
-    private GameState currentState = GameState.MENU;
-    private GameEngine gameEngine;
-    private Stage stage;
-    private Parent pauseMenu;
-    private Parent endMenu;
-
-    private MusicManager musicManager=MusicManager.getInstance();
+    private static MusicManager musicManager=MusicManager.getInstance();
 
     @FXML
     private void onReturnMenu() {
         if(pauseMenu != null) {
             gameEngine.getRoot().getChildren().remove(pauseMenu);
         }
-        showMenu();
+        showMenu(this.getStage());
     }
 
     @FXML
@@ -67,7 +65,7 @@ public class GameStateController {
         System.out.println("state changed");
         switch (newState) {
             case MENU:
-                showMenu();
+                showMenu(this.getStage());
                 break;
             case RUNNING:
                 startGame();
@@ -87,18 +85,13 @@ public class GameStateController {
         }
     }
 
+    private Stage getStage() {
+        return stage;
+    }
+
     public GameState getState() {
         return currentState;
     }
-
-//    private void readyState() {
-//        if(stage.getScene()!=gameEngine.getScene()) {
-//            stage.setScene(gameEngine.getScene());
-//            stage.show();
-//            gameEngine.getScene().getRoot().requestFocus();
-//        }
-//        gameEngine.startGameLoop();
-//    }
 
     public void onViewLeaderboard() {
         try {
@@ -117,9 +110,9 @@ public class GameStateController {
         }
     }
 
-    private void showMenu() {
+    public static void showMenu(Stage stage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"));
+            FXMLLoader loader = new FXMLLoader(GameStateController.class.getResource("menu.fxml"));
             Scene menuScene = new Scene(loader.load());
             stage.setScene(menuScene);
             stage.centerOnScreen();
