@@ -26,7 +26,7 @@ public class MenuController {
     @FXML
     private ImageView Start;
     @FXML
-    private Button Mode;
+    private ImageView Mode;
     @FXML
     private ImageView Guide;
     @FXML
@@ -130,7 +130,7 @@ public class MenuController {
     private void comeBack() throws IOException {
         String currentFXML = getCurrentFXML();
 
-        if (currentFXML.endsWith("hdsd.fxml")) {
+        if (currentFXML.endsWith("hdsd.fxml") || currentFXML.endsWith("About.fxml")) {
             switchSceneWithEffect("menu.fxml");
         } else if (currentFXML.endsWith("hdsd2.fxml")) {
             switchSceneWithEffect("hdsd.fxml");
@@ -242,22 +242,24 @@ public class MenuController {
     private void playSlideAnimation(Parent newRoot) {
         // Tìm các button / imageView trong scene mới
         Node start = newRoot.lookup("#Start");
+        Node mode = newRoot.lookup("#Mode");
         Node guide = newRoot.lookup("#Guide");
         Node about = newRoot.lookup("#About");
         Node exit = newRoot.lookup("#Exit");
         Node leaderboard = newRoot.lookup("#Leaderboard");
 
         slideIn(start, -300);
-        slideIn(guide, -250);
-        slideIn(leaderboard, -200);
-        slideIn(about, -150);
-        slideIn(exit, -100);
+        slideIn(mode, - 450);
+        slideIn(guide, -600);
+        slideIn(leaderboard, -750);
+        slideIn(about, -900);
+        slideIn(exit, -1050);
     }
 
     private void slideIn(Node node, double fromX) {
         if (node == null) return;
         node.setTranslateX(fromX);
-        TranslateTransition slide = new TranslateTransition(Duration.millis(700), node);
+        TranslateTransition slide = new TranslateTransition(Duration.millis(800), node);
         slide.setToX(0);
         slide.setInterpolator(Interpolator.EASE_OUT);
         slide.play();
