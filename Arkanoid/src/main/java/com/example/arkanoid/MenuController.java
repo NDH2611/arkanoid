@@ -39,6 +39,9 @@ public class MenuController {
     private ImageView About;
     @FXML
     private Button backButton;
+    @FXML
+    private Button nextButton;
+
     private Stage stage;
     private GameEngine gameEngine;
     private MusicManager musicManager = MusicManager.getInstance();
@@ -125,10 +128,48 @@ public class MenuController {
 
     @FXML
     private void comeBack() throws IOException {
+        String currentFXML = getCurrentFXML();
 
-        switchSceneWithEffect("menu.fxml");
+        if (currentFXML.endsWith("hdsd.fxml")) {
+            switchSceneWithEffect("menu.fxml");
+        } else if (currentFXML.endsWith("hdsd2.fxml")) {
+            switchSceneWithEffect("hdsd.fxml");
+        } else if (currentFXML.endsWith("hdsd3.fxml")) {
+            switchSceneWithEffect("hdsd.fxml");
+        } else {
+            System.out.println("Không có scene trước cho: " + currentFXML);
+        }
     }
 
+    @FXML
+    private void toNext() {
+        String currentFXML = getCurrentFXML();
+
+        if (currentFXML.endsWith("hdsd.fxml")) {
+            switchSceneWithEffect("hdsd2.fxml");
+        } else if (currentFXML.endsWith("hdsd2.fxml")) {
+            switchSceneWithEffect("hdsd3.fxml");
+        } else {
+            System.out.println("Không có scene tiếp theo cho: " + currentFXML);
+        }
+    }
+
+    private String getCurrentFXML() {
+        try {
+            // Lấy controller class name
+            String url = rootPane.getScene().getRoot().getClass().getResource("").toString();
+            // Hoặc đơn giản hơn, lấy từ title Stage
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            Scene scene = stage.getScene();
+            // FXMLLoader không tự lưu file, nên ta tạm dựa vào ID root nếu bạn có gán
+            // => Giải pháp tốt hơn: set userData mỗi khi load scene
+            Object data = scene.getRoot().getUserData();
+            return data == null ? "" : data.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
     @FXML
     public void onLeaderboard() throws IOException {
 
@@ -163,6 +204,9 @@ public class MenuController {
                 Stage stage = (Stage) rootPane.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
                 Parent newRoot = loader.load();
+
+                newRoot.setUserData(fxmlName);
+
                 Scene scene = new Scene(newRoot);
                 stage.setScene(scene);
                 stage.show();
