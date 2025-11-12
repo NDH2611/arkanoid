@@ -137,6 +137,11 @@ public class GameEngine {
         this.currentLevel = 1;
         initialize();
 
+        stage.setScene(scene);
+        scene.getRoot().requestFocus();
+        startGameLoop();
+        troller.setState(GameState.READY);
+
     }
 
     private void saveScore() {

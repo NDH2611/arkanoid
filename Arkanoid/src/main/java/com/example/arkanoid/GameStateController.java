@@ -49,7 +49,7 @@ public class GameStateController {
                 ((ExpandPaddlePowerUp) powerUp).resumeEffect();
             }
         }
-        gameEngine.startGameLoop();
+        setState(GameState.RUNNING);
     }
 
     public GameStateController() {
@@ -177,6 +177,9 @@ public class GameStateController {
             loader.setController(this);
             endMenu = loader.load();
 
+            Button playBtn = (Button) endMenu.lookup("#PlayContinue");
+            playBtn.setOnAction(e -> onRestartGame());
+
             gameEngine.getRoot().getChildren().add(endMenu);
             endMenu.toFront();
             endMenu.requestFocus();
@@ -190,6 +193,15 @@ public class GameStateController {
     }
     @FXML
     private void onRestartGame() {
+        System.out.println("Restart clicked");
+        if (gameEngine == null) {
+            System.out.println("gameEngine is null!");
+            return;
+        }
+        if(endMenu != null) {
+            gameEngine.getRoot().getChildren().remove(endMenu);
+            endMenu = null;
+        }
         gameEngine.restartGame();
     }
 
