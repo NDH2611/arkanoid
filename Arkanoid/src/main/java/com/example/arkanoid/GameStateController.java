@@ -18,15 +18,17 @@ public class GameStateController {
     public Button ViewLeaderboard;
     @FXML
     private Button Leaderboard;
+    @FXML
+    private Button ReturnMenu;
+    @FXML
+    private Button PlayContinue;
+
     private GameState currentState = GameState.MENU;
     private GameEngine gameEngine;
     private Stage stage;
     private Parent pauseMenu;
     private Parent endMenu;
-    @FXML
-    private Button ReturnMenu;
-    @FXML
-    private Button PlayContinue;
+
     private MusicManager musicManager=MusicManager.getInstance();
 
     @FXML

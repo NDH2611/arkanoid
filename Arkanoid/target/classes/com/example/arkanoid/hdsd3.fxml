@@ -12,7 +12,6 @@
             <Image url="@images/guide_powerup.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="nextButton" layoutX="544.0" layoutY="14.0" mnemonicParsing="false" onAction="#toNext" text="Next" />
       <Button fx:id="backButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#comeBack" text="Back" />
    </children>
 </AnchorPane>
