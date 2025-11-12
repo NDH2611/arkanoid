@@ -1,5 +1,6 @@
 package com.example.arkanoid;
 
+import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -7,6 +8,8 @@ import javafx.scene.shape.Circle;
 public class Ball extends MovableObject implements Prototype {
     protected double radius;
     protected Circle circle;
+
+    private ArrayList<FireParticle> fireParticles = new ArrayList<>();
 
     public Ball(double x, double y, double radius, double speed) {
         super(x - radius, y - radius, radius * 2, radius * 2, speed);
@@ -28,6 +31,10 @@ public class Ball extends MovableObject implements Prototype {
     }
 
     public void render(GraphicsContext gc) {
+        for (FireParticle p : fireParticles) {
+            p.render(gc);
+        }
+
         gc.setFill(Color.rgb(242, 226, 210));
         gc.fillOval(x, y, width, height);
     }
@@ -36,6 +43,15 @@ public class Ball extends MovableObject implements Prototype {
         setX(x += dx * deltaTime * 60);
         setY(y += dy * deltaTime * 60);
         CheckCollision.checkBallWallCollision(this);
+
+        for (int i = 0; i < 3; i++) {
+            fireParticles.add(new FireParticle(
+                    x + radius + (Math.random() - 0.5) * 5,
+                    y + radius + (Math.random() - 0.5) * 5
+            ));
+        }
+
+        fireParticles.removeIf(p -> !p.update(deltaTime));
     }
 
     @Override
