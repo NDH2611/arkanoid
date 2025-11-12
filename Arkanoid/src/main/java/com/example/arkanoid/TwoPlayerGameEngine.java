@@ -214,6 +214,7 @@ public class TwoPlayerGameEngine {
             root.getChildren().remove(endMenu);
             endMenu = null;
         }
+
         Stage currentStage = (Stage) root.getScene().getWindow();
         TwoPlayerGameEngine newEngine = new TwoPlayerGameEngine(currentStage);
         newEngine.startGameLoop();
