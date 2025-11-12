@@ -3,17 +3,14 @@ package com.example.arkanoid;
 import javafx.scene.paint.Color;
 
 public interface GameConfig {
-    // Canvas dimensions
     public static final int CANVAS_WIDTH = 800;
     public static final int CANVAS_HEIGHT = 650;
 
-    // Colors
     public static final Color BACKGROUND_COLOR = Color.rgb(46, 26, 71);
     public static final Color UI_TEXT_COLOR = Color.rgb(242, 226, 210);
     public static final Color BALL_COLOR = Color.rgb(242, 226, 210);
     public static final Color SEPARATOR_COLOR = Color.BLACK;
 
-    //Database
     public static final String URL = "jdbc:sqlite:Arkanoid/arkanoid.db";
 
     public static final int WIDTH = 800;

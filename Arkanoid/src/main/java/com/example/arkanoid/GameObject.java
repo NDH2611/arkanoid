@@ -13,9 +13,6 @@ public abstract class GameObject {
         this.height = height;
     }
 
-//    public abstract void update();
-//    public abstract void render();
-
     public double getX() {
         return x;
     }

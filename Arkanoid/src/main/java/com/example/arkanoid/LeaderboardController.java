@@ -42,13 +42,6 @@ public class LeaderboardController {
 
     public void initialize() {
         dbManager = DatabaseManager.getInstance();
-//        rankColumn.setCellValueFactory(cellData -> {
-//            int index = leaderboardTable.getItems().indexOf(cellData.getValue()) + 1;
-//            return new javafx.beans.property.SimpleIntegerProperty(index).asObject();
-//        });
-//        playerColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
-//        levelColumn.setCellValueFactory(new PropertyValueFactory<>("levelNum"));
-//        scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
         ObservableList<String> modes = FXCollections.observableArrayList("Solo");
         modeSelector.setItems(modes);
         modeSelector.setValue(currentMode);
@@ -63,8 +56,7 @@ public class LeaderboardController {
         leaderboardContainer.getChildren().clear();
 
         List<ScoreRecord> scores = dbManager.getTopScore(mode, 10);
-//        ObservableList<ScoreRecord> scoreData = FXCollections.observableArrayList(scores);
-//        leaderboardTable.setItems(scoreData);
+
         for (int i = 0; i < scores.size(); i++) {
             ScoreRecord record = scores.get(i);
             HBox row = createLeaderboardRow(i + 1, record);

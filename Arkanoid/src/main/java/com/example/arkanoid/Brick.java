@@ -9,7 +9,6 @@ public class Brick extends GameObject {
     private TYPE type;
     private boolean visible;
     private Rectangle rectangle;
-    //private final static ArrayList<Brick> bricks = new ArrayList<>();
     private int strength;
     private int score;
 
@@ -100,11 +99,11 @@ public class Brick extends GameObject {
     }
 
     enum TYPE {
-        GREEN,      //normal brick, GREEN
-        YELLOW,     //unbreakable brick, YELLOW
-        BLUE,     //ball brick, BLUE
-        PINK,       //healing brick, PINK
-        ORANGE,      //double strength brick, ORANGE
+        GREEN,
+        YELLOW,
+        BLUE,
+        PINK,
+        ORANGE,
         MAROON
     }
 

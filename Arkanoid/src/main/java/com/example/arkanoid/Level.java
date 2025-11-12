@@ -14,8 +14,6 @@ public class Level {
     private static final int LEVEL_ROW = 5;
     private static final int BRICK_SPACE = 5;
     private static final int DISTANCE_Y = 50;
-    //    private static final int DISTANCE_X = (GameEngine.WIDTH - WIDTH_BRICK * LEVEL_COLUMN
-//            - BRICK_SPACE * (LEVEL_COLUMN - 1)) / 2;
     private static final int BRICK_TYPE = 5;
 
     private ArrayList<Brick> bricks = new ArrayList<>();

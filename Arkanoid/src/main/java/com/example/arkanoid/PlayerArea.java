@@ -1,5 +1,6 @@
 package com.example.arkanoid;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.text.Font;
@@ -26,6 +27,8 @@ public class PlayerArea {
     private List<PowerUp> activePowerUps = new ArrayList<>();
     private List<String> mapFiles = new ArrayList<>();
     private MusicManager musicManager = MusicManager.getInstance();
+    private AnimationTimer gameLoop;
+    private long startTime = 0;
 
 
     private int lives = 3;
@@ -54,13 +57,23 @@ public class PlayerArea {
         createLevel();
     }
 
+    public void stopGameLoop() {
+        if (gameLoop != null) {
+            gameLoop.stop();
+            gameLoop = null;
+            startTime = 0;
+            System.out.println("game stopped.");
+        }
+    }
+
     public void restartGame() {
+        stopGameLoop();
         balls.clear();
         powerUps.clear();
         levels.clear();
         paddles.clear();
-        totalScores = 0;
-        lives = 3;
+        this.setTotalScores(0);
+        this.setLives(3);
         this.currentLevel = 1;
         initialize();
 
@@ -320,6 +333,19 @@ public class PlayerArea {
     public int getTotalScores(){
         return totalScores;
     }
+
+    public void setTotalScores(int totalScores) {
+        this.totalScores = totalScores;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
     public List<Level> getLevels() {
         return levels;
     }
