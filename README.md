@@ -38,10 +38,9 @@ Nhóm 2 - Lớp INT2204_11
 ## UML Diagram
 
 ### Class Diagram
+![Class Diagram](docs/uml/arkanoid_UML.png)
 
-![[docs/uml/arkanoid_UML.png]]
-
-Xem chi tiết tại ![[docs/uml/arkanoid_fullUMLL.png]]
+Xem chi tiết tại [Full UML Diagram](docs/uml/arkanoid_fullUMLL.png)
 
 ---
 
@@ -139,20 +138,21 @@ Xem chi tiết tại ![[docs/uml/arkanoid_fullUMLL.png]]
 
 ### Ảnh chụp
 
-**Main Menu**  
-![[docs/demo/arkanoid_mainMenu.png]]
+### Main Menu
+![Main Menu](docs/demo/arkanoid_mainMenu.png)
 
-**Gameplay**
-![[docs/demo/arkanoid_gamePlay.png]]
-**Power-ups**
-1. Double Ball
-![[docs/demo/ark_doubleBall.png]]
-2. Expand Paddle
-![[docs/demo/ark_expandPaddle.png]]
-3. Shrink Paddle
-![[docs/demo/ark_shrink.png]]
-**Leaderboard** 
-![[docs/demo/arkanoid_leaderboard.png]]
+### Gameplay
+![Gameplay](docs/demo/arkanoid_gamePlay.png)
+
+### Power-ups
+
+- **Double Ball**: ![Double Ball](docs/demo/ark_doubleBall.png)
+- **Expand Paddle**: ![Expand Paddle](docs/demo/ark_expandPaddle.png)
+- **Shrink Paddle**: ![Shrink Paddle](docs/demo/ark_shrink.png)
+
+### Leaderboard
+![Leaderboard](docs/demo/arkanoid_leaderboard.png)
+
 ### Video Demo
 
 Video đầy đủ tại link: 
