@@ -156,7 +156,7 @@ Xem chi tiết tại [Full UML Diagram](docs/uml/arkanoid_fullUMLL.png)
 ### Video Demo
 
 Video đầy đủ tại link: 
-https://drive.google.com/file/d/15wQs4erYB14BYwDr8mUzzqdB3D9ATOgI/view?usp=sharing
+[https://drive.google.com/file/d/15wQs4erYB14BYwDr8mUzzqdB3D9ATOgI/view?usp=sharing](https://drive.google.com/file/d/1bTmWd_gU1TMXu6d68WjilHcxl2CaqhL6/view?usp=sharing)
 
 ---
 
