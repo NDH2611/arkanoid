@@ -39,7 +39,9 @@ Nhóm 2 - Lớp INT2204_11
 
 ### Class Diagram
 
-![[arkanoid_UML.png]]
+![[docs/uml/arkanoid_UML.png]]
+
+Xem chi tiết tại ![[docs/uml/arkanoid_fullUMLL.png]]
 
 ---
 
@@ -138,21 +140,20 @@ Nhóm 2 - Lớp INT2204_11
 ### Ảnh chụp
 
 **Main Menu**  
-![[arkanoid_mainMenu.png]]
+![[docs/demo/arkanoid_mainMenu.png]]
 
 **Gameplay**
-![[arkanoid_gamePlay.png]]
+![[docs/demo/arkanoid_gamePlay.png]]
 **Power-ups**
 1. Double Ball
-![[ark_doubleBall.png]]
+![[docs/demo/ark_doubleBall.png]]
 2. Expand Paddle
-![[ark_expandPaddle.png]]
+![[docs/demo/ark_expandPaddle.png]]
 3. Shrink Paddle
-![[ark_shrink.png]]
+![[docs/demo/ark_shrink.png]]
 **Leaderboard** 
-![[arkanoid_leaderboard.png]]
+![[docs/demo/arkanoid_leaderboard.png]]
 ### Video Demo
-![[arkanoid_demoVid.mp4]]
 
 Video đầy đủ tại link: 
 https://drive.google.com/file/d/15wQs4erYB14BYwDr8mUzzqdB3D9ATOgI/view?usp=sharing
