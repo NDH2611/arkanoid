@@ -102,7 +102,6 @@ public class Paddle extends MovableObject {
 
     public void render(GraphicsContext gc) {
         if (fireSpriteSheet != null) {
-            //double fireWidth = width * 0.8;
             double fireWidth = 96;
             double fireHeight = 96;
             double fireX = x + (width - fireWidth) / 2;
@@ -125,11 +124,6 @@ public class Paddle extends MovableObject {
             gc.fillRect(x, y, width, height);
         }
 
-        /*
-        gc.setFill(Color.rgb(242, 226, 210));
-        gc.fillRect(x, y, width, height);
-
-         */
     }
 
     public void update(double deltaTime) {

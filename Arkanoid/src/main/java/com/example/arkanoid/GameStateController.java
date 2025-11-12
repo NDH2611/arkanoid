@@ -149,11 +149,6 @@ public class GameStateController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("state.fxml"));
             loader.setController(this);
             pauseMenu = loader.load();
-            //StackPane.setAlignment(pauseMenu, Pos.CENTER);
-
-//            GameStateController controller = loader.getController();
-//            controller.setStage(stage);
-//            controller.setGameEngine(gameEngine);
 
             gameEngine.getRoot().getChildren().add(pauseMenu);
             pauseMenu.toFront();
@@ -174,19 +169,13 @@ public class GameStateController {
                 exp.pauseEffect();
             }
         }
-        //gameEngine.stopGameLoop();
     }
 
     private void gameOverRestart() {
-        //gameEngine.stopGameLoop();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("endgame.fxml"));
             loader.setController(this);
             endMenu = loader.load();
-
-//            GameStateController controller = loader.getController();
-//            controller.setStage(stage);
-//            controller.setGameEngine(gameEngine);
 
             gameEngine.getRoot().getChildren().add(endMenu);
             endMenu.toFront();

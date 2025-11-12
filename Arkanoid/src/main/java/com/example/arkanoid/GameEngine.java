@@ -136,10 +136,6 @@ public class GameEngine {
         this.setLives(3);
         this.currentLevel = 1;
         initialize();
-        stage.setScene(this.scene);
-        this.root.requestFocus();
-        stage.show();
-        troller.setState(GameState.READY);
 
     }
 
@@ -422,7 +418,6 @@ public class GameEngine {
             case R:
                 if (troller.getState() == GameState.GAME_OVER) {
                     restartGame();
-                    //troller.setState(GameState.RUNNING);
                 }
                 break;
             case SPACE:

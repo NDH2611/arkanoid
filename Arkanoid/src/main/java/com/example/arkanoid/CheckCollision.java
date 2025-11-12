@@ -28,10 +28,6 @@ public class CheckCollision {
             ball.setDy(-ball.getDy());
         }
 
-//        if (ball.getY() + ball.getHeight() >= GameEngine.HEIGHT) {
-//            ball.setY(GameEngine.HEIGHT - ball.getWidth());
-//            ball.setDy(-ball.getDy());
-//        }
     }
 
     public static void checkPaddleWallCollision(Paddle paddle) {

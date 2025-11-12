@@ -183,7 +183,6 @@ public class TwoPlayerGameEngine {
             loader.setController(this);
             endMenu = loader.load();
 
-            // Determine winner and display message
             String winnerMessage = "";
             if (player1Area.isGameOver() && !player2Area.isGameOver()) {
                 winnerMessage = "Player 2 Wins!";
@@ -209,21 +208,18 @@ public class TwoPlayerGameEngine {
         resumeGame();
     }
 
-    // In TwoPlayerGameEngine.java
-
     @FXML
     private void onRestartGame() {
         if (endMenu != null) {
             root.getChildren().remove(endMenu);
             endMenu = null;
         }
+        Stage currentStage = (Stage) root.getScene().getWindow();
+        TwoPlayerGameEngine newEngine = new TwoPlayerGameEngine(currentStage);
+        newEngine.startGameLoop();
+        currentStage.setScene(newEngine.getScene());
 
-        player1Area.restartGame();
-        player2Area.restartGame();
 
-        currentState = GameState.READY;
-
-        startGameLoop();
     }
 
     @FXML
@@ -249,5 +245,8 @@ public class TwoPlayerGameEngine {
     }
     public Scene getScene() {
         return scene;
+    }
+    public StackPane getRoot() {
+        return root;
     }
 }
