@@ -10,23 +10,25 @@ import javafx.scene.Parent;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.Pane;
-
+import javafx.scene.image.ImageView;
 import java.io.IOException;
 
 public class GameStateController {
     @FXML
     public Button ViewLeaderboard;
     @FXML
-    private Button Leaderboard;
+    private ImageView Leaderboard;
+    @FXML
+    private ImageView ReturnMenu;
+    @FXML
+    private ImageView PlayContinue;
+
     private GameState currentState = GameState.MENU;
     private GameEngine gameEngine;
     private static Stage stage;
     private Parent pauseMenu;
     private Parent endMenu;
-    @FXML
-    private Button ReturnMenu;
-    @FXML
-    private Button PlayContinue;
+
     private static MusicManager musicManager=MusicManager.getInstance();
 
     @FXML
@@ -177,8 +179,8 @@ public class GameStateController {
             loader.setController(this);
             endMenu = loader.load();
 
-            Button playBtn = (Button) endMenu.lookup("#PlayContinue");
-            playBtn.setOnAction(e -> onRestartGame());
+            ImageView playBtn = (ImageView) endMenu.lookup("#PlayContinue");
+            playBtn.setOnMouseClicked(e -> onRestartGame());
 
             gameEngine.getRoot().getChildren().add(endMenu);
             endMenu.toFront();
@@ -213,7 +215,7 @@ public class GameStateController {
         this.gameEngine = gameEngine;
     }
 
-    public Button getLeaderboard() {
+    public ImageView getLeaderboard() {
         return Leaderboard;
     }
 }
