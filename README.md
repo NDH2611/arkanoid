@@ -39,40 +39,29 @@ Nhóm 2 - Lớp INT2204_11
 
 ### Class Diagram
 
-[![Class Diagram](https://github.com/kieuvantuyen01/OOP_demo/raw/master/docs/uml/class-diagram.png)](https://github.com/kieuvantuyen01/OOP_demo/blob/master/docs/uml/class-diagram.png)
-
-_Có thể sử dụng IntelliJ để generate ra Class Diagrams: [https://www.youtube.com/watch?v=yCkTqNxZkbY](https://www.youtube.com/watch?v=yCkTqNxZkbY)_
-
-_Complete UML diagrams are available in the `docs/uml/` folder_
+![[arkanoid_UML.png]]
 
 ---
 
-## Design Patterns Implementation
-
-_Có dùng hay không và dùng ở đâu_
+## Mẫu thiết kế
 
 ### 1. Singleton Pattern
 
-[](https://github.com/kieuvantuyen01/OOP_demo#1-singleton-pattern)
+**Sử dụng:** `DatabaseManager`, `MusicManager`
 
-**Used in:** `GameManager`, `AudioManager`, `ResourceLoader`
+**Mục đích:** Đảm bảo có 1 phiên bản Manager và Music tồn tại trong toàn bộ game
 
-**Purpose:** Ensure only one instance exists throughout the application.
+### 2. Prototype
+
+**Sử dụng:** `Ball`
+
+**Mục đích:** Tạo bản sao của Ball để thuận tiện tạo chức năng
+
 
 ---
 
-## Multithreading Implementation
+## Đa luồng
 
-[](https://github.com/kieuvantuyen01/OOP_demo#multithreading-implementation)
-
-_Có dùng hay không và dùng như thế nào_
-
-The game uses multiple threads to ensure smooth performance:
-
-1. **Game Loop Thread**: Updates game logic at 60 FPS
-2. **Rendering Thread**: Handles graphics rendering (EDT for JavaFX Application Thread)
-3. **Audio Thread Pool**: Plays sound effects asynchronously
-4. **I/O Thread**: Handles save/load operations without blocking UI
 
 ---
 
@@ -83,24 +72,42 @@ The game uses multiple threads to ensure smooth performance:
 3. Cài đặt JDK phiên bản 24, cài đặt JavaFX phiên bản 25
 4. Build và chạy chương trình
 
-## Usage
+## Hướng dẫn
 
-### Controls
+### Điều khiển
 
-|Key|Action|
-|---|---|
-|`←` or `A`|Move paddle left|
-|`→` or `D`|Move paddle right|
-|`SPACE`|Launch ball / Shoot laser|
-|`P` or `ESC`|Pause game|
-|`R`|Restart game|
-|`Q`|Quit to menu|
+1. **Mode Solo**
 
-### How to Play
+| Phím    | Hành động                   |
+| ------- | --------------------------- |
+| `←`     | Di chuyển bảng đỡ sang trái |
+| `→`     | Di chuyển bảng đỡ sang phải |
+| `SPACE` | Phát bóng                   |
+| `P`     | Tạm dừng game               |
+| `R`     | Khởi động lại game          |
+
+1. **Mode Duel**
+
+| Phím    | Hành động                                |
+| ------- | ---------------------------------------- |
+| `←`     | Di chuyển bảng đỡ người chơi 1 sang trái |
+| `→`     | Di chuyển bảng đỡ người chơi 1 sang phải |
+| `A`     | Di chuyển bảng đỡ người chơi 2 sang trái |
+| `D`     | Di chuyển bảng đỡ người chơi 2 sang phải |
+| `SPACE` | Phát bóng                                |
+| `P`     | Tạm dừng game                            |
+| `R`     | Khởi động lại game                       |
+
+
+### Cách chơi
 
 1. **Bắt đầu chơi:** bấm chọn Start ở Menu
-2. **Control the paddle**: Use arrow keys or A/D to move left and right.
-3. **Launch the ball**: Press SPACE to launch the ball from the paddle.
+2. **Điều khiển bảng đỡ:** 
+	- Với chế độ Solo: sử dụng nút `→` hoặc `←`
+	- Với chế độ Duel:
+		- Người chơi số 1: sử dụng nút `→` hoặc `←`
+		- Người chơi số 2: sử dụng nút `A` hoặc `D`
+3. **Phát bóng:** sử dụng `SPACE` để phát bóng
 4. **Phá hủy gạch:** sử dụng bóng va chạm với gạch để phá hủy
 5. **Thu thập vật phẩm:** dùng bảng đỡ nhặt các vật phẩm rơi xuống
 6. **Không để mất bóng:** không để bóng rơi dưới bảng đỡ
@@ -108,65 +115,69 @@ The game uses multiple threads to ensure smooth performance:
 
 ### Vật phẩm
 
-| Biểu tượng | Tên           | Hiệu ứng                                      |
-| ---------- | ------------- | --------------------------------------------- |
+| Biểu tượng | Tên           | Hiệu ứng                         |
+| ---------- | ------------- | -------------------------------- |
+| 🟩         | Expand Paddle | Tăng kích thước bảng đỡ trong 5s |
+| 🟥         | Shrink Paddle | Giảm kích thước bảng đỡ trong 5s |
+| 🟦         | Double Ball   | Nhân đôi bóng trong 5s           |
+| 🩷         | Health        | Tăng mạng                        |
 
 
 ### Cách tính điểm
 
-- Normal Brick: 100 points
-- Strong Brick: 300 points
-- Explosive Brick: 500 points + nearby bricks
-- Power-up Collection: 50 points
-- Combo Multiplier: x2, x3, x4... for consecutive hits
+- Green Brick, Yellow Brick, Maroon Brick: 10 điểm
+- Two-hit Brick: 20 điểm
+- Double-ball Brick: 30 điểm
+- Healing Brick: 10 điểm
+- Qua mỗi 1 màn chơi: 100 điểm
 
 ---
 
 ## Demo
 
-### Screenshots
-
+### Ảnh chụp
 
 **Main Menu**  
+![[arkanoid_mainMenu.png]]
 
-**Gameplay**  
-
-**Power-ups in Action**  
-
-**Leaderboard**  
-
+**Gameplay**
+![[arkanoid_gamePlay.png]]
+**Power-ups**
+1. Double Ball
+![[ark_doubleBall.png]]
+2. Expand Paddle
+![[ark_expandPaddle.png]]
+3. Shrink Paddle
+![[ark_shrink.png]]
+**Leaderboard** 
+![[arkanoid_leaderboard.png]]
 ### Video Demo
+![[arkanoid_demoVid.mp4]]
 
-
-_Full gameplay video is available in `docs/demo/gameplay.mp4`_
-
----
-
-## Future Improvements
-
-
-### Planned Features
-
-1. **Additional game modes**
-    
-    - Time attack mode
-    - Survival mode with endless levels
-    - Co-op multiplayer mode
-2. **Enhanced gameplay**
-    
-    - Boss battles at end of worlds
-    - More power-up varieties (freeze time, shield wall, etc.)
-    - Achievements system
-3. **Technical improvements**
-    
-    - Migrate to LibGDX or JavaFX for better graphics
-    - Add particle effects and advanced animations
-    - Implement AI opponent mode
-    - Add online leaderboard with database backend
+Video đầy đủ tại link: 
+https://drive.google.com/file/d/15wQs4erYB14BYwDr8mUzzqdB3D9ATOgI/view?usp=sharing
 
 ---
 
-## Technologies Used
+## Kế hoạch phát triển
+
+
+### Tính năng dự kiến
+
+1. **Thêm lựa chọn mode**
+    - Mode Story cho phép người chơi chọn màn
+    - Mode boss cho phép người chơi đánh quái ở màn cuối
+2. **Cải thiện về Gameplay**
+    - Nhiều vật phẩm giúp trải nghiệm chơi thú vị hơn: bóng xuyên gạch, bảng đỡ có đạn bắn
+	- Nhiều loại gạch hơn, ví dụ gạch không thể phá vỡ, gạch nổ
+	- Nhiều map chơi hơn, tăng độ khó và thử thách
+3. **Cải thiện kĩ thuật**
+	- Tính năng login có mật khẩu
+	- Cải thiện thêm về mặt đồ họa
+
+---
+
+## Công nghệ được sử dụng
 
 | Công nghệ | Phiên bản | Vai trò                        |
 | --------- | --------- | ------------------------------ |
@@ -181,7 +192,7 @@ _Full gameplay video is available in `docs/demo/gameplay.mp4`_
 
 Dự án sử dụng cho mục đích giáo dục
 
-**Liêm chính học thuật:** Dự án được cung cấp như một tài liệu tham khảo. Vui lòng tuân theo các tiêu chí liêm chính học thuật của cơ sở giáo dục
+**Liêm chính học thuật:** Dự án được cung cấp như một tài liệu tham khảo. Vui lòng tuân theo các tiêu chí liêm chính học thuật của cơ sở giáo dục
 
 ---
 
@@ -191,3 +202,7 @@ Dự án sử dụng cho mục đích giáo dục
 - Các đoạn mã được viết bởi các thành viên dưới sự hướng dẫn
 - Các nội dung hình ảnh, âm thanh được sử dụng với mục đích học thuật
 - Bài tập lớn minh họa thực tế cách ứng dụng các nguyên tắc hướng đối tượng và mẫu thiết kế
+
+---
+
+Cập nhật cuối: 12/11/2025
